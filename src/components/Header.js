@@ -8,6 +8,7 @@ import Edit_brd from './board_page/Edit_brd';
 import Main from './Main';
 import Basic from './Basic';
 import Board from './Board';
+import Property from './Property';
 import View_brd from './board_page/View_brd';
 import Edit_profile from './Edit_profile';
 import axios from 'axios';
@@ -90,6 +91,16 @@ function Header(){
                   <p>게시판 관리</p>
                 </Link>
               </li>
+              <li onClick={()=>{
+                dispatch(change_page('property'))
+              }} className={store.current_page === 'property' ? 'on' : null}>
+                <Link to='/property'>
+                  <div className='img_con'>
+                    <img src='img/header/header_property.png' alt='아이콘이미지'></img>
+                  </div>
+                  <p>매물 관리</p>
+                </Link>
+              </li>
               {/* <li onClick={()=>{
                 dispatch(change_page('member'))
               }} className={store.current_page === 'member' ? 'on' : null}>
@@ -119,6 +130,7 @@ function Header(){
             <Route path='/edit_profile' element={ <Edit_profile></Edit_profile> }></Route>
             <Route path='/basic' element={ <Basic></Basic> }></Route>
             <Route path='/board' element={ <Board></Board> }></Route>
+            <Route path='/property' element={ <Property></Property> }></Route>
             <Route path='/write' element={ <Write_brd></Write_brd> }></Route>
             <Route path='/edit' element={ <Edit_brd></Edit_brd> }></Route>
             <Route path='/view' element={ <View_brd></View_brd> }></Route>

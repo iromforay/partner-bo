@@ -158,6 +158,20 @@ function Set_header(props){
                 </li>
                 <li>
                   <div className="check_con">
+                    <h5 className="tit_menu">매물등록</h5>
+                    <label>
+                      <input className="input_check_hidden" name="around_show" type="hidden" value='N'></input>
+                      <input className="check_menu input_check" name="around_show" type="checkbox"value='Y' defaultChecked={basicSetting.around_show === "Y" ? true : false}></input>
+                      <div className="check_btn">
+                        <span className="disabled">숨김</span>
+                        <span className="abled">보임</span>
+                        <div className="circle"></div>
+                      </div>
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div className="check_con">
                     <h5 className="tit_menu">이용요금</h5>
                     <label>
                       <input className="input_check_hidden" name="charge_show" type="hidden" value='N'></input>

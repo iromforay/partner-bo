@@ -60,7 +60,7 @@ input {outline: none;}
 #header .nav_con ul li {position: relative; padding: 10px 0; border-bottom: 1px dotted #E0E0E0;}
 #header .nav_con ul li a {display: flex; align-items: center; }
 #header .nav_con ul li a .img_con {position: relative; width: 30px; height: 30px; border-radius: 50%; background: #EBEEF2;}
-#header .nav_con ul li a .img_con img {position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
+#header .nav_con ul li a .img_con img {width: 60%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
 #header .nav_con ul li a p {position: relative; font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; margin: 0 0 0 5px;}
 #header .nav_con ul li.on:before {position: absolute; top: 0; left: -30px; width: calc(100% + 60px); height: 100%; content: ''; background: #A5AFB6;}
 #header .nav_con ul li.on a p {color: #fff;}
@@ -144,6 +144,18 @@ input {outline: none;}
 .container .sections.basic .width_con .row .title_con span.esenstial {margin: 0 0 0 5px; font-size: 0.8rem; line-height: 1rem; color: #f00;}
 .container .sections.basic .width_con .row p.row_desc {margin: 5px 0 0 0; font-size: 0.6rem; line-height: 1rem; color: #777;}
 
+/* 매물관리 페이지 설정 */
+.setting-container {display: flex; gap: 16px; width: 100%; padding: 20px; box-sizing: border-box;}
+.setting-card {flex: 1; min-width: 200px; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; display: flex; flex-direction: column; overflow: hidden;}
+.card-header { background-color: #f8fafc; padding: 12px; border-bottom: 1px solid #e2e8f0;}
+.card-header h5 { margin: 0; font-size: 14px; font-weight: 700; color: #334155;}
+.card-body {padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.setting-item {display: flex; justify-content: space-between; align-items: center;}
+.item-label {margin: 0; font-size: 13px; color: #475569;}
+.check_con label {cursor: pointer; display: inline-block;}
+.input_check { display: none;}
+
+
 .container .sections.basic .width_con .row1 {display: flex; justify-content: space-between; align-items: center;}
 .container .sections.basic .width_con .row1 .btn_con {display: flex;}
 .container .sections.basic .width_con .row1 .btns {width: 120px; margin: 0 0 0 10px; padding: 10px 0; text-align: center; border-radius: 4px; box-shadow: 2px 2px 4px rgba(0,0,0,.2);}
@@ -156,6 +168,7 @@ input {outline: none;}
 
 .container .sections.board .width_con:before {display: none;}
 .container .sections.board .width_con .board_con {max-height: 750px; padding: 15px; background: #fff; border-radius: 0px 0px 4px 4px; box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.20); overflow: auto;}
+.container .sections.board .width_con ul.tabs {justify-content:left; gap:5px;}
 .container .sections.board .width_con ul.tabs li {width: calc(20% - 5px);}
 .container .sections.board .width_con ul.tabs:before {display: none;}
 .container .sections.board .width_con ul.tabs li .status {display: flex; flex-direction: column; align-items: flex-end;}
