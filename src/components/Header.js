@@ -11,6 +11,11 @@ import Board from './Board';
 import Property from './Property';
 import View_brd from './board_page/View_brd';
 import Edit_profile from './Edit_profile';
+
+import Write_property from './property_page/Write_property';
+import Edit_property from './property_page/Edit_property';
+import View_property from './property_page/View_property';
+
 import axios from 'axios';
 
 function Header(){
@@ -134,6 +139,10 @@ function Header(){
             <Route path='/write' element={ <Write_brd></Write_brd> }></Route>
             <Route path='/edit' element={ <Edit_brd></Edit_brd> }></Route>
             <Route path='/view' element={ <View_brd></View_brd> }></Route>
+
+            <Route path='/property/write' element={ <Write_property></Write_property> }></Route>
+            <Route path='/property/edit' element={ <Edit_property></Edit_property> }></Route>
+            <Route path='/property/view' element={ <View_property></View_property> }></Route>
           </Routes>
         </div>
       </div>

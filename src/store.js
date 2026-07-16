@@ -113,6 +113,18 @@ let board_view_data = createSlice({
   }
 })
 
+// 1. 매물 전용 슬라이스 생성
+let property_view_data = createSlice({
+  name : 'property_view_data',
+  initialState : '',
+  reducers : {
+      // 매물 정보를 담아줄 액션명 (게시판과 구분되게!)
+      now_property_view(state, a){
+        return state = a.payload
+      }
+  }
+});
+
 export let {log_in_out} = alt_log.actions
 export let {set_idkey} = now_idkey.actions
 export let {change_page} = current_page.actions
@@ -122,6 +134,7 @@ export let {plus_del} = sns_del.actions
 export let {plus_Mslide, minus_Mslide} = set_main_slide.actions
 export let {plus_Aslide, minus_Aslide} = set_around_slide.actions
 export let {now_view} = board_view_data.actions
+export let { now_property_view } = property_view_data.actions;
 
 export default configureStore({
   reducer: {
@@ -133,6 +146,7 @@ export default configureStore({
       sns_del : sns_del.reducer,
       set_main_slide : set_main_slide.reducer,
       set_around_slide : set_around_slide.reducer,
-      board_view_data : board_view_data.reducer
+      board_view_data : board_view_data.reducer,
+      property_view_data : property_view_data.reducer 
   }
 });
