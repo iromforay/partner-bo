@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { change_page, minus_list, plus_list } from "../store";
-import Brd_all from './property_page/Brd_all';
+import Property_brd_all from './property_page/Property_brd_all';
 import './board_page/brd.css';
 import axios from "axios";
 
@@ -41,7 +41,7 @@ function Property(){
     return(
       <div className="sections board">
         <div className="width_con">
-          <h3>게시판 관리</h3>
+          <h3>매물 관리</h3>
           <ul className="tabs">
             <li onClick={()=>{
               setSelect('all');
@@ -103,7 +103,7 @@ function Property(){
             </li>
           </ul>
           <div className="board_con">
-            <Brd_all origin_data={data} data={copy_data} whats={select}></Brd_all>
+            <Property_brd_all origin_data={data} data={copy_data} whats={select}></Property_brd_all>
           </div>
         </div>
       </div>

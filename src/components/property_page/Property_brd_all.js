@@ -53,7 +53,7 @@ const getPropertyTypeAndPrice = (row) => {
   return { type, typeClass, price: priceText };
 };
 
-function Brd_all(props){
+function Property_brd_all(props){
   
   let data = props.data;
   let origin = props.origin_data;
@@ -382,4 +382,4 @@ function Rows(props){
   )
 }
 
-export default Brd_all;
+export default Property_brd_all;
