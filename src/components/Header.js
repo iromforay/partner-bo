@@ -143,7 +143,7 @@ function Header(){
             <Route path='/property/write' element={ <Write_property></Write_property> }></Route>
             {/* URL 파라미터로 property_no를 넘겨줍니다 */}
             <Route path="/property/edit/:property_no" element={<Edit_property />} />
-            <Route path='/property/view' element={ <View_property></View_property> }></Route>
+            <Route path='/property/view/:property_no' element={ <View_property></View_property> }></Route>
           </Routes>
         </div>
       </div>
