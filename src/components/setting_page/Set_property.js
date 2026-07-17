@@ -1,22 +1,15 @@
 import { useEffect, useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { change_set, minus_list, plus_del, plus_list, replace_list } from "../../store";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faTrashCan} from "@fortawesome/free-regular-svg-icons";
-import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import $ from "jquery";
 import post_ajax from "../../ajaxs";
 import axios from "axios";
 
 function Set_property(props){
 
-  let [basicSetting, setBasicSetting] = useState();
+  let [propertySetting, setPropertySetting] = useState();
   let dispatch = useDispatch();
   let store = useSelector((state)=>{return state});
-  let sns_cnt = store.snslist_cnt;
-  let sns_del = store.sns_del;
-  console.log(sns_cnt, sns_del)
-  let [upload_logo_img, setUpload] = useState('');
   let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
 
@@ -25,36 +18,10 @@ function Set_property(props){
       'Authorization': `Bearer ${login_key}`
     }
   }
-
-  useEffect(()=>{
-    if(basicSetting){
-      setUpload(basicSetting.logo_url);
-      dispatch(replace_list(basicSetting.sns_link));
-      $(".opa span").text(basicSetting.menu_back_transparent+"%")
-      // $(".tit_menu").css({'color' : basicSetting.main_menu_color});
-      // $(".tit_menu").css({'background' : '#EBEFF2'});
-      // $(".tit_menu.point").css({'background' : basicSetting.sub_menu_color});
-      // $(".tit_menu.point").css({'color' : '#fff'});
-    }
-  }, [basicSetting]);
-  
   useMemo(()=>{
-    
-    return axios.get(process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=map', config).then((result)=>{console.log(result); setBasicSetting(result.data.RECORD)}).catch(()=>{alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); window.location.href = '/';});
+    //code=다른 거로 수정해야함, 임시로 map쓰는 중
+    return axios.get(process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=map', config).then((result)=>{console.log(result); setPropertySetting(result.data.RECORD)}).catch(()=>{alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); window.location.href = '/';});
   }, []);
-
-  function preview(input){
-    if (input.length !== 0) {
-      console.log(input);
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        setUpload(e.target.result);
-      };
-      reader.readAsDataURL(input[0]);
-    } else {
-      return;
-    }
-  }
 
   const menuData = [
     {
@@ -115,10 +82,10 @@ function Set_property(props){
     }
   ];
 
-  console.log(basicSetting);
-  if(basicSetting){
+  console.log(propertySetting);
+  if(propertySetting){
     return(
-      <form id="headerSetting" data-whats="header">
+      <form id="propertySetting" data-whats="property">
         <div className="row row1">
           <div className="title_con">
             <h4>매물관리 페이지 설정</h4>
@@ -178,7 +145,7 @@ function Set_property(props){
                             name={item.key}
                             type="checkbox"
                             value='Y'
-                            defaultChecked={basicSetting[item.key] === "Y" ? true : false}
+                            defaultChecked={propertySetting[item.key] === "Y" ? true : false}
                           />
                           <div className="check_btn">
                             <span className="disabled">숨김</span>
@@ -199,47 +166,6 @@ function Set_property(props){
     )
   }
 
-  
-}
-
-function Snslist(props){
-
-  //let [sns_link, setSns_link] = useState(props.data[props.val].link);
-  let dispatch = useDispatch();
-
-  let sns_key = props.data[props.val].key,
-      sns_link = props.data[props.val].link,
-      sns_img_url = props.data[props.val].img_url;
-
-  function preview(input, idx){
-    if (input.length !== 0) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        $(".upload_img"+idx+" img").attr('src', e.target.result);
-      };
-      reader.readAsDataURL(input[0]);
-    } else {
-      return;
-    }
-  }
-
-  return(
-    <li>
-      <div className="input_con">
-        <label>
-          <input className="sns_img" type="file" name='sns_img[]' accept="image/png, image/jpeg" onChange={(e)=>{preview(e.target.files, props.val)}}></input>
-          <div className={"upload_img upload_img"+props.val}>
-            <img src={sns_img_url}></img>
-          </div>
-        </label>
-        <input type="text" name='sns_link[]' className="sns_link" placeholder="SNS 링크주소 입력" defaultValue={sns_link} key={sns_link}></input>
-        <input type="hidden" name="sns_key[]" defaultValue={sns_key}></input>
-      </div>
-      <div className="minus">
-        <span onClick={()=>{dispatch(minus_list(props.val)); dispatch(plus_del(sns_key))}}><FontAwesomeIcon icon={faTrashCan} /></span>
-      </div>
-    </li>
-  )
 }
 
 export default Set_property
