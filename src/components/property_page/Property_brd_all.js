@@ -358,7 +358,7 @@ function Rows(props){
             <span onClick={() => {
               dispatch(now_property_view(row));
             }}>
-              <Link to={`/property/edit?property_no=${row.property_no}`}>수정</Link>
+              <Link to={`/property/edit/${row.property_no}`}>수정</Link>
             </span>
           </div>
           <div className="btns btn_del">

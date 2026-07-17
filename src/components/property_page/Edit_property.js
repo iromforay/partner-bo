@@ -1,202 +1,648 @@
-import $ from "jquery";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import ReactQuill from 'react-quill';
+import React, { useState, useEffect } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faXmark} from "@fortawesome/free-solid-svg-icons";
-import {faTrashCan} from "@fortawesome/free-regular-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import axios from "axios";
+import DaumPostcode from "react-daum-postcode";
 
-function Edit_property(){
+// 주소 검색 모달 컴포넌트
+function AddressSearchModal({ onComplete, onClose }) {
+  const handleComplete = (data) => {
+    let fullAddress = data.address;
+    let extraAddress = "";
 
-  let store = useSelector((state)=>{return state.board_view_data});
-  let [contents, setContents] = useState(store.board_content);
-  let types = store.board_type;
-  let separator = '';
-  let navigate = useNavigate();
-  let id = window.localStorage.getItem('id');
-  let login_key = window.localStorage.getItem('login_key');
-  const config = {
-    headers : {
-      'Authorization': `Bearer ${login_key}`
+    if (data.addressType === "R") {
+      if (data.bname !== "") extraAddress += data.bname;
+      if (data.buildingName !== "") {
+        extraAddress += extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
-  }
-  switch(types){
-    case 'notice' : separator = '공지'
-    break;
-    case 'event' : separator = '이벤트'
-    break;
-    case 'charge' : separator = '이용요금'
-    break;
-    case 'review' : separator = '이용후기'
-    break;
-    case 'vod' : separator = '홍보영상'
-    break;
-  }
-  console.log(store)
+
+    onComplete({
+      sido: data.sido,
+      sigungu: data.sigungu,
+      bname: data.bname,
+      roadAddress: data.roadAddress,
+      zonecode: data.zonecode,
+    });
+  };
+
+  return (
+    <div
+      className="modal_overlay"
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        zIndex: 1000,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          background: "#fff",
+          padding: "20px",
+          borderRadius: "8px",
+          width: "90%",
+          maxWidth: "500px",
+          position: "relative",
+        }}
+      >
+        <button
+          onClick={onClose}
+          style={{
+            float: "right",
+            cursor: "pointer",
+            border: "none",
+            background: "none",
+            fontWeight: "bold",
+          }}
+        >
+          X 닫기
+        </button>
+        <h4 style={{ marginBottom: "15px", fontSize: "18px", fontWeight: "bold" }}>
+          주소 검색
+        </h4>
+        <DaumPostcode onComplete={handleComplete} />
+      </div>
+    </div>
+  );
+}
+
+function Edit_property() {
+  const navigate = useNavigate();
+
+  // 1. Redux Store에서 데이터 가져오기
+  const storeData = useSelector((state) => state.property_view_data || state.board_view_data || {});
+
+  // Redux 데이터가 없는 상태(예: 새로고침)로 접속했을 때 처리
+  useEffect(() => {
+    if (!storeData || (!storeData.property_no && !storeData.property_name)) {
+      alert("수정할 매물 정보가 없습니다. 목록으로 이동합니다.");
+      navigate("/property");
+    }
+  }, [storeData, navigate]);
+
+  const login_key = window.localStorage.getItem("login_key");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${login_key}`,
+    },
+  };
+
+  // 2. Form State 초기화
+  const [formData, setFormData] = useState({
+    property_no: storeData.property_no || "",
+    propertyType: storeData.propertyType || storeData.property_type || "apartment",
+    tradeType: storeData.tradeType || storeData.trade_type || "매매",
+    tradeStatus: String(storeData.tradeStatus || storeData.status || "1"),
+    display_yn: String(storeData.display_yn || "1"),
+    property_name: storeData.property_name || "",
+    building_name: storeData.building_name || "",
+    addr_sido: storeData.addr_sido || "",
+    addr_sigungu: storeData.addr_sigungu || "",
+    addr_dong: storeData.addr_dong || "",
+    addr_road: storeData.addr_road || "",
+    addr_detail: storeData.addr_detail || "",
+    lat: storeData.lat || "",
+    lng: storeData.lng || "",
+    supply_area: storeData.supply_area || "",
+    exclusive_area: storeData.exclusive_area || "",
+    total_floor: storeData.total_floor || "",
+    current_floor: storeData.current_floor || "",
+    room_count: storeData.room_count || "",
+    bathroom_count: storeData.bathroom_count || "",
+    parking_available: storeData.parking_available || "Y",
+    parking_count: storeData.parking_count || "",
+    completion_date: storeData.completion_date || "",
+    move_in_date: storeData.move_in_date || "",
+    direction: storeData.direction || "S",
+    heating_fuel: String(storeData.heating_fuel || "1"),
+    heating_type: String(storeData.heating_type || "1"),
+    sale_price: storeData.sale_price || "",
+    jeonse_price: storeData.jeonse_price || "",
+    deposit_price: storeData.deposit_price || "",
+    monthly_rent: storeData.monthly_rent || "",
+    loan_amount: storeData.loan_amount || "",
+    maintenance_fee: storeData.maintenance_fee || "",
+    summary: storeData.summary || "",
+    description: storeData.description || "",
+  });
+
+  // 3. 이미지 상태 개선 (기존 URL과 신규 업로드 파일 분리)
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [upload_thumb_img, setUploadThumbImg] = useState(storeData.thumbnail_image || "");
+
+  // 기존 서버 이미지 URL 목록
+  const [existingDetailImgs, setExistingDetailImgs] = useState(storeData.detail_images || []);
+  // 새로 업로드할 파일 객체 및 프리뷰 URL 목록 (객체 형태로 세트 관리)
+  const [newDetailFiles, setNewDetailFiles] = useState([]); // [{ file: File, preview: string }]
+
+  const [isOpenPostcode, setIsOpenPostcode] = useState(false);
+
+  // 썸네일 미리보기
+  const previewThumb = (files) => {
+    if (files && files.length > 0) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setUploadThumbImg(e.target.result);
+      };
+      reader.readAsDataURL(file);
+      setThumbnailFile(file);
+    }
+  };
+
+  // 상세 이미지 추가
+  const previewDetails = (files) => {
+    if (files && files.length > 0) {
+      const fileArray = Array.from(files);
+      const totalCount = existingDetailImgs.length + newDetailFiles.length + fileArray.length;
+
+      if (totalCount > 10) {
+        alert("추가 이미지는 최대 10장까지 선택 가능합니다.");
+        return;
+      }
+
+      fileArray.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setNewDetailFiles((prev) => [
+            ...prev,
+            { file: file, preview: e.target.result },
+          ]);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  // 기존 상세 이미지 삭제
+  const removeExistingDetailImg = (index) => {
+    setExistingDetailImgs((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // 신규 상세 이미지 삭제
+  const removeNewDetailFile = (index) => {
+    setNewDetailFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // 주소 검색 Complete & 카카오 Geocoder
+  const handleAddressComplete = (addrData) => {
+    const nextAddrState = {
+      addr_sido: addrData.sido || "",
+      addr_sigungu: addrData.sigungu || "",
+      addr_dong: addrData.bname || "",
+      addr_road: addrData.roadAddress || "",
+    };
+
+    if (window.kakao && window.kakao.maps && window.kakao.maps.services) {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.addressSearch(addrData.roadAddress, (result, status) => {
+        if (status === window.kakao.maps.services.Status.OK && result[0]) {
+          setFormData((prev) => ({
+            ...prev,
+            ...nextAddrState,
+            lat: result[0].y,
+            lng: result[0].x,
+          }));
+        } else {
+          setFormData((prev) => ({ ...prev, ...nextAddrState }));
+        }
+      });
+    } else {
+      setFormData((prev) => ({ ...prev, ...nextAddrState }));
+    }
+    setIsOpenPostcode(false);
+  };
+
+  // 수정 제출 처리
+  const handleSubmit = () => {
+    if (!formData.property_name.trim()) {
+      alert("매물명을 입력해주세요.");
+      return;
+    }
+
+    if (!window.confirm("매물 정보를 수정하시겠습니까?")) return;
+
+    const sendFormData = new FormData();
+
+    // 폼 데이터 바인딩
+    Object.keys(formData).forEach((key) => {
+      sendFormData.append(key, formData[key] ?? "");
+    });
+
+    // 대표 이미지
+    if (thumbnailFile) {
+      sendFormData.append("thumbnail_image", thumbnailFile);
+    } else {
+      // 새로 업로드 안 했을 경우 기존 URL 유지 여부를 백엔드와 맞춤
+      sendFormData.append("existing_thumbnail_image", upload_thumb_img);
+    }
+
+    // 유지할 기존 상세 이미지 목록 전송
+    existingDetailImgs.forEach((url) => {
+      sendFormData.append("existing_detail_images[]", url);
+    });
+
+    // 신규 추가된 상세 이미지 파일 전송
+    newDetailFiles.forEach((item) => {
+      sendFormData.append("detail_images[]", item.file);
+    });
+
+    axios
+      .post(`${process.env.REACT_APP_API_KEY}Admin/Property/save`, sendFormData, config)
+      .then((res) => {
+        alert("매물 정보가 수정되었습니다.");
+        navigate("/property");
+      })
+      .catch((err) => {
+        console.error("매물 수정 실패:", err);
+        alert("데이터 전송에 실패하였습니다.");
+      });
+  };
 
   const modules = {
-    toolbar: {
-        container: [
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-          [{ 'font': [] }],
-          [{ 'align': [] }],
-          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }, 'link'],
-          [{ 'color': ['#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', '#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff', '#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff', '#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2', '#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466', 'custom-color'] }, { 'background': [] }],
-          ['image']
-        ],
-    }
-  }
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      ["clean"],
+    ],
+  };
 
-  return(
-    <div className="sections write">
+  return (
+    <div className="sections write property_write">
       <div className="width_con">
-        <h3>글 수정하기</h3>
+        <h3>매물 수정</h3>
         <div className="form_con">
-          <form id="editBoard">
-            <div className="row row1">
-              <div className={"board_type "+types}>
-                <span>{separator}</span>
+          <form id="propertyEditForm" onSubmit={(e) => e.preventDefault()}>
+            {/* 1. 기본정보 */}
+            <div className="section_box">
+              <div className="sec_title_bar">
+                <h4>기본정보</h4>
+              </div>
+
+              <div className="grid_row col4">
+                <div className="form_group">
+                  <label>매물종류</label>
+                  <select name="propertyType" value={formData.propertyType} onChange={handleChange}>
+                    <option value="apartment">아파트</option>
+                    <option value="officetel">오피스텔</option>
+                  </select>
+                </div>
+                <div className="form_group">
+                  <label>거래방식</label>
+                  <select name="tradeType" value={formData.tradeType} onChange={handleChange}>
+                    <option value="매매">매매</option>
+                    <option value="전세">전세</option>
+                    <option value="월세">월세</option>
+                  </select>
+                </div>
+                <div className="form_group">
+                  <label>거래상태</label>
+                  <select name="tradeStatus" value={formData.tradeStatus} onChange={handleChange}>
+                    <option value="1">거래가능</option>
+                    <option value="2">거래중</option>
+                    <option value="3">거래완료</option>
+                    <option value="4">거래보류</option>
+                    <option value="5">비공개</option>
+                  </select>
+                </div>
+                <div className="form_group">
+                  <label>노출여부</label>
+                  <select name="display_yn" value={formData.display_yn} onChange={handleChange}>
+                    <option value="1">노출</option>
+                    <option value="2">숨김</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid_row col2">
+                <div className="form_group">
+                  <label>매물명</label>
+                  <input
+                    type="text"
+                    name="property_name"
+                    value={formData.property_name}
+                    onChange={handleChange}
+                    placeholder="매물명 입력"
+                  />
+                </div>
+                <div className="form_group">
+                  <label>건물명</label>
+                  <input
+                    type="text"
+                    name="building_name"
+                    value={formData.building_name}
+                    onChange={handleChange}
+                    placeholder="건물명 입력"
+                  />
+                </div>
               </div>
             </div>
-            <div className="row row2">
-              <div className="input_title_con">
-                <input type="text" name="board_title" className="write_title" placeholder="글제목" defaultValue={store.board_title}></input>
+
+            {/* 2. 위치정보 */}
+            <div className="section_box">
+              <div className="sec_title_bar">
+                <h4>위치정보</h4>
+                <div className="btn_search btn_addr_search" onClick={() => setIsOpenPostcode(true)}>
+                  <span>주소 검색</span>
+                </div>
               </div>
-              {
-                types === 'review' ? <Score_con score={store.score}></Score_con> : null
-              }
+              <div className="grid_row col4">
+                <div className="form_group">
+                  <label>주소(시도)</label>
+                  <input type="text" name="addr_sido" value={formData.addr_sido} readOnly placeholder="시/도" />
+                </div>
+                <div className="form_group">
+                  <label>주소(시군구)</label>
+                  <input type="text" name="addr_sigungu" value={formData.addr_sigungu} readOnly placeholder="시/군/구" />
+                </div>
+                <div className="form_group">
+                  <label>주소(읍면동)</label>
+                  <input type="text" name="addr_dong" value={formData.addr_dong} readOnly placeholder="읍/면/동" />
+                </div>
+                <div className="form_group">
+                  <label>좌표 정보</label>
+                  <div className="dashed_box">
+                    {formData.lat && formData.lng
+                      ? `${formData.lat} / ${formData.lng}`
+                      : "위도/경도 (자동산출)"}
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid_row col2">
+                <div className="form_group">
+                  <label>도로명주소</label>
+                  <input type="text" name="addr_road" value={formData.addr_road} readOnly placeholder="도로명 주소" />
+                </div>
+                <div className="form_group">
+                  <label>상세주소</label>
+                  <input
+                    type="text"
+                    name="addr_detail"
+                    value={formData.addr_detail}
+                    onChange={handleChange}
+                    placeholder="상세 주소 입력 (동/호수 등)"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="row row3">
-              <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
+
+            {/* 3. 매물 정보 */}
+            <div className="section_box">
+              <div className="sec_title_bar">
+                <h4>매물 정보</h4>
+              </div>
+              <div className="grid_row col4">
+                <div className="form_group">
+                  <label>공급면적 (㎡)</label>
+                  <input type="number" name="supply_area" value={formData.supply_area} onChange={handleChange} placeholder="0" />
+                </div>
+                <div className="form_group">
+                  <label>전용면적 (㎡)</label>
+                  <input type="number" name="exclusive_area" value={formData.exclusive_area} onChange={handleChange} placeholder="0" />
+                </div>
+                <div className="form_group">
+                  <label>총 층수 / 해당 층</label>
+                  <div className="flex_inputs">
+                    <input type="number" name="total_floor" placeholder="총층" value={formData.total_floor} onChange={handleChange} />
+                    <span>/</span>
+                    <input type="number" name="current_floor" placeholder="해당층" value={formData.current_floor} onChange={handleChange} />
+                  </div>
+                </div>
+                <div className="form_group">
+                  <label>방수 / 욕실수</label>
+                  <div className="flex_inputs">
+                    <input type="number" name="room_count" placeholder="방" value={formData.room_count} onChange={handleChange} />
+                    <span>/</span>
+                    <input type="number" name="bathroom_count" placeholder="욕실" value={formData.bathroom_count} onChange={handleChange} />
+                  </div>
+                </div>
+                <div className="form_group">
+                  <label>주차 가능 여부 / 대수</label>
+                  <div className="flex_inputs">
+                    <select name="parking_available" value={formData.parking_available} onChange={handleChange}>
+                      <option value="Y">가능</option>
+                      <option value="N">불가</option>
+                    </select>
+                    <input type="number" name="parking_count" placeholder="대수" value={formData.parking_count} onChange={handleChange} />
+                  </div>
+                </div>
+                <div className="form_group">
+                  <label>방향</label>
+                  <select name="direction" value={formData.direction} onChange={handleChange}>
+                    <option value="S">남향</option>
+                    <option value="SE">남동향</option>
+                    <option value="SW">남서향</option>
+                    <option value="E">동향</option>
+                    <option value="W">서향</option>
+                    <option value="N">북향</option>
+                    <option value="NE">북동향</option>
+                    <option value="NW">북서향</option>
+                  </select>
+                </div>
+                <div className="form_group">
+                  <label>난방연료</label>
+                  <select name="heating_fuel" value={formData.heating_fuel} onChange={handleChange}>
+                    <option value="1">도시가스</option>
+                    <option value="2">전기</option>
+                    <option value="3">LPG</option>
+                    <option value="4">기름</option>
+                    <option value="9">기타</option>
+                  </select>
+                </div>
+                <div className="form_group">
+                  <label>난방방식</label>
+                  <select name="heating_type" value={formData.heating_type} onChange={handleChange}>
+                    <option value="1">개별난방</option>
+                    <option value="2">중앙난방</option>
+                    <option value="3">지역난방</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            {
-              types === 'vod' ? <Row4 data={store}></Row4> : null
-            }
+
+            {/* 4. 가격 및 소개 */}
+            <div className="section_box">
+              <div className="sec_title_bar">
+                <h4>가격 및 소개</h4>
+              </div>
+              <div className="grid_row col4">
+                <div className="form_group">
+                  <label>매매가 (만원)</label>
+                  <input type="number" name="sale_price" value={formData.sale_price} onChange={handleChange} placeholder="0" />
+                </div>
+                <div className="form_group">
+                  <label>전세가 (만원)</label>
+                  <input type="number" name="jeonse_price" value={formData.jeonse_price} onChange={handleChange} placeholder="0" />
+                </div>
+                <div className="form_group">
+                  <label>보증금 / 월세 (만원)</label>
+                  <div className="flex_inputs">
+                    <input type="number" name="deposit_price" placeholder="보증금" value={formData.deposit_price} onChange={handleChange} />
+                    <span>/</span>
+                    <input type="number" name="monthly_rent" placeholder="월세" value={formData.monthly_rent} onChange={handleChange} />
+                  </div>
+                </div>
+                <div className="form_group">
+                  <label>관리비 (만원)</label>
+                  <input type="number" name="maintenance_fee" value={formData.maintenance_fee} onChange={handleChange} placeholder="0" />
+                </div>
+              </div>
+
+              <div className="grid_row full">
+                <div className="form_group">
+                  <label>한줄소개</label>
+                  <input
+                    type="text"
+                    name="summary"
+                    value={formData.summary}
+                    onChange={handleChange}
+                    placeholder="리스트에 노출될 요약 문구를 입력하세요."
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="form_group">
+                  <label>상세설명</label>
+                  <ReactQuill
+                    modules={modules}
+                    value={formData.description || ""}
+                    onChange={(val) => setFormData((prev) => ({ ...prev, description: val }))}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 5. 사진 정보 */}
+            <div className="section_box">
+              <div className="sec_title_bar">
+                <h4>사진 정보</h4>
+              </div>
+              <div className="image_upload_container">
+                {/* 대표 이미지 */}
+                <div className="thumb_upload_area">
+                  <p className="row_desc">대표 이미지</p>
+                  <div className="detail_grid">
+                    {upload_thumb_img === "" ? (
+                      <label className="upload_box add_btn">
+                        <input
+                          type="file"
+                          name="thumbnail_file"
+                          accept="image/*"
+                          onChange={(e) => previewThumb(e.target.files)}
+                          style={{ display: "none" }}
+                        />
+                        <span className="upload_placeholder">+ 대표사진 선택</span>
+                      </label>
+                    ) : (
+                      <div className="upload_img_item upload_img">
+                        <img src={upload_thumb_img} alt="대표 이미지 미리보기" />
+                        <button
+                          type="button"
+                          className="btn_del_img_overlay"
+                          onClick={() => {
+                            setUploadThumbImg("");
+                            setThumbnailFile(null);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faTrashCan} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* 추가 이미지 */}
+                <div className="detail_upload_area">
+                  <p className="row_desc">추가 이미지 (최대 10장)</p>
+                  <div className="detail_grid">
+                    <label className="upload_box add_btn">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={(e) => previewDetails(e.target.files)}
+                        style={{ display: "none" }}
+                      />
+                      <span className="upload_placeholder">+ 사진 추가</span>
+                    </label>
+
+                    {/* 기존 서버 등록 이미지 */}
+                    {existingDetailImgs.map((imgUrl, idx) => (
+                      <div className="upload_img_item upload_img" key={`existing-${idx}`}>
+                        <img src={imgUrl} alt={`기존 사진 ${idx + 1}`} />
+                        <button
+                          type="button"
+                          className="btn_del_img_overlay"
+                          onClick={() => removeExistingDetailImg(idx)}
+                        >
+                          <FontAwesomeIcon icon={faTrashCan} />
+                        </button>
+                      </div>
+                    ))}
+
+                    {/* 새로 첨부한 이미지 */}
+                    {newDetailFiles.map((item, idx) => (
+                      <div className="upload_img_item upload_img" key={`new-${idx}`}>
+                        <img src={item.preview} alt={`새 추가 사진 ${idx + 1}`} />
+                        <button
+                          type="button"
+                          className="btn_del_img_overlay"
+                          onClick={() => removeNewDetailFile(idx)}
+                        >
+                          <FontAwesomeIcon icon={faTrashCan} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 하단 버튼 */}
             <div className="row row5">
               <div className="btn_con">
-                <div className="btns apply">
-                  <span onClick={()=>{
-                    const this_form = document.getElementById("editBoard");
-                    let formData = new FormData(this_form);
-                    if(contents){
-                      formData.append('board_content', contents);
-                    }
-                    formData.append('board_writer', '테스트 운영자');
-                    formData.append('board_no', store.board_no);
-                    formData.append('code', store.board_type);
-                    if(window.confirm('수정하시겠습니까?')){
-                      axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/modify', formData, config).then((result)=>{
-                        console.log(result);
-                        alert('수정되었습니다');
-                        navigate('/board');
-                      }).catch(()=>{
-                        alert("데이터 전송이 실패하였습니다.");
-                      });
-                    }
-                    for (const [key, value] of formData.entries()) {
-                      console.log(key, value);
-                    }
-                  }}>수정하기</span>
-                </div>
+                <button type="button" className="btns apply" onClick={handleSubmit}>
+                  <span>매물 수정</span>
+                </button>
                 <div className="btns exit">
-                  <span><Link to='/board'>나가기</Link></span>
+                  <span>
+                    <Link to="/property">취소</Link>
+                  </span>
                 </div>
               </div>
             </div>
           </form>
         </div>
       </div>
+
+      {isOpenPostcode && (
+        <AddressSearchModal
+          onComplete={handleAddressComplete}
+          onClose={() => setIsOpenPostcode(false)}
+        />
+      )}
     </div>
-  )
-}
-
-function Score_con(props){
-  let score = props.score;
-  const checkOnlyOne = (checkThis) => {
-    const checkboxes = document.getElementsByName('score');
-    for (let i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i] !== checkThis) {
-        checkboxes[i].checked = false
-      }
-    }
-  }
-  return(
-    <div className="score_con">
-      <h5>리뷰 평점</h5>
-      <div className="check_score">
-        <input type="checkbox" name="score" value={5} defaultChecked={score === '5' ? true : false} onChange={(e) => checkOnlyOne(e.target)}></input>
-        <img src="img/board/write/star.png"></img>
-        <img src="img/board/write/star.png"></img>
-        <img src="img/board/write/star.png"></img>
-        <img src="img/board/write/star.png"></img>
-        <img src="img/board/write/star.png"></img>
-        <span>아주 좋아요</span>
-      </div>
-      <div className="check_score">
-        <input type="checkbox" name="score" value={4} defaultChecked={score === '4' ? true : false} onChange={(e) => checkOnlyOne(e.target)}></input>
-        <img src="img/board/write/star.png"></img>
-        <img src="img/board/write/star.png"></img>
-        <img src="img/board/write/star.png"></img>
-        <img src="img/board/write/star.png"></img>
-        <span>맘에 들어요</span>
-      </div>
-      <div className="check_score">
-        <input type="checkbox" name="score" value={3} defaultChecked={score === '3' ? true : false} onChange={(e) => checkOnlyOne(e.target)}></input>
-        <img src="img/board/write/star.png"></img>
-        <img src="img/board/write/star.png"></img>
-        <img src="img/board/write/star.png"></img>
-        <span>보통이예요</span>
-      </div>
-      <div className="check_score">
-        <input type="checkbox" name="score" value={2} defaultChecked={score === '2' ? true : false} onChange={(e) => checkOnlyOne(e.target)}></input>
-        <img src="img/board/write/star.png"></img>
-        <img src="img/board/write/star.png"></img>
-        <span>그냥 그래요</span>
-      </div>
-      <div className="check_score">
-        <input type="checkbox" name="score" value={1} defaultChecked={score === '1' ? true : false} onChange={(e) => checkOnlyOne(e.target)}></input>
-        <img src="img/board/write/star.png"></img>
-        <span>별로예요</span>
-      </div>
-    </div>
-  )
-}
-
-function Row4(props){
-
-  let [del, setDel] = useState(false);
-
-  return(
-    <div className="row row4">
-      <p>영상 첨부 방식 두가지 중 한가지를 선택해주세요</p>
-      <div className="upload_vod">
-        <h5>영상첨부</h5>
-        {
-          del === false ?
-          <div className="origin_file">
-            <h6>{props.data.file_name}</h6>
-            <span onClick={()=>{
-              setDel(!del)
-            }}><FontAwesomeIcon icon={faTrashCan} /></span>
-          </div>
-          :
-          <div className="new_file">
-            <input type="file" name="file" className="input_vod"></input>
-            <input type="hidden" name="file_del" value={del === true ? "Y" : "N" }></input>
-            <span onClick={()=>{$(".input_vod").val('')}}><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></span>
-          </div>
-        }
-        
-      </div>
-      <div className="upload_vod">
-        <h5>유튜브 URL</h5>
-        <input type="text" name="movie_url" className="input_url" placeholder="유튜브 URL을 입력해주시면 영상을 불러올 수 있습니다." defaultValue={props.data.movie_url}></input>
-      </div>
-    </div>
-  )
+  );
 }
 
 export default Edit_property;

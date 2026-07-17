@@ -8,7 +8,7 @@ import axios from "axios";
 import DaumPostcode from 'react-daum-postcode';
 
 /* ==========================================
-   주소 검색 팝업 모달 컴포넌트
+   주소 검색 팝업 모달
    ========================================== */
 function AddressSearchModal({ onComplete, onClose }) {
   const handleComplete = (data) => {
@@ -23,11 +23,10 @@ function AddressSearchModal({ onComplete, onClose }) {
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
-    // 시도, 시군구, 읍면동, 도로명주소 분할 데이터 추출
     onComplete({
       sido: data.sido,
       sigungu: data.sigungu,
-      bname: data.bname, // 읍면동
+      bname: data.bname,
       roadAddress: data.roadAddress,
       zonecode: data.zonecode
     });
@@ -49,7 +48,7 @@ function AddressSearchModal({ onComplete, onClose }) {
 }
 
 /* ==========================================
-   메인 매물 등록 컴포넌트
+   메인 매물 등록 컴포넌트 (Write_brd 구조 완전 이식)
    ========================================== */
 function Write_property() {
   const navigate = useNavigate();
@@ -61,52 +60,20 @@ function Write_property() {
     }
   };
 
-  const [formData, setFormData] = useState({
-    propertyType: 'apartment',
-    tradeType: '매매',
-    tradeStatus: '1',
-    display_yn: '1',
-    property_name: '',
-    building_name: '',
-    addr_sido: '',
-    addr_sigungu: '',
-    addr_dong: '',
-    addr_road: '',
-    addr_detail: '',
-    lat: '',
-    lng: '',
-    supply_area: '',
-    exclusive_area: '',
-    total_floor: '',
-    current_floor: '',
-    room_count: '',
-    bathroom_count: '',
-    parking_available: 'Y',
-    parking_count: '',
-    completion_date: '',
-    move_in_date: '',
-    direction: 'S',
-    heating_fuel: '1',
-    heating_type: '1',
-    sale_price: '',
-    jeonse_price: '',
-    deposit_price: '',
-    monthly_rent: '',
-    loan_amount: '',
-    maintenance_fee: '',
-    summary: '',
-    description: ''
+  // 1. 주소 및 에디터용 최소 State (화면 UI 갱신용)
+  const [addrData, setAddrData] = useState({
+    sido: '', sigungu: '', dong: '', road: '', lat: '', lng: ''
   });
+  const [description, setDescription] = useState('');
 
-  // 대표 이미지 상태
+  // 2. 이미지 미리보기 및 파일 State
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [upload_thumb_img, setUploadThumbImg] = useState('');
 
-  // 추가 이미지 (배열) 상태
   const [detailFiles, setDetailFiles] = useState([]);
   const [upload_detail_imgs, setUploadDetailImgs] = useState([]);
 
-  // 주소 모달 상태
+  // 주소 모달 열림 여부
   const [isOpenPostcode, setIsOpenPostcode] = useState(false);
 
   // 대표 이미지 미리보기
@@ -121,7 +88,7 @@ function Write_property() {
     }
   };
 
-  // 추가 이미지 다중 미리보기
+  // 상세 이미지 미리보기
   const previewDetails = (files) => {
     if (files && files.length > 0) {
       const fileArray = Array.from(files);
@@ -143,71 +110,78 @@ function Write_property() {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // 주소 검색 완료 및 위경도(Geocoding) 추출 핸들러
-  const handleAddressComplete = (addrData) => {
+  // 주소 선택 시 처리 (카카오 지도 좌표 추출)
+  const handleAddressComplete = (data) => {
     let latVal = '';
     let lngVal = '';
 
-    // 카카오 스크립트가 로드되어 있는 경우 주소->좌표 변환
     if (window.kakao && window.kakao.maps && window.kakao.maps.services) {
       const geocoder = new window.kakao.maps.services.Geocoder();
-      geocoder.addressSearch(addrData.roadAddress, (result, status) => {
+      geocoder.addressSearch(data.roadAddress, (result, status) => {
         if (status === window.kakao.maps.services.Status.OK) {
           latVal = result[0].y;
           lngVal = result[0].x;
         }
-        setFormData(prev => ({
-          ...prev,
-          addr_sido: addrData.sido,
-          addr_sigungu: addrData.sigungu,
-          addr_dong: addrData.bname,
-          addr_road: addrData.roadAddress,
+        setAddrData({
+          sido: data.sido,
+          sigungu: data.sigungu,
+          dong: data.bname,
+          road: data.roadAddress,
           lat: latVal,
           lng: lngVal
-        }));
+        });
       });
     } else {
-      // GeoCoder가 없을 경우 주소만 세팅
-      setFormData(prev => ({
-        ...prev,
-        addr_sido: addrData.sido,
-        addr_sigungu: addrData.sigungu,
-        addr_dong: addrData.bname,
-        addr_road: addrData.roadAddress
-      }));
+      setAddrData({
+        sido: data.sido,
+        sigungu: data.sigungu,
+        dong: data.bname,
+        road: data.roadAddress,
+        lat: '',
+        lng: ''
+      });
     }
     setIsOpenPostcode(false);
   };
 
+  /* ==========================================
+     Submit 함수 (Write_brd와 100% 동일한 방식)
+     ========================================== */
   const handleSubmit = () => {
-    if (!formData.property_name.trim()) {
+    const this_form = document.getElementById("propertyWriteForm");
+
+    // 유효성 검사 (Write_brd 스타일)
+    if (!this_form.property_name.value.trim()) {
       alert("매물명을 입력해주세요.");
+      this_form.property_name.focus();
       return;
     }
 
     if (!window.confirm("매물을 등록하시겠습니까?")) return;
 
-    const sendFormData = new FormData();
+    // Write_brd처럼 DOM Form 요소를 통째로 긁어옴!
+    const formData = new FormData(this_form);
 
-    Object.keys(formData).forEach((key) => {
-      sendFormData.append(key, formData[key] ?? '');
-    });
+    // Quill 에디터 본문 및 파일 첨부 (HTML Form 외부 요소들 추가)
+    formData.append('description', description);
 
     if (thumbnailFile) {
-      sendFormData.append('thumbnail_image', thumbnailFile);
+      formData.append('thumbnail_image', thumbnailFile);
     }
 
     detailFiles.forEach((file) => {
-      sendFormData.append('detail_images[]', file);
+      formData.append('detail_images[]', file);
     });
 
-    axios.post(`${process.env.REACT_APP_API_KEY}Admin/Property/save`, sendFormData, config)
+    // 디버깅용 전송 파라미터 콘솔 출력
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    // 서버 전송
+    axios.post(`${process.env.REACT_APP_API_KEY}Admin/Property/save`, formData, config)
       .then((res) => {
+        console.log("등록 성공:", res);
         alert('매물이 등록되었습니다.');
         navigate('/property');
       })
@@ -243,14 +217,14 @@ function Write_property() {
               <div className="grid_row col4">
                 <div className="form_group">
                   <label>매물종류</label>
-                  <select name="propertyType" value={formData.propertyType} onChange={handleChange}>
+                  <select name="propertyType" defaultValue="apartment">
                     <option value="apartment">아파트</option>
                     <option value="officetel">오피스텔</option>
                   </select>
                 </div>
                 <div className="form_group">
                   <label>거래방식</label>
-                  <select name="tradeType" value={formData.tradeType} onChange={handleChange}>
+                  <select name="tradeType" defaultValue="매매">
                     <option value="매매">매매</option>
                     <option value="전세">전세</option>
                     <option value="월세">월세</option>
@@ -258,7 +232,7 @@ function Write_property() {
                 </div>
                 <div className="form_group">
                   <label>거래상태</label>
-                  <select name="tradeStatus" value={formData.tradeStatus} onChange={handleChange}>
+                  <select name="tradeStatus" defaultValue="1">
                     <option value="1">거래가능</option>
                     <option value="2">거래중</option>
                     <option value="3">거래완료</option>
@@ -268,7 +242,7 @@ function Write_property() {
                 </div>
                 <div className="form_group">
                   <label>노출여부</label>
-                  <select name="display_yn" value={formData.display_yn} onChange={handleChange}>
+                  <select name="display_yn" defaultValue="1">
                     <option value="1">노출</option>
                     <option value="2">숨김</option>
                   </select>
@@ -278,11 +252,11 @@ function Write_property() {
               <div className="grid_row col2">
                 <div className="form_group">
                   <label>매물명</label>
-                  <input type="text" name="property_name" value={formData.property_name} onChange={handleChange} placeholder="매물명 입력" />
+                  <input type="text" name="property_name" placeholder="매물명 입력" />
                 </div>
                 <div className="form_group">
                   <label>건물명</label>
-                  <input type="text" name="building_name" value={formData.building_name} onChange={handleChange} placeholder="건물명 입력" />
+                  <input type="text" name="building_name" placeholder="건물명 입력" />
                 </div>
               </div>
             </div>
@@ -295,24 +269,29 @@ function Write_property() {
                   <span>주소 검색</span>
                 </div>
               </div>
+              
+              {/* 주소 정보 및 숨겨진 좌표 input */}
+              <input type="hidden" name="lat" value={addrData.lat} />
+              <input type="hidden" name="lng" value={addrData.lng} />
+
               <div className="grid_row col4">
                 <div className="form_group">
                   <label>주소(시도)</label>
-                  <input type="text" name="addr_sido" value={formData.addr_sido} readOnly placeholder="시/도" />
+                  <input type="text" name="addr_sido" value={addrData.sido} readOnly placeholder="시/도" />
                 </div>
                 <div className="form_group">
                   <label>주소(시군구)</label>
-                  <input type="text" name="addr_sigungu" value={formData.addr_sigungu} readOnly placeholder="시/군/구" />
+                  <input type="text" name="addr_sigungu" value={addrData.sigungu} readOnly placeholder="시/군/구" />
                 </div>
                 <div className="form_group">
                   <label>주소(읍면동)</label>
-                  <input type="text" name="addr_dong" value={formData.addr_dong} readOnly placeholder="읍/면/동" />
+                  <input type="text" name="addr_dong" value={addrData.dong} readOnly placeholder="읍/면/동" />
                 </div>
                 <div className="form_group">
                   <label>좌표 정보</label>
                   <div className="dashed_box">
-                    {formData.lat && formData.lng 
-                      ? `${formData.lat} / ${formData.lng}` 
+                    {addrData.lat && addrData.lng 
+                      ? `${addrData.lat} / ${addrData.lng}` 
                       : '위도/경도 (자동산출)'}
                   </div>
                 </div>
@@ -321,11 +300,11 @@ function Write_property() {
               <div className="grid_row col2">
                 <div className="form_group">
                   <label>도로명주소</label>
-                  <input type="text" name="addr_road" value={formData.addr_road} readOnly placeholder="도로명 주소" />
+                  <input type="text" name="addr_road" value={addrData.road} readOnly placeholder="도로명 주소" />
                 </div>
                 <div className="form_group">
                   <label>상세주소</label>
-                  <input type="text" name="addr_detail" value={formData.addr_detail} onChange={handleChange} placeholder="상세 주소 입력 (동/호수 등)" />
+                  <input type="text" name="addr_detail" placeholder="상세 주소 입력 (동/호수 등)" />
                 </div>
               </div>
             </div>
@@ -338,41 +317,41 @@ function Write_property() {
               <div className="grid_row col4">
                 <div className="form_group">
                   <label>공급면적 (㎡)</label>
-                  <input type="number" name="supply_area" value={formData.supply_area} onChange={handleChange} placeholder="0" />
+                  <input type="number" name="supply_area" placeholder="0" />
                 </div>
                 <div className="form_group">
                   <label>전용면적 (㎡)</label>
-                  <input type="number" name="exclusive_area" value={formData.exclusive_area} onChange={handleChange} placeholder="0" />
+                  <input type="number" name="exclusive_area" placeholder="0" />
                 </div>
                 <div className="form_group">
                   <label>총 층수 / 해당 층</label>
                   <div className="flex_inputs">
-                    <input type="number" name="total_floor" placeholder="총층" value={formData.total_floor} onChange={handleChange} />
+                    <input type="number" name="total_floor" placeholder="총층" />
                     <span>/</span>
-                    <input type="number" name="current_floor" placeholder="해당층" value={formData.current_floor} onChange={handleChange} />
+                    <input type="number" name="current_floor" placeholder="해당층" />
                   </div>
                 </div>
                 <div className="form_group">
                   <label>방수 / 욕실수</label>
                   <div className="flex_inputs">
-                    <input type="number" name="room_count" placeholder="방" value={formData.room_count} onChange={handleChange} />
+                    <input type="number" name="room_count" placeholder="방" />
                     <span>/</span>
-                    <input type="number" name="bathroom_count" placeholder="욕실" value={formData.bathroom_count} onChange={handleChange} />
+                    <input type="number" name="bathroom_count" placeholder="욕실" />
                   </div>
                 </div>
                 <div className="form_group">
                   <label>주차 가능 여부 / 대수</label>
                   <div className="flex_inputs">
-                    <select name="parking_available" value={formData.parking_available} onChange={handleChange}>
+                    <select name="parking_available" defaultValue="Y">
                       <option value="Y">가능</option>
                       <option value="N">불가</option>
                     </select>
-                    <input type="number" name="parking_count" placeholder="대수" value={formData.parking_count} onChange={handleChange} />
+                    <input type="number" name="parking_count" placeholder="대수" />
                   </div>
                 </div>
                 <div className="form_group">
                   <label>방향</label>
-                  <select name="direction" value={formData.direction} onChange={handleChange}>
+                  <select name="direction" defaultValue="S">
                     <option value="S">남향</option>
                     <option value="SE">남동향</option>
                     <option value="SW">남서향</option>
@@ -385,7 +364,7 @@ function Write_property() {
                 </div>
                 <div className="form_group">
                   <label>난방연료</label>
-                  <select name="heating_fuel" value={formData.heating_fuel} onChange={handleChange}>
+                  <select name="heating_fuel" defaultValue="1">
                     <option value="1">도시가스</option>
                     <option value="2">전기</option>
                     <option value="3">LPG</option>
@@ -395,7 +374,7 @@ function Write_property() {
                 </div>
                 <div className="form_group">
                   <label>난방방식</label>
-                  <select name="heating_type" value={formData.heating_type} onChange={handleChange}>
+                  <select name="heating_type" defaultValue="1">
                     <option value="1">개별난방</option>
                     <option value="2">중앙난방</option>
                     <option value="3">지역난방</option>
@@ -412,40 +391,40 @@ function Write_property() {
               <div className="grid_row col4">
                 <div className="form_group">
                   <label>매매가 (만원)</label>
-                  <input type="number" name="sale_price" value={formData.sale_price} onChange={handleChange} placeholder="0" />
+                  <input type="number" name="sale_price" placeholder="0" />
                 </div>
                 <div className="form_group">
                   <label>전세가 (만원)</label>
-                  <input type="number" name="jeonse_price" value={formData.jeonse_price} onChange={handleChange} placeholder="0" />
+                  <input type="number" name="jeonse_price" placeholder="0" />
                 </div>
                 <div className="form_group">
                   <label>보증금 / 월세 (만원)</label>
                   <div className="flex_inputs">
-                    <input type="number" name="deposit_price" placeholder="보증금" value={formData.deposit_price} onChange={handleChange} />
+                    <input type="number" name="deposit_price" placeholder="보증금" />
                     <span>/</span>
-                    <input type="number" name="monthly_rent" placeholder="월세" value={formData.monthly_rent} onChange={handleChange} />
+                    <input type="number" name="monthly_rent" placeholder="월세" />
                   </div>
                 </div>
                 <div className="form_group">
                   <label>관리비 (만원)</label>
-                  <input type="number" name="maintenance_fee" value={formData.maintenance_fee} onChange={handleChange} placeholder="0" />
+                  <input type="number" name="maintenance_fee" placeholder="0" />
                 </div>
               </div>
 
               <div className="grid_row full">
                 <div className="form_group">
                   <label>한줄소개</label>
-                  <input type="text" name="summary" value={formData.summary} onChange={handleChange} placeholder="리스트에 노출될 요약 문구를 입력하세요." />
+                  <input type="text" name="summary" placeholder="리스트에 노출될 요약 문구를 입력하세요." />
                 </div>
               </div>
-              <div className="">
+              <div>
                 <div className="form_group">
                   <label>상세설명</label>
-                    <ReactQuill 
-                      modules={modules} 
-                      value={formData.description || ''} 
-                      onChange={(val) => setFormData((prev) => ({ ...prev, description: val }))} 
-                    />
+                  <ReactQuill 
+                    modules={modules} 
+                    value={description} 
+                    onChange={setDescription} 
+                  />
                 </div>
               </div>
             </div>
@@ -464,7 +443,6 @@ function Write_property() {
                       <label className="upload_box add_btn">
                         <input
                           type="file"
-                          name="thumbnail_file"
                           accept="image/*"
                           onChange={(e) => previewThumb(e.target.files)}
                           style={{ display: 'none' }}
