@@ -159,7 +159,7 @@ function Property_brd_all(props){
     return(
       <div className="brd all_brd">
         <div className="fn_bar">
-          <div className="search_con" style={{ opacity: 1, pointerEvents: 'all', gap: '5px', }}>
+          <div className="search_con show">
             {/* 1. 매물종류 셀렉트 박스 */}
             <select 
               id="property_type"             
@@ -189,8 +189,8 @@ function Property_brd_all(props){
 
             {/* 3. 거래상태 셀렉트 박스 */}
             <select 
-              id="trade_status"              
-              name="trade_status"
+              id="status"              
+              name="status"
               aria-label="거래상태 필터 선택"
               value={tradeStatus} 
               onChange={(e) => setTradeStatus(e.target.value)}
@@ -218,8 +218,8 @@ function Property_brd_all(props){
             {/* 5. 매물명 입력란 */}
             <input 
               type="text" 
-              id="property_search"           
-              name="property_search"
+              id="property_name"           
+              name="property_name"
               aria-label="매물명 검색어 입력"
               placeholder="매물명" 
               value={propertyNameTxt} 
@@ -238,7 +238,7 @@ function Property_brd_all(props){
             </div>
           </div>
           <div className="btn_new">
-            <span><Link to="/write">매물 등록</Link></span>
+            <span><Link to="/property/write">매물 등록</Link></span>
           </div>
         </div>
         <div className="borad_rows">
@@ -250,7 +250,7 @@ function Property_brd_all(props){
               <li className="board_property_name board_title">매물명</li>
               <li className="board_sigungu">지역</li>
               <li className="board_price">가격</li>
-              <li className="board_trade_status">상태</li>
+              <li className="board_status">상태</li>
               <li className="board_display_yn">노출</li>
               <li className="board_hit">조회</li>
               <li className="board_date">등록일</li>
