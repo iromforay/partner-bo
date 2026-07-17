@@ -119,6 +119,16 @@
 .sections.write form .row5 .btns.exit {background: #A5AFB6;}
 .sections.write form .row5 .btns.exit span {color: #fff;}
 .sections.write form .row5 .btns.exit span a {font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; display: inline-block; width: 100%; height: 100%;; color: inherit;}
+.sections.write .row5 {margin: 30px 0 0 0;}
+.sections.write .row5 .btn_con {display: flex;}
+.sections.write .row5 .btns {width: 120px; margin: 0 0 0 10px; padding: 10px 0; text-align: center; border-radius: 4px; box-shadow: 2px 2px 4px rgba(0,0,0,.2); cursor: pointer;}
+.sections.write .row5 .btns.apply {background: #06F;}
+.sections.write .row5 .btns.apply span {font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; color: #fff;}
+.sections.write .row5 .btns.temporary {background: #fff; border: 1px solid #06F;}
+.sections.write .row5 .btns.temporary span {font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; color: #06F; background: none;}
+.sections.write .row5 .btns.exit {background: #A5AFB6;}
+.sections.write .row5 .btns.exit span {color: #fff;}
+.sections.write .row5 .btns.exit span a {font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; display: inline-block; width: 100%; height: 100%;; color: inherit;}
 
 
 .sections.view {}
@@ -169,7 +179,7 @@
 .brd .rows ul li.board_property_name {width: 27%;}
 .brd .rows ul li.board_sigungu {width: 10%;}
 .brd .rows ul li.board_price {width: 7%;}
-.brd .rows ul li.board_trade_status {width: 7%;}
+.brd .rows ul li.board_status {width: 7%;}
 .brd .rows ul li.board_display_yn {width: 5%;}
 
 .brd .rows ul li span.badge.possible {background: #2DB400;}
@@ -223,6 +233,7 @@
 /* 입력 필드 (Input, Select) 공통 스타일 */
 .property_write input[type="text"],
 .property_write input[type="number"],
+.property_write input[type="date"],
 .property_write select {
   width: 100%;
   height: 42px;
@@ -238,12 +249,33 @@
 
 .property_write input[type="text"]:focus,
 .property_write input[type="number"]:focus,
+.property_write input[type="date"]:focus,
 .property_write select:focus {
   border-color: #2b6cb0;
   outline: none;
   box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.15);
 }
+.btn_addr_search{
+  background:#2bb055;
+}
+.dashed_box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 40px; /* 사용 중인 input 높이로 맞추세요 */
+  padding: 0 12px;
+  border: 1px solid #d9d9d9; /* 기본 input border 색상 */
+  border-radius: 6px; /* 기본 input border-radius */
+  background-color: #f5f5f5; /* readonly 느낌을 주는 연한 회색 */
+  color: #555555;
+  font-size: 14px;
+  box-sizing: border-box;
+}
 
+/* 값이 없을 때(placeholder 느낌) 색상 연하게 */
+.dashed_box.empty {
+  color: #aaa;
+}
 /* 복합 입력 필드 (방/욕실수, 보증금/월세, 슬래시 구분 등) */
 .property_write .flex_inputs {
   display: flex;
@@ -292,7 +324,6 @@
   font-size: 14px;
   font-weight: 600;
   color: #333;
-  margin-bottom: 10px;
 }
 
 /* ------------------------------------------
@@ -404,4 +435,12 @@
     line-height: 1.6rem;
     color: #fff;
 }
-
+.property_view .row4{
+    border: 1px solid #A5AFB6;
+}
+.property_view label{
+  color:#393939;
+}
+.property_view .view_text{
+  color:#000;
+}

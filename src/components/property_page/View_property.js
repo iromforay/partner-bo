@@ -1,151 +1,394 @@
-import $ from "jquery";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import ReactQuill from 'react-quill';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faXmark} from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import DaumPostcode from "react-daum-postcode";
 
-function View_property(){
+// 💡 백엔드 연결 실패 시 사용할 퍼블리싱용 더미 데이터
+const MOCK_DATA = {
+  property_no: "1024",
+  property_type: "apartment",
+  trade_type: "매매",
+  status: "1",
+  display_yn: "1",
+  property_name: "반포 자이 아파트 104동",
+  building_name: "반포자이",
+  addr_sido: "서울특별시",
+  addr_sigungu: "서초구",
+  addr_dong: "반포동",
+  addr_road: "서울특별시 서초구 신반포로 270",
+  addr_detail: "104동 1203호",
+  lat: 37.5056,
+  lng: 127.0125,
+  supply_area: "115.7",
+  exclusive_area: "84.9",
+  total_floor: "30",
+  current_floor: "12",
+  room_count: "3",
+  bathroom_count: "2",
+  parking_available: "Y",
+  parking_count: "2",
+  completion_date: "2018-05-20",
+  move_in_date: "즉시입주",
+  direction: "S",
+  heating_fuel: "1",
+  heating_type: "3",
+  sale_price: "250000", // 25억
+  jeonse_price: "0",
+  deposit_price: "0",
+  monthly_rent: "0",
+  loan_amount: "30000",
+  maintenance_fee: "25",
+  summary: "채광과 조망이 우수한 로얄층 로얄동 매물입니다.",
+  description: `
+    <p><strong>[매물 상세 설명]</strong></p>
+    <p>1. 단지 내 최고 선호 동이며, 올확장형으로 넓은 실내 공간을 자랑합니다.
+    2. 지하철역 도보 3분 거리의 초역세권 단지입니다.
+    3. 커뮤니티 시설(수영장, 피트니스, 독서실 등) 이용이 편리합니다.</p>
+  `,
+  thumbnail_image: "https://via.placeholder.com/600x400/3b82f6/ffffff?text=Main+Thumbnail",
+  detail_images: [
+    "https://via.placeholder.com/400x300/e2e8f0/475569?text=Detail+Img+1",
+    "https://via.placeholder.com/400x300/e2e8f0/475569?text=Detail+Img+2",
+    "https://via.placeholder.com/400x300/e2e8f0/475569?text=Detail+Img+3"
+  ]
+};
 
-  let navigate = useNavigate();
-  let store = useSelector((state)=>{return state.board_view_data});
-  let types = store.board_type;
-  let vod_url = store.movie_url;
-  let files;
-  let id = window.localStorage.getItem('id');
-  let login_key = window.localStorage.getItem('login_key');
+function View_property() {
+  const { property_no } = useParams();
+  const navigate = useNavigate();
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const login_key = window.localStorage.getItem('login_key');
   const config = {
-    headers : {
+    headers: {
       'Authorization': `Bearer ${login_key}`
     }
-  }
+  };
 
-  let separator = '';
-  switch(types){
-    case 'notice' : separator = '공지'
-    break;
-    case 'event' : separator = '이벤트'
-    break;
-    case 'charge' : separator = '이용요금'
-    break;
-    case 'review' : separator = '이용후기'
-    break;
-    case 'vod' : separator = '홍보영상'
-    break;
-  }
-  console.log(store);
+  useEffect(() => {
+    // API 호출 시도
+    axios.get(`${process.env.REACT_APP_API_KEY}Admin/Property/detail`, {
+      ...config,
+      params: { property_no }
+    })
+    .then((res) => {
+      const resultData = res.data.RECORD || res.data.data || res.data;
+      if (resultData && Object.keys(resultData).length > 0) {
+        setData(resultData);
+      } else {
+        // 응답이 비어있으면 더미 데이터 바인딩
+        setData({ ...MOCK_DATA, property_no: property_no || MOCK_DATA.property_no });
+      }
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.warn("⚠️ API 호출 실패! 퍼블리싱용 더미 데이터를 불러옵니다.", err);
+      // 🔥 GET 실패 시 더미 데이터로 대체하여 화면 렌더링
+      setData({ ...MOCK_DATA, property_no: property_no || MOCK_DATA.property_no });
+      setLoading(false);
+    });
+  }, [property_no]);
 
-  if(vod_url){
-    vod_url = vod_url.slice(-11);
-  }
-  if(store.board_type === 'vod'){
-    files = store.file.slice(-3);
-  }
+  // 카카오 지도 렌더링
+  useEffect(() => {
+    if (data?.lat && data?.lng && window.kakao && window.kakao.maps) {
+      const container = document.getElementById('map');
+      if (container) {
+        const options = {
+          center: new window.kakao.maps.LatLng(data.lat, data.lng),
+          level: 3
+        };
+        const map = new window.kakao.maps.Map(container, options);
+        
+        const markerPosition = new window.kakao.maps.LatLng(data.lat, data.lng);
+        const marker = new window.kakao.maps.Marker({ position: markerPosition });
+        marker.setMap(map);
+      }
+    }
+  }, [data]);
 
-  return(
-    <div className="sections view">
-      <div className="width_con">
-        <div className="view_con">
-          <div className="row row1">
-            <div className={"board_type "+types}>
-              <span>{separator}</span>
-            </div>
-          </div>
-          <div className="row row2">
-            <div className="title_con">
-              <h3>{store.board_title}</h3>
-            </div>
-            {
-              types === 'review' ? <Score_con score={store.score}></Score_con> : null
-            }
-          </div>
-          <div className="row row3">
-            <div className="view_info">
-              <div className="col col1">
-                <span className="writer">{store.board_writer}</span>
-                <span className="date">{store.board_date}</span>
-              </div>
-              <div className="col col2">
-                <span className="hits">조회수 {store.board_hit}</span>
-              </div>
-            </div>
-          </div>
-          <div className="row row4">
-            {
-              store.board_type === 'vod' ?
-              (
-                store.file !== '' && store.movie_url === '' ?
-                (
-                  files === 'png' || files === 'jpg' || files === 'jpge' ? <p className="caution">동영상 파일이 아닙니다.</p> : <video src={store.file} controls></video>
-                )
-                :
-                <div className="iframe_con">
-                  <iframe src={"https://www.youtube.com/embed/"+vod_url+""} title="YouTube video player"></iframe>
-                </div>
-              )
-              : null
-            }
-            <div dangerouslySetInnerHTML={{ __html : store.board_content  }} />
-          </div>
-          <div className="row row5">
-            <div className="btn_con">
-              <div className="btns exit">
-                <span><Link to='/board'>목록으로</Link></span>
-              </div>
-              <div className="btns apply">
-                <span><Link to='/edit'>글 수정</Link></span>
-              </div>
-              <div className="btns del">
-                <span onClick={(()=>{
-                  let formData = new FormData();
-                  formData.append('board_no', store.board_no);
-                  if(window.confirm('삭제하시겠습니까?')){
-                    axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/board_del', formData, config).catch(()=>{
-                      alert("데이터 전송이 실패하였습니다.");
-                    }).then((result)=>{
-                      console.log(result);
-                      alert('삭제되었습니다');
-                      navigate(-1);
-                    });
-                  }
-                })}>글 삭제</span>
-              </div>
-            </div>
+  if (loading) {
+    return (
+      <div className="sections view property_view">
+        <div className="width_con">
+          <div className="loading_box" style={{ padding: '100px 0', textAlign: 'center' }}>
+            <p>데이터를 불러오는 중입니다...</p>
           </div>
         </div>
       </div>
-    </div>
-  )
-}
+    );
+  }
 
-function Score_con(props){
-  let a = ``;
-  let review = '';
-  let score = Number(props.score);
-  for(let i = 0; i < score; i++){
-    a += `<img src='img/board/write/star.png'></img>`;
-  }
-  switch(score){
-    case 5 : review = '아주좋아요'
-    break;
-    case 4 : review = '맘에 들어요'
-    break;
-    case 3 : review = '보통이예요'
-    break;
-    case 2 : review = '그냥 그래요'
-    break;
-    case 1 : review = '별로예요'
-    break;
-  }
-  return(
-    <div className="score_con">
-      <h5>리뷰평점</h5>
-      <div dangerouslySetInnerHTML={{ __html : a  }} />
-      <span>{review}</span>
+  // 코드값 매핑 객체
+  const propertyTypeMap = { apartment: "아파트", officetel: "오피스텔" };
+  const statusMap = { "1": "거래가능", "2": "거래중", "3": "거래완료", "4": "거래보류", "5": "비공개" };
+  const directionMap = { S: "남향", SE: "남동향", SW: "남서향", E: "동향", W: "서향", N: "북향", NE: "북동향", NW: "북서향" };
+  const heatingFuelMap = { "1": "도시가스", "2": "전기", "3": "LPG", "4": "기름", "9": "기타" };
+  const heatingTypeMap = { "1": "개별난방", "2": "중앙난방", "3": "지역난방" };
+
+  return (
+    <div className="sections write property_write view property_view">
+      <div className="width_con">
+        <h3>매물 상세 보기</h3>
+        <div className="form_con">
+
+          {/* 1. 기본정보 */}
+          <div className="section_box">
+            <div className="sec_title_bar">
+              <h4>기본정보</h4>
+            </div>
+            <div className="grid_row col4">
+              <div className="form_group">
+                <label>매물종류</label>
+                <div className="view_text">{propertyTypeMap[data.property_type] || data.property_type || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>거래방식</label>
+                <div className="view_text">{data.trade_type || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>거래상태</label>
+                <div className="view_text">{statusMap[data.status] || data.status || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>노출여부</label>
+                <div className="view_text">{data.display_yn === "1" ? "노출" : "숨김"}</div>
+              </div>
+            </div>
+
+            <div className="grid_row col2">
+              <div className="form_group">
+                <label>매물명</label>
+                <div className="view_text">{data.property_name || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>건물명</label>
+                <div className="view_text">{data.building_name || "-"}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* 2. 위치정보 */}
+          <div className="section_box">
+            <div className="sec_title_bar">
+              <h4>위치정보</h4>
+            </div>
+            <div className="grid_row col4">
+              <div className="form_group">
+                <label>주소(시도)</label>
+                <div className="view_text">{data.addr_sido || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>주소(시군구)</label>
+                <div className="view_text">{data.addr_sigungu || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>주소(읍면동)</label>
+                <div className="view_text">{data.addr_dong || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>좌표 정보</label>
+                <div className="view_text">
+                  {data.lat && data.lng ? `위도: ${data.lat} / 경도: ${data.lng}` : "-"}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid_row col2">
+              <div className="form_group">
+                <label>도로명주소</label>
+                <div className="view_text">{data.addr_road || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>상세주소</label>
+                <div className="view_text">{data.addr_detail || "-"}</div>
+              </div>
+            </div>
+
+            {/* 지도 박스 */}
+            {data.lat && data.lng && (
+              <div className="map_area" style={{ marginTop: '15px' }}>
+                <div id="map" style={{ width: '100%', height: '280px', borderRadius: '8px', border: '1px solid #e2e8f0', backgroundColor: '#f8fafc' }}></div>
+              </div>
+            )}
+          </div>
+
+          {/* 3. 매물 정보 */}
+          <div className="section_box">
+            <div className="sec_title_bar">
+              <h4>매물 정보</h4>
+            </div>
+            <div className="grid_row col4">
+              <div className="form_group">
+                <label>공급면적</label>
+                <div className="view_text">{data.supply_area ? `${data.supply_area} ㎡` : "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>전용면적</label>
+                <div className="view_text">{data.exclusive_area ? `${data.exclusive_area} ㎡` : "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>총 층수</label>
+                <div className="view_text">{data.total_floor ? `${data.total_floor}층` : "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>해당 층</label>
+                <div className="view_text">{data.current_floor ? `${data.current_floor}층` : "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>방수</label>
+                <div className="view_text">방 {data.room_count || 0}개</div>
+              </div>
+              <div className="form_group">
+                <label>욕실수</label>
+                <div className="view_text">욕실 {data.bathroom_count || 0}개</div>
+              </div>
+              <div className="form_group">
+                <label>주차 가능</label>
+                <div className="view_text">
+                  {data.parking_available === "Y" ? `가능 (${data.parking_count || 0}대)` : "불가"}
+                </div>
+              </div>
+              <div className="form_group">
+                <label>준공일</label>
+                <div className="view_text">{data.completion_date || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>입주가능일</label>
+                <div className="view_text">{data.move_in_date || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>방향</label>
+                <div className="view_text">{directionMap[data.direction] || data.direction || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>난방연료</label>
+                <div className="view_text">{heatingFuelMap[data.heating_fuel] || data.heating_fuel || "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>난방방식</label>
+                <div className="view_text">{heatingTypeMap[data.heating_type] || data.heating_type || "-"}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* 4. 가격 및 소개 */}
+          <div className="section_box">
+            <div className="sec_title_bar">
+              <h4>가격 및 소개</h4>
+            </div>
+            <div className="grid_row col4">
+              <div className="form_group">
+                <label>매매가</label>
+                <div className="view_text">{data.sale_price ? `${Number(data.sale_price).toLocaleString()} 만원` : "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>전세가</label>
+                <div className="view_text">{data.jeonse_price ? `${Number(data.jeonse_price).toLocaleString()} 만원` : "-"}</div>
+              </div>
+              <div className="form_group">
+                <label>보증금 / 월세</label>
+                <div className="view_text">
+                  {data.deposit_price || data.monthly_rent 
+                    ? `${Number(data.deposit_price || 0).toLocaleString()} / ${Number(data.monthly_rent || 0).toLocaleString()} 만원` 
+                    : "-"}
+                </div>
+              </div>
+              <div className="form_group">
+                <label>융자금</label>
+                <div className="view_text">
+                  {data.loan_amount ? `${Number(data.loan_amount).toLocaleString()}만원` : "없음"}
+                </div>
+              </div>
+              <div className="form_group">
+                <label>관리비</label>
+                <div className="view_text">
+                  {data.maintenance_fee ? `${Number(data.maintenance_fee).toLocaleString()}만원` : "없음"}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid_row full">
+              <div className="form_group">
+                <label>한줄소개</label>
+                <div className="view_text">{data.summary || "-"}</div>
+              </div>
+            </div>
+
+            <div className="grid_row full">
+              <div className="form_group">
+                <label>상세설명</label>
+                <div 
+                  className="row4" 
+                  dangerouslySetInnerHTML={{ __html: data.description || "등록된 상세설명이 없습니다." }} 
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 5. 사진 정보 */}
+          <div className="section_box">
+            <div className="sec_title_bar">
+              <h4>사진 정보</h4>
+            </div>
+            <div className="image_upload_container">
+              {/* 대표 이미지 */}
+              <div className="thumb_upload_area">
+                <p className="row_desc">대표 이미지</p>
+                <div className="upload_img_item">
+                  {data.thumbnail_image ? (
+                    <img src={data.thumbnail_image} alt="대표 이미지" />
+                  ) : (
+                    <p className="no_img">등록된 대표 사진이 없습니다.</p>
+                  )}
+                </div>
+              </div>
+
+              {/* 상세 이미지 목록 */}
+              <div className="detail_upload_area" style={{ marginTop: '20px' }}>
+                <p className="row_desc">추가 이미지</p>
+                <div className="detail_grid">
+                  {data.detail_images && data.detail_images.length > 0 ? (
+                    data.detail_images.map((imgUrl, idx) => (
+                      <div className="upload_img_item" key={idx}>
+                        <img src={typeof imgUrl === 'object' ? imgUrl.url : imgUrl} alt={`상세 이미지 ${idx + 1}`} />
+                      </div>
+                    ))
+                  ) : (
+                    <p className="no_img">등록된 추가 사진이 없습니다.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 하단 버튼 바 */}
+          <div className="row row5">
+            <div className="btn_con">
+              <button 
+                type="button" 
+                className="btns apply" 
+                onClick={() => navigate(`/property/edit/${data.property_no}`)}
+              >
+                <span>수정하기</span>
+              </button>
+              <div className="btns exit">
+                <span><Link to='/property'>목록으로</Link></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export default View_property;

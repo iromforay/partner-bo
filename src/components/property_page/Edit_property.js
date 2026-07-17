@@ -102,9 +102,9 @@ function Edit_property() {
   // 2. Form State 초기화
   const [formData, setFormData] = useState({
     property_no: storeData.property_no || "",
-    propertyType: storeData.propertyType || storeData.property_type || "apartment",
-    tradeType: storeData.tradeType || storeData.trade_type || "매매",
-    tradeStatus: String(storeData.tradeStatus || storeData.status || "1"),
+    property_type: storeData.property_type || "apartment",
+    trade_type: storeData.trade_type || "매매",
+    status: String(storeData.status || "1"),
     display_yn: String(storeData.display_yn || "1"),
     property_name: storeData.property_name || "",
     building_name: storeData.building_name || "",
@@ -296,19 +296,22 @@ function Edit_property() {
             <div className="section_box">
               <div className="sec_title_bar">
                 <h4>기본정보</h4>
+                <div className="dashed_box">
+                  {`매물코드: ${formData.property_no}`}
+                </div>
               </div>
 
               <div className="grid_row col4">
                 <div className="form_group">
                   <label>매물종류</label>
-                  <select name="propertyType" value={formData.propertyType} onChange={handleChange}>
+                  <select name="property_type" value={formData.property_type} onChange={handleChange}>
                     <option value="apartment">아파트</option>
                     <option value="officetel">오피스텔</option>
                   </select>
                 </div>
                 <div className="form_group">
                   <label>거래방식</label>
-                  <select name="tradeType" value={formData.tradeType} onChange={handleChange}>
+                  <select name="trade_type" value={formData.trade_type} onChange={handleChange}>
                     <option value="매매">매매</option>
                     <option value="전세">전세</option>
                     <option value="월세">월세</option>
@@ -316,7 +319,7 @@ function Edit_property() {
                 </div>
                 <div className="form_group">
                   <label>거래상태</label>
-                  <select name="tradeStatus" value={formData.tradeStatus} onChange={handleChange}>
+                  <select name="status" value={formData.status} onChange={handleChange}>
                     <option value="1">거래가능</option>
                     <option value="2">거래중</option>
                     <option value="3">거래완료</option>
@@ -382,7 +385,7 @@ function Edit_property() {
                   <label>좌표 정보</label>
                   <div className="dashed_box">
                     {formData.lat && formData.lng
-                      ? `${formData.lat} / ${formData.lng}`
+                      ? `위도: ${formData.lat} / 경도: ${formData.lng}`
                       : "위도/경도 (자동산출)"}
                   </div>
                 </div>
@@ -421,31 +424,41 @@ function Edit_property() {
                   <input type="number" name="exclusive_area" value={formData.exclusive_area} onChange={handleChange} placeholder="0" />
                 </div>
                 <div className="form_group">
-                  <label>총 층수 / 해당 층</label>
-                  <div className="flex_inputs">
-                    <input type="number" name="total_floor" placeholder="총층" value={formData.total_floor} onChange={handleChange} />
-                    <span>/</span>
-                    <input type="number" name="current_floor" placeholder="해당층" value={formData.current_floor} onChange={handleChange} />
-                  </div>
+                  <label>총 층수</label>
+                  <input type="number" name="total_floor" placeholder="총층" value={formData.total_floor} onChange={handleChange} />
                 </div>
                 <div className="form_group">
-                  <label>방수 / 욕실수</label>
-                  <div className="flex_inputs">
-                    <input type="number" name="room_count" placeholder="방" value={formData.room_count} onChange={handleChange} />
-                    <span>/</span>
-                    <input type="number" name="bathroom_count" placeholder="욕실" value={formData.bathroom_count} onChange={handleChange} />
-                  </div>
+                  <label>해당 층</label>
+                  <input type="number" name="current_floor" placeholder="해당층" value={formData.current_floor} onChange={handleChange} />
                 </div>
                 <div className="form_group">
-                  <label>주차 가능 여부 / 대수</label>
-                  <div className="flex_inputs">
-                    <select name="parking_available" value={formData.parking_available} onChange={handleChange}>
-                      <option value="Y">가능</option>
-                      <option value="N">불가</option>
-                    </select>
-                    <input type="number" name="parking_count" placeholder="대수" value={formData.parking_count} onChange={handleChange} />
-                  </div>
+                  <label>방수</label>
+                  <input type="number" name="room_count" placeholder="방" value={formData.room_count} onChange={handleChange} />
                 </div>
+                <div className="form_group">
+                  <label>욕실수</label>
+                  <input type="number" name="bathroom_count" placeholder="욕실" value={formData.bathroom_count} onChange={handleChange} />
+                </div>
+                <div className="form_group">
+                  <label>주차 가능</label>
+                  <select name="parking_available" value={formData.parking_available} onChange={handleChange}>
+                    <option value="Y">가능</option>
+                    <option value="N">불가</option>
+                  </select>
+                </div>
+                <div className="form_group">
+                  <label>대수</label>
+                  <input type="number" name="parking_count" placeholder="대수" value={formData.parking_count} onChange={handleChange} />
+                </div>
+                <div className="form_group">
+                  <label>준공일</label>
+                  <input type="date" name="completion_date"value={formData.completion_date} onChange={handleChange} />
+                </div>
+
+                <div className="form_group">
+                  <label>입주가능일</label>
+                  <input type="date" name="move_in_date"value={formData.move_in_date} onChange={handleChange} />
+                </div>             
                 <div className="form_group">
                   <label>방향</label>
                   <select name="direction" value={formData.direction} onChange={handleChange}>
@@ -495,12 +508,21 @@ function Edit_property() {
                   <input type="number" name="jeonse_price" value={formData.jeonse_price} onChange={handleChange} placeholder="0" />
                 </div>
                 <div className="form_group">
-                  <label>보증금 / 월세 (만원)</label>
-                  <div className="flex_inputs">
-                    <input type="number" name="deposit_price" placeholder="보증금" value={formData.deposit_price} onChange={handleChange} />
-                    <span>/</span>
-                    <input type="number" name="monthly_rent" placeholder="월세" value={formData.monthly_rent} onChange={handleChange} />
-                  </div>
+                  <label>보증금</label>
+                  <input type="number" name="deposit_price" placeholder="보증금" value={formData.deposit_price} onChange={handleChange} />
+                </div>
+                <div className="form_group">
+                  <label>월세 (만원)</label>
+                  <input type="number" name="monthly_rent" placeholder="월세" value={formData.monthly_rent} onChange={handleChange} />
+                </div>
+                <div className="form_group">
+                  <label>융자금</label>
+                  <input
+                    type="number"
+                    name="loan_amount"
+                    value={formData.loan_amount} onChange={handleChange}
+                    placeholder="0"
+                  />
                 </div>
                 <div className="form_group">
                   <label>관리비 (만원)</label>

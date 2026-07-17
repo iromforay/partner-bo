@@ -175,9 +175,10 @@ function Write_property() {
 
     // 디버깅용 전송 파라미터 콘솔 출력
     for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
+      console.log(`key는 ${key}:`, value);
     }
-
+console.log(process.env.REACT_APP_API_KEY + 'Admin/Board/save');
+console.log(process.env.REACT_APP_API_KEY + 'Admin/Property/save');
     // 서버 전송
     axios.post(`${process.env.REACT_APP_API_KEY}Admin/Property/save`, formData, config)
       .then((res) => {
@@ -211,20 +212,20 @@ function Write_property() {
             {/* 1. 기본정보 */}
             <div className="section_box">
               <div className="sec_title_bar">
-                <h4>기본정보</h4>
+                <h4>기본정보</h4>                
               </div>
 
               <div className="grid_row col4">
                 <div className="form_group">
                   <label>매물종류</label>
-                  <select name="propertyType" defaultValue="apartment">
+                  <select name="property_type" defaultValue="apartment">
                     <option value="apartment">아파트</option>
                     <option value="officetel">오피스텔</option>
                   </select>
                 </div>
                 <div className="form_group">
                   <label>거래방식</label>
-                  <select name="tradeType" defaultValue="매매">
+                  <select name="trade_type" defaultValue="매매">
                     <option value="매매">매매</option>
                     <option value="전세">전세</option>
                     <option value="월세">월세</option>
@@ -232,7 +233,7 @@ function Write_property() {
                 </div>
                 <div className="form_group">
                   <label>거래상태</label>
-                  <select name="tradeStatus" defaultValue="1">
+                  <select name="status" defaultValue="1">
                     <option value="1">거래가능</option>
                     <option value="2">거래중</option>
                     <option value="3">거래완료</option>
@@ -291,7 +292,7 @@ function Write_property() {
                   <label>좌표 정보</label>
                   <div className="dashed_box">
                     {addrData.lat && addrData.lng 
-                      ? `${addrData.lat} / ${addrData.lng}` 
+                      ? `위도: ${addrData.lat} / 경도: ${addrData.lng}` 
                       : '위도/경도 (자동산출)'}
                   </div>
                 </div>
@@ -304,7 +305,7 @@ function Write_property() {
                 </div>
                 <div className="form_group">
                   <label>상세주소</label>
-                  <input type="text" name="addr_detail" placeholder="상세 주소 입력 (동/호수 등)" />
+                  <input type="text" name="" placeholder="상세 주소 입력 (동/호수 등)" />
                 </div>
               </div>
             </div>
@@ -324,31 +325,43 @@ function Write_property() {
                   <input type="number" name="exclusive_area" placeholder="0" />
                 </div>
                 <div className="form_group">
-                  <label>총 층수 / 해당 층</label>
+                  <label>총 층수</label>
                   <div className="flex_inputs">
                     <input type="number" name="total_floor" placeholder="총층" />
-                    <span>/</span>
-                    <input type="number" name="current_floor" placeholder="해당층" />
                   </div>
                 </div>
                 <div className="form_group">
-                  <label>방수 / 욕실수</label>
-                  <div className="flex_inputs">
-                    <input type="number" name="room_count" placeholder="방" />
-                    <span>/</span>
-                    <input type="number" name="bathroom_count" placeholder="욕실" />
-                  </div>
+                  <label>해당 층</label>
+                  <input type="number" name="current_floor" placeholder="해당층" />
                 </div>
                 <div className="form_group">
-                  <label>주차 가능 여부 / 대수</label>
-                  <div className="flex_inputs">
+                  <label>방수</label>
+                  <input type="number" name="room_count" placeholder="방" />
+                </div>
+                <div className="form_group">
+                  <label>욕실수</label>
+                  <input type="number" name="bathroom_count" placeholder="욕실" />
+                </div>
+                <div className="form_group">
+                  <label>주차 가능</label>
                     <select name="parking_available" defaultValue="Y">
                       <option value="Y">가능</option>
                       <option value="N">불가</option>
                     </select>
-                    <input type="number" name="parking_count" placeholder="대수" />
-                  </div>
                 </div>
+                <div className="form_group">
+                  <label>대수</label>
+                  <input type="number" name="parking_count" placeholder="대수" />
+                </div>
+                <div className="form_group">
+                  <label>준공일</label>
+                  <input type="date" name="completion_date" />
+                </div>
+
+                <div className="form_group">
+                  <label>입주가능일</label>
+                  <input type="date" name="move_in_date" />
+                </div>             
                 <div className="form_group">
                   <label>방향</label>
                   <select name="direction" defaultValue="S">
@@ -398,12 +411,20 @@ function Write_property() {
                   <input type="number" name="jeonse_price" placeholder="0" />
                 </div>
                 <div className="form_group">
-                  <label>보증금 / 월세 (만원)</label>
-                  <div className="flex_inputs">
-                    <input type="number" name="deposit_price" placeholder="보증금" />
-                    <span>/</span>
-                    <input type="number" name="monthly_rent" placeholder="월세" />
-                  </div>
+                  <label>보증금</label>
+                  <input type="number" name="deposit_price" placeholder="보증금" />
+                </div>
+                <div className="form_group">
+                  <label>월세 (만원)</label>
+                  <input type="number" name="monthly_rent" placeholder="월세" />
+                </div>
+                <div className="form_group">
+                  <label>융자금</label>
+                  <input
+                    type="number"
+                    name="loan_amount"
+                    placeholder="0"
+                  />
                 </div>
                 <div className="form_group">
                   <label>관리비 (만원)</label>
