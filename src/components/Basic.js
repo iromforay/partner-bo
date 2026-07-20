@@ -77,7 +77,7 @@ function Basic(props){
                 }
               </div>
             </li>
-            <li onClick={()=>{
+            {/* <li onClick={()=>{
               dispatch(change_set(5))
             }} className={select === 5 ? "on" : null}>
               <h5>이용요금</h5>
@@ -86,7 +86,7 @@ function Basic(props){
                   menuSetting.charge_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
                 }
               </div>
-            </li>
+            </li> */}
             <li onClick={()=>{
               dispatch(change_set(6))
             }} className={select === 6 ? "on" : null}>

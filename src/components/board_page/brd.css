@@ -258,6 +258,9 @@
 .btn_addr_search{
   background:#2bb055;
 }
+.display_none{
+  display:none !important;
+}
 .dashed_box {
   display: flex;
   align-items: center;

@@ -16,7 +16,7 @@ function chunk(params = [], size = 1) {
   return arr;
 }
 
-function Property_brd_all(props){
+function Property_list(props){
   
   //let [data, setData] = useState(props.data);
   let data = props.data;
@@ -112,20 +112,26 @@ const [propertyNameTxt, setPropertyNameTxt] = useState('');
         <div className="fn_bar">
           <div className="search_con show">
             <select value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
-              <option value="all">매물종류</option>
-              <option value="apartment">아파트</option>
-              <option value="officetel">오피스텔</option>
+              <option value="all" disabled hidden>매물종류</option>
+              <option value="apt">아파트</option>
+              <option value="villa">빌라/연립</option>
+              <option value="house">주택</option>
+              <option value="commercial">상가</option>
+              <option value="office">사무실</option>
+              <option value="land">토지</option>
+              <option value="factory">공장/창고</option>
+              <option value="etc">기타</option>
             </select>
 
             <select value={tradeType} onChange={(e) => setTradeType(e.target.value)}>
-              <option value="all">거래방식</option>
-              <option value="buy">매매</option>
+              <option value="all"disabled hidden>거래방식</option>
+              <option value="sale">매매</option>
               <option value="jeonse">전세</option>
-              <option value="rent">월세</option>
+              <option value="monthly">월세</option>
             </select>
 
             <select value={tradeStatus} onChange={(e) => setTradeStatus(e.target.value)}>
-              <option value="all">거래상태</option>
+              <option value="all" disabled hidden>거래상태</option>
               <option value="1">거래가능</option>
               <option value="2">거래중</option>
               <option value="3">거래완료</option>
@@ -307,4 +313,4 @@ else if (Number(datas[props.val].sale_price) > 0) {
   )
 }
 
-export default Property_brd_all;
+export default Property_list;

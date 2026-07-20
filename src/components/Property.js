@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { change_page, minus_list, plus_list } from "../store";
-import Property_brd_all from './property_page/Property_brd_all';
+import Property_list from './property_page/Property_list';
 import './board_page/brd.css';
 import axios from "axios";
 
@@ -103,7 +103,7 @@ function Property(){
             </li>
           </ul>
           <div className="board_con">
-            <Property_brd_all origin_data={data} data={copy_data} whats={select}></Property_brd_all>
+            <Property_list origin_data={data} data={copy_data} whats={select}></Property_list>
           </div>
         </div>
       </div>

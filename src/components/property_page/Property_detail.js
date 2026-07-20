@@ -6,12 +6,12 @@ import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
-import DaumPostcode from "react-daum-postcode";
+// import DaumPostcode from "react-daum-postcode";
 
 // 💡 백엔드 연결 실패 시 사용할 퍼블리싱용 더미 데이터
 const MOCK_DATA = {
-  property_no: "1024",
-  property_type: "apartment",
+  property_no: "1",
+  property_type: "apt",
   trade_type: "매매",
   status: "1",
   display_yn: "1",
@@ -58,7 +58,7 @@ const MOCK_DATA = {
   ]
 };
 
-function View_property() {
+function Property_detail() {
   const { property_no } = useParams();
   const navigate = useNavigate();
 
@@ -89,28 +89,17 @@ function View_property() {
       });
   }, [property_no]);
 
-  // 카카오 지도 렌더링
-  useEffect(() => {
-    if (data?.lat && data?.lng && window.kakao && window.kakao.maps) {
-      const container = document.getElementById('map');
-      if (container) {
-        const options = {
-          center: new window.kakao.maps.LatLng(data.lat, data.lng),
-          level: 3
-        };
-        const map = new window.kakao.maps.Map(container, options);
-        
-        const markerPosition = new window.kakao.maps.LatLng(data.lat, data.lng);
-        const marker = new window.kakao.maps.Marker({ position: markerPosition });
-        marker.setMap(map);
-      }
-    }
-  }, [data]);
-
-
-
   // 코드값 매핑 객체
-  const propertyTypeMap = { apartment: "아파트", officetel: "오피스텔" };
+  const propertyTypeMap = {
+    apt: "아파트",
+    villa: "빌라/연립",
+    house: "주택",
+    commercial: "상가",
+    office: "사무실",
+    land: "토지",
+    factory: "공장/창고",
+    etc: "기타", 
+  };
   const statusMap = { "1": "거래가능", "2": "거래중", "3": "거래완료", "4": "거래보류", "5": "비공개" };
   const directionMap = { S: "남향", SE: "남동향", SW: "남서향", E: "동향", W: "서향", N: "북향", NE: "북동향", NW: "북서향" };
   const heatingFuelMap = { "1": "도시가스", "2": "전기", "3": "LPG", "4": "기름", "9": "기타" };
@@ -187,7 +176,7 @@ function View_property() {
                 <label>주소(읍면동)</label>
                 <div className="view_text">{data.addr_dong || "-"}</div>
               </div>
-              <div className="form_group">
+              <div className="form_group display_none">
                 <label>좌표 정보</label>
                 <div className="view_text">
                   {data.lat && data.lng ? `위도: ${data.lat} / 경도: ${data.lng}` : "-"}
@@ -207,11 +196,11 @@ function View_property() {
             </div>
 
             {/* 지도 박스 */}
-            {data.lat && data.lng && (
+            {/* {data.lat && data.lng && (
               <div className="map_area" style={{ marginTop: '15px' }}>
                 <div id="map" style={{ width: '100%', height: '280px', borderRadius: '8px', border: '1px solid #e2e8f0', backgroundColor: '#f8fafc' }}></div>
               </div>
-            )}
+            )} */}
           </div>
 
           {/* 3. 매물 정보 */}
@@ -385,4 +374,4 @@ function View_property() {
   );
 }
 
-export default View_property;
+export default Property_detail;

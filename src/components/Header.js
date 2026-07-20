@@ -12,9 +12,9 @@ import Property from './Property';
 import View_brd from './board_page/View_brd';
 import Edit_profile from './Edit_profile';
 
-import Write_property from './property_page/Write_property';
-import Edit_property from './property_page/Edit_property';
-import View_property from './property_page/View_property';
+import  Property_form from './property_page/Property_form';
+// import Edit_property from './property_page/Edit_property';
+import Property_detail from './property_page/Property_detail';
 
 import axios from 'axios';
 
@@ -140,10 +140,14 @@ function Header(){
             <Route path='/edit' element={ <Edit_brd></Edit_brd> }></Route>
             <Route path='/view' element={ <View_brd></View_brd> }></Route>
 
-            <Route path='/property/write' element={ <Write_property></Write_property> }></Route>
-            {/* URL 파라미터로 property_no를 넘겨줍니다 */}
-            <Route path="/property/edit/:property_no" element={<Edit_property />} />
-            <Route path='/property/view/:property_no' element={ <View_property></View_property> }></Route>
+            {/* 매물 등록 */}
+            <Route path="/property/write" element={<Property_form />} />
+
+            {/* 매물 수정 (URL 파라미터 :property_no 받기) */}
+            <Route path="/property/edit/:property_no" element={<Property_form />} />
+
+            {/* 매물 상세 조회 */}
+            <Route path="/property/view/:property_no" element={<Property_detail />} />
           </Routes>
         </div>
       </div>
