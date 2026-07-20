@@ -3,7 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
@@ -81,16 +81,8 @@ function AddressSearchModal({ onComplete, onClose }) {
 function Edit_property() {
   const navigate = useNavigate();
 
-  // 1. Redux Store에서 데이터 가져오기
-  const storeData = useSelector((state) => state.property_view_data || state.board_view_data || {});
-
-  // Redux 데이터가 없는 상태(예: 새로고침)로 접속했을 때 처리
-  useEffect(() => {
-    if (!storeData || (!storeData.property_no && !storeData.property_name)) {
-      alert("수정할 매물 정보가 없습니다. 목록으로 이동합니다.");
-      navigate("/property");
-    }
-  }, [storeData, navigate]);
+  const { property_no } = useParams();
+  const [loading, setLoading] = useState(true);
 
   const login_key = window.localStorage.getItem("login_key");
   const config = {
@@ -99,51 +91,79 @@ function Edit_property() {
     },
   };
 
+  //1. 상세 데이터 가져오기
+  useEffect(()=>{
+
+    if(!property_no) return;
+
+    axios.get(`${process.env.REACT_APP_API_KEY}API/Property/detail?property_no=${property_no}`, config)
+      .then((res)=>{
+        const data = res.data.RECORD.rows[0];
+console.log("상세 데이터:", data);
+        setFormData(prev=>({
+          ...prev,
+          ...data,
+          status:String(data.status),
+          display_yn:String(data.display_yn),
+          heating_fuel:String(data.heating_fuel),
+          heating_type:String(data.heating_type)
+        }));
+
+        setUploadThumbImg(data.thumbnail_image || "");
+        setExistingDetailImgs(data.detail_images || []);
+
+      })
+      .catch((err)=>{
+        console.log("매물 상세 조회 실패", err);
+      });
+
+  },[property_no]);
+
   // 2. Form State 초기화
-  const [formData, setFormData] = useState({
-    property_no: storeData.property_no || "",
-    property_type: storeData.property_type || "apartment",
-    trade_type: storeData.trade_type || "매매",
-    status: String(storeData.status || "1"),
-    display_yn: String(storeData.display_yn || "1"),
-    property_name: storeData.property_name || "",
-    building_name: storeData.building_name || "",
-    addr_sido: storeData.addr_sido || "",
-    addr_sigungu: storeData.addr_sigungu || "",
-    addr_dong: storeData.addr_dong || "",
-    addr_road: storeData.addr_road || "",
-    addr_detail: storeData.addr_detail || "",
-    lat: storeData.lat || "",
-    lng: storeData.lng || "",
-    supply_area: storeData.supply_area || "",
-    exclusive_area: storeData.exclusive_area || "",
-    total_floor: storeData.total_floor || "",
-    current_floor: storeData.current_floor || "",
-    room_count: storeData.room_count || "",
-    bathroom_count: storeData.bathroom_count || "",
-    parking_available: storeData.parking_available || "Y",
-    parking_count: storeData.parking_count || "",
-    completion_date: storeData.completion_date || "",
-    move_in_date: storeData.move_in_date || "",
-    direction: storeData.direction || "S",
-    heating_fuel: String(storeData.heating_fuel || "1"),
-    heating_type: String(storeData.heating_type || "1"),
-    sale_price: storeData.sale_price || "",
-    jeonse_price: storeData.jeonse_price || "",
-    deposit_price: storeData.deposit_price || "",
-    monthly_rent: storeData.monthly_rent || "",
-    loan_amount: storeData.loan_amount || "",
-    maintenance_fee: storeData.maintenance_fee || "",
-    summary: storeData.summary || "",
-    description: storeData.description || "",
+  const [formData,setFormData] = useState({
+    property_no: property_no,
+    property_type:"apartment",
+    trade_type:"매매",
+    status:"1",
+    display_yn:"1",
+    property_name:"",
+    building_name:"",
+    addr_sido:"",
+    addr_sigungu:"",
+    addr_dong:"",
+    addr_road:"",
+    addr_detail:"",
+    lat:"",
+    lng:"",
+    supply_area:"",
+    exclusive_area:"",
+    total_floor:"",
+    current_floor:"",
+    room_count:"",
+    bathroom_count:"",
+    parking_available:"Y",
+    parking_count:"",
+    completion_date:"",
+    move_in_date:"",
+    direction:"S",
+    heating_fuel:"1",
+    heating_type:"1",
+    sale_price:"",
+    jeonse_price:"",
+    deposit_price:"",
+    monthly_rent:"",
+    loan_amount:"",
+    maintenance_fee:"",
+    summary:"",
+    description:""
   });
 
   // 3. 이미지 상태 개선 (기존 URL과 신규 업로드 파일 분리)
   const [thumbnailFile, setThumbnailFile] = useState(null);
-  const [upload_thumb_img, setUploadThumbImg] = useState(storeData.thumbnail_image || "");
+  const [upload_thumb_img,setUploadThumbImg] = useState("");
 
   // 기존 서버 이미지 URL 목록
-  const [existingDetailImgs, setExistingDetailImgs] = useState(storeData.detail_images || []);
+  const [existingDetailImgs,setExistingDetailImgs] = useState([]);
   // 새로 업로드할 파일 객체 및 프리뷰 URL 목록 (객체 형태로 세트 관리)
   const [newDetailFiles, setNewDetailFiles] = useState([]); // [{ file: File, preview: string }]
 
@@ -245,7 +265,9 @@ function Edit_property() {
     Object.keys(formData).forEach((key) => {
       sendFormData.append(key, formData[key] ?? "");
     });
-
+console.log(
+  Object.fromEntries(sendFormData.entries())
+);
     // 대표 이미지
     if (thumbnailFile) {
       sendFormData.append("thumbnail_image", thumbnailFile);
@@ -267,7 +289,6 @@ function Edit_property() {
     axios
       .post(`${process.env.REACT_APP_API_KEY}Admin/Property/save`, sendFormData, config)
       .then((res) => {
-        alert("매물 정보가 수정되었습니다.");
         navigate("/property");
       })
       .catch((err) => {

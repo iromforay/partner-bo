@@ -15,7 +15,7 @@ const MOCK_DATA = {
   trade_type: "매매",
   status: "1",
   display_yn: "1",
-  property_name: "반포 자이 아파트 104동",
+  property_name: "더미데이터",
   building_name: "반포자이",
   addr_sido: "서울특별시",
   addr_sigungu: "서초구",
@@ -72,28 +72,21 @@ function View_property() {
     }
   };
 
+  let url = `${process.env.REACT_APP_API_KEY}API/Property/detail?property_no=${property_no}`;
+
   useEffect(() => {
-    // API 호출 시도
-    axios.get(`${process.env.REACT_APP_API_KEY}Admin/Property/detail`, {
-      ...config,
-      params: { property_no }
-    })
-    .then((res) => {
-      const resultData = res.data.RECORD || res.data.data || res.data;
-      if (resultData && Object.keys(resultData).length > 0) {
-        setData(resultData);
-      } else {
-        // 응답이 비어있으면 더미 데이터 바인딩
-        setData({ ...MOCK_DATA, property_no: property_no || MOCK_DATA.property_no });
-      }
-      setLoading(false);
-    })
-    .catch((err) => {
-      console.warn("⚠️ API 호출 실패! 퍼블리싱용 더미 데이터를 불러옵니다.", err);
-      // 🔥 GET 실패 시 더미 데이터로 대체하여 화면 렌더링
-      setData({ ...MOCK_DATA, property_no: property_no || MOCK_DATA.property_no });
-      setLoading(false);
-    });
+    axios
+      .get(url, config)
+      .then((result) => {
+        setData(result.data.RECORD.rows);
+      })
+      .catch((err) => {
+        console.error(err);
+        setData(MOCK_DATA); // 백엔드 연결 실패 시 더미 데이터 사용
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [property_no]);
 
   // 카카오 지도 렌더링
@@ -114,17 +107,7 @@ function View_property() {
     }
   }, [data]);
 
-  if (loading) {
-    return (
-      <div className="sections view property_view">
-        <div className="width_con">
-          <div className="loading_box" style={{ padding: '100px 0', textAlign: 'center' }}>
-            <p>데이터를 불러오는 중입니다...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+
 
   // 코드값 매핑 객체
   const propertyTypeMap = { apartment: "아파트", officetel: "오피스텔" };
@@ -133,6 +116,17 @@ function View_property() {
   const heatingFuelMap = { "1": "도시가스", "2": "전기", "3": "LPG", "4": "기름", "9": "기타" };
   const heatingTypeMap = { "1": "개별난방", "2": "중앙난방", "3": "지역난방" };
 
+ if(loading){
+    return (
+    <div className="sections view property_view">
+      <div className="width_con">
+        <div className="loading_box" style={{ padding: '100px 0', textAlign: 'center' }}>
+          <p>데이터를 불러오는 중입니다...</p>
+        </div>
+      </div>
+    </div>
+    );
+  }
   return (
     <div className="sections write property_write view property_view">
       <div className="width_con">
@@ -155,11 +149,11 @@ function View_property() {
               </div>
               <div className="form_group">
                 <label>거래상태</label>
-                <div className="view_text">{statusMap[data.status] || data.status || "-"}</div>
+                <div className="view_text">{data.status_txt || "-"}</div>
               </div>
               <div className="form_group">
                 <label>노출여부</label>
-                <div className="view_text">{data.display_yn === "1" ? "노출" : "숨김"}</div>
+                <div className="view_text">{data.display_yn_txt}</div>
               </div>
             </div>
 
@@ -266,15 +260,15 @@ function View_property() {
               </div>
               <div className="form_group">
                 <label>방향</label>
-                <div className="view_text">{directionMap[data.direction] || data.direction || "-"}</div>
+                <div className="view_text">{data.direction_txt || "-"}</div>
               </div>
               <div className="form_group">
                 <label>난방연료</label>
-                <div className="view_text">{heatingFuelMap[data.heating_fuel] || data.heating_fuel || "-"}</div>
+                <div className="view_text">{data.heating_fuel_txt || "-"}</div>
               </div>
               <div className="form_group">
                 <label>난방방식</label>
-                <div className="view_text">{heatingTypeMap[data.heating_type] || data.heating_type || "-"}</div>
+                <div className="view_text">{data.heating_type_txt || "-"}</div>
               </div>
             </div>
           </div>

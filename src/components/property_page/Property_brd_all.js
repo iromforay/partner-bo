@@ -1,92 +1,96 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { change_page, now_property_view } from '../../store'; // store 경로에 맞춰 조절
+import { change_page } from '../../store';
 import { Link } from 'react-router-dom';
+import { now_property_view } from '../../store';
 import axios from "axios";
+import $ from "jquery";
 
-// 가격 포맷팅 유틸리티
-const formatPrice = (price) => {
-  if (!price) return '0';
-  const numPrice = Number(price);
-  if (numPrice >= 10000) {
-    const uk = Math.floor(numPrice / 10000);
-    const rest = numPrice % 10000;
-    return rest > 0 ? `${uk}억 ${rest}만` : `${uk}억`;
-  }
-  return `${numPrice}만`;
-};
-
-// 매물 방식 및 최종 가격 조합 함수
-const getPropertyTypeAndPrice = (row) => {
-  let type = '-';
-  let typeClass = '';
-  let priceText = '-';
-
-  if (row.sale_price && Number(row.sale_price) > 0) {
-    type = '매매';
-    typeClass = 'sale';
-    priceText = formatPrice(row.sale_price);
-  } else if (row.jeonse_price && Number(row.jeonse_price) > 0) {
-    type = '전세';
-    typeClass = 'jeonse';
-    priceText = formatPrice(row.jeonse_price);
-  } else if (row.monthly_rent && Number(row.monthly_rent) > 0) {
-    type = '월세';
-    typeClass = 'rent';
-    const deposit = row.deposit_price ? formatPrice(row.deposit_price).replace('만', '') : '0';
-    const rent = row.monthly_rent;
-    priceText = `${deposit}/${rent}`;
+function chunk(params = [], size = 1) {
+  const arr = [];
+    
+  for (let i = 0; i < params.length; i += size) {
+    arr.push(params.slice(i, i + size));
   }
 
-  return { type, typeClass, price: priceText };
-};
+  return arr;
+}
 
-/* ==========================================
-   1. 메인 리스트 컴포넌트
-   ========================================== */
 function Property_brd_all(props){
+  
+  //let [data, setData] = useState(props.data);
   let data = props.data;
   let origin = props.origin_data;
   let [now_data, setNow_data] = useState();
   let [now_page, setNow_page] = useState(1);
-  let [page_info, setPage_info] = useState(origin?.pager || null);
+  let [page_info, setPage_info] = useState();
 
-  // 검색 조건 State
-  let [propertyType, setPropertyType] = useState('all');
-  let [tradeType, setTradeType] = useState('all');
-  let [tradeStatus, setTradeStatus] = useState('all');
-  let [regionTxt, setRegionTxt] = useState('');
-  let [propertyNameTxt, setPropertyNameTxt] = useState('');
+  const [propertyType, setPropertyType] = useState('all');
+const [tradeType, setTradeType] = useState('all');
+const [tradeStatus, setTradeStatus] = useState('all');
+const [regionTxt, setRegionTxt] = useState('');
+const [propertyNameTxt, setPropertyNameTxt] = useState('');
 
+  console.log(data);
+  console.log(origin);
+
+  let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
   const config = {
     headers : {
       'Authorization': `Bearer ${login_key}`
     }
-  };
+  }
+
+
+  let page = [];
+  for(let i = 0; i < origin.pager.total_page; i++){
+    page.push('');
+  }
+  
 
   useEffect(()=>{
     setNow_data(data);
-    setPage_info(origin?.pager);
-  }, [data, origin]);
+    setNow_page(1);
+  }, [data]);
 
-  // 검색 및 페이징 요청
-  const handleSearch = (targetPage = 1) => {
-    let url = `${process.env.REACT_APP_API_KEY}Admin/Property/list?limit=8&page=${targetPage}&code=${props.whats}`;
+  useEffect(()=>{
+    axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8&page='+(now_page)+'&code='+(props.whats)+'', config).then((result)=>{console.log(result.data.RECORD.rows); setNow_data(result.data.RECORD.rows); setPage_info(result.data.RECORD.pager)});
+  }, [now_page]);
 
-    if (propertyType !== 'all') url += `&category=${propertyType}`;
-    if (tradeType !== 'all') url += `&trade_type=${tradeType}`;
-    if (tradeStatus !== 'all') url += `&status=${tradeStatus}`;
-    if (regionTxt.trim() !== '') url += `&region=${encodeURIComponent(regionTxt)}`;
-    if (propertyNameTxt.trim() !== '') url += `&property_name=${encodeURIComponent(propertyNameTxt)}`;
+  console.log(now_data, page, page_info)
 
-    axios.get(url, config).then((result)=>{
-      setNow_data(result.data.RECORD.rows); 
+  //검색
+  const handleSearch = (page = 1) => {
+    let url = `${process.env.REACT_APP_API_KEY}Admin/Property/list?limit=8&page=${page}&code=${props.whats}`;
+
+    if (propertyType !== 'all') {
+      url += `&property_type=${propertyType}`;
+    }
+
+    if (tradeType !== 'all') {
+      url += `&trade_type=${tradeType}`;
+    }
+
+    if (tradeStatus !== 'all') {
+      url += `&status=${tradeStatus}`;
+    }
+
+    if (regionTxt.trim() !== '') {
+      url += `&region=${encodeURIComponent(regionTxt)}`;
+    }
+
+    if (propertyNameTxt.trim() !== '') {
+      url += `&property_name=${encodeURIComponent(propertyNameTxt)}`;
+    }
+
+    axios.get(url, config).then((result) => {
+      setNow_data(result.data.RECORD.rows);
       setPage_info(result.data.RECORD.pager);
-    }).catch(err => console.error("조회 실패", err));
+    });
   };
-
-  // 초기화
+  
+  //초기화
   const handleReset = () => {
     setPropertyType('all');
     setTradeType('all');
@@ -94,20 +98,13 @@ function Property_brd_all(props){
     setRegionTxt('');
     setPropertyNameTxt('');
     setNow_page(1);
-
-    let url = `${process.env.REACT_APP_API_KEY}Admin/Property/list?limit=8&page=1&code=${props.whats}`;
-    axios.get(url, config).then((result) => {
-      setNow_data(result.data.RECORD.rows);
-      setPage_info(result.data.RECORD.pager);
-    });
+    handleSearch(1);
   };
 
-  useEffect(()=>{
+  //페이지 이동
+  useEffect(() => {
     handleSearch(now_page);
   }, [now_page]);
-
-  const totalPages = page_info?.total_page || 1;
-  const pageList = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   if(now_data){
     return(
@@ -152,7 +149,13 @@ function Property_brd_all(props){
               onKeyDown={(e) => { if(e.key === 'Enter') { setNow_page(1); handleSearch(1); } }}
             />
 
-            <div className="btn_search" onClick={() => { setNow_page(1); handleSearch(1); }}>
+            <div className="btn_search" onClick={() => {
+                handleSearch(1);
+
+                if (now_page !== 1) {
+                  setNow_page(1);
+                } }}
+            >
               <span>검색</span>
             </div>
             
@@ -164,7 +167,6 @@ function Property_brd_all(props){
             <span><Link to="/property/write">매물 등록</Link></span>
           </div>
         </div>
-
         <div className="borad_rows">
           <div className="rows row0">
             <ul>
@@ -182,30 +184,28 @@ function Property_brd_all(props){
             </ul>
           </div>
           {
-            now_data ? now_data.map(function(row, i){
+            // {
+            //   1 : page[0].map(function(a, i){
+            //     return(
+            //       <Rows data={page[0]} val={i} key={i}></Rows>
+            //     )
+            //   })
+            // }[now_page]
+            now_data ? now_data.map(function(a, i){
               return(
-                <Rows 
-                  cfg={config} 
-                  row={row} 
-                  val={i} 
-                  nowPage={now_page} 
-                  page_data={page_info} 
-                  key={row.property_no || i}
-                />
+                <Rows cfg={config} data={now_data} page_data={page_info} val={i} key={i}></Rows>
               )
             }) : null
           }
         </div>
-
         <ul className='pagenation'>
-          {pageList.map(function(pageNum){
+          {page.map(function(a, i){
             return(
-              <li 
-                className={now_page === pageNum ? 'on' : null} 
-                key={pageNum} 
-                onClick={()=>{ setNow_page(pageNum); }}
-              >
-                <span>{pageNum}</span>
+              <li className={now_page === i+1 ? 'on' : null} key={i} onClick={()=>{
+                setNow_page(i+1);
+                
+              }}>
+                <span>{i + 1}</span>
               </li>
             )
           })}
@@ -215,66 +215,91 @@ function Property_brd_all(props){
   }
 }
 
-/* ==========================================
-   2. 각 행을 나타내는 Rows 컴포넌트
-   ========================================== */
 function Rows(props){
-  let dispatch = useDispatch();
-  let row = props.row;
-  let index = props.val;
 
-  const { type, price } = getPropertyTypeAndPrice(row);
-  const fullAddress = `${row.addr_sigungu || ''} ${row.addr_dong || ''}`.trim() || '지역 정보 없음';
+  let dispatch = useDispatch();
+  let datas = props.data;
+  let page_datas = props.page_data;
+  let types = '';
+
+  console.log(page_datas);
+// 거래방식
+let tradeType = '-';
+
+if (Number(datas[props.val].sale_price) > 0) {
+  tradeType = '매매';
+} else if (Number(datas[props.val].jeonse_price) > 0) {
+  tradeType = '전세';
+} else if (Number(datas[props.val].monthly_rent) > 0) {
+  tradeType = '월세';
+}
+
+// 가격
+let price = '-';
+
+// 월세
+if (Number(datas[props.val].monthly_rent) > 0) {
+  tradeType = '월세';
+  price = `${Number(datas[props.val].deposit_price).toLocaleString()} / ${Number(datas[props.val].monthly_rent).toLocaleString()}만원`;
+}
+// 전세
+else if (Number(datas[props.val].jeonse_price) > 0) {
+  tradeType = '전세';
+  price = `${Number(datas[props.val].jeonse_price).toLocaleString()}만원`;
+}
+// 매매
+else if (Number(datas[props.val].sale_price) > 0) {
+  tradeType = '매매';
+  price = `${Number(datas[props.val].sale_price).toLocaleString()}만원`;
+}
 
   const statusClassMap = { '1': 'possible', '2': 'ing', '3': 'complete', '4': 'pending', '5': 'private' };
   const statusTextMap = { '1': '거래가능', '2': '거래중', '3': '거래완료', '4': '거래보류', '5': '비공개' };
 
-  const statusKey = row.status ? String(row.status) : '1';
+  const statusKey = datas[props.val].status ? String(datas[props.val].status) : '1';
   const targetClass = statusClassMap[statusKey] || 'possible';
   const targetText = statusTextMap[statusKey] || '거래가능';
 
   const displayClassMap = { '1': 'display_y', '2': 'display_n' };
   const displayTextMap = { '1': 'ON', '2': 'OFF' };
 
-  const displayKey = row.display_yn ? String(row.display_yn) : '1';
-  const targetDisplayClass = displayClassMap[displayKey] || 'display_y';
+  const displayKey = datas[props.val].display_yn ? String(datas[props.val].display_yn) : '1';  const targetDisplayClass = displayClassMap[displayKey] || 'display_y';
   const targetDisplayText = displayTextMap[displayKey] || 'ON';
 
   return(
-    <div className={"rows row"+(index+1)}>
-      <ul className={row.display_yn === "N" ? "deleted" : null}>
-        <li className="board_no">{row.property_no}</li>
-        <li className="board_trade_type">{type}</li>
-        <li className="board_property_type">{row.category || '유형 없음'}</li>
-        <li className="board_property_name board_title" onClick={()=>{ dispatch(now_property_view(row)); }}>
-          <Link to={`/property/view/${row.property_no}`}>{row.property_name || '이름 없음'}</Link>
+    <div className={"rows row"+(props.val+1)}>
+      <ul className={datas[props.val].display_yn === "N" ? "deleted" : null}>
+        <li className="board_no">{datas[props.val].property_no}</li>
+        <li className="board_trade_type">{tradeType}</li>
+        <li className="board_property_type">{datas[props.val].property_type || ''}</li>
+        <li className="board_property_name board_title" onClick={()=>{ dispatch(now_property_view(datas[props.val])); }}>
+          <Link to={`/property/view/${datas[props.val].property_no}`}>{datas[props.val].property_name || ''}</Link></li>
+        <li className="board_sigungu">
+          {`${datas[props.val].addr_sigungu || ''} ${datas[props.val].addr_dong || ''}`.trim() || ''}
         </li>
-        <li className="board_sigungu">{fullAddress}</li>
         <li className="board_price">{price}</li>
         <li className="board_status"><span className={`badge ${targetClass}`}>{targetText}</span></li>
         <li className="board_display_yn"><span className={`${targetDisplayClass}`}>{targetDisplayText}</span></li>
-        <li className="board_hit">{row.view_count || 0}</li>
-        <li className="board_date">{row.completion_date ? row.completion_date.substring(0, 10) : '-'}</li>
+        <li className="board_hit">{datas[props.val].board_hit}</li>
+        <li className="board_date">{datas[props.val].board_date}</li>
         <li className="board_etc">
           <div className="btns btn_edit">
-            <span onClick={() => { dispatch(now_property_view(row)); }}>
-              <Link to={`/property/edit/${row.property_no}`}>수정</Link>
-            </span>
+            <span onClick={()=>{dispatch(now_property_view(datas[props.val]))}}><Link to={`/property/edit/${datas[props.val].property_no}`}>글수정</Link></span>
           </div>
           <div className="btns btn_del">
             <span onClick={(()=>{
               let formData = new FormData();
-              formData.append('property_no', row.property_no);
+              formData.append('property_no', datas[props.val].property_no);
               if(window.confirm('삭제하시겠습니까?')){
-                axios.post(process.env.REACT_APP_API_KEY+'Admin/Property/board_del', formData, props.cfg).catch(()=>{
+                axios.post(process.env.REACT_APP_API_KEY+'', formData, props.cfg).catch(()=>{
                   alert("데이터 전송이 실패하였습니다.");
                 }).then((result)=>{
+                  console.log(result);
                   alert('삭제되었습니다');
-                  window.location.reload();
                   dispatch(change_page('property'));
                 });
               }
-            })}>삭제</span>
+            })}>글삭제</span>
           </div>
         </li>
       </ul>
@@ -282,7 +307,4 @@ function Rows(props){
   )
 }
 
-/* ==========================================
-   3. 내보내기 (export default)
-   ========================================== */
 export default Property_brd_all;

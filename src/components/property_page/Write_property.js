@@ -62,7 +62,12 @@ function Write_property() {
 
   // 1. 주소 및 에디터용 최소 State (화면 UI 갱신용)
   const [addrData, setAddrData] = useState({
-    sido: '', sigungu: '', dong: '', road: '', lat: '', lng: ''
+    sido: '', 
+    sigungu: '', 
+    dong: '', 
+    road: '', 
+    lat: '', 
+    lng: ''
   });
   const [description, setDescription] = useState('');
 
@@ -157,6 +162,16 @@ function Write_property() {
       return;
     }
 
+    // if (!this_form.addr_sido.value) {
+    // alert("주소를 입력해주세요.");
+    // return;
+    // }
+
+    // if (!thumbnailFile) {
+    // alert("대표 이미지를 등록해주세요.");
+    // return;
+    // }
+
     if (!window.confirm("매물을 등록하시겠습니까?")) return;
 
     // Write_brd처럼 DOM Form 요소를 통째로 긁어옴!
@@ -177,14 +192,12 @@ function Write_property() {
     for (let [key, value] of formData.entries()) {
       console.log(`key는 ${key}:`, value);
     }
-console.log(process.env.REACT_APP_API_KEY + 'Admin/Board/save');
-console.log(process.env.REACT_APP_API_KEY + 'Admin/Property/save');
+
     // 서버 전송
     axios.post(`${process.env.REACT_APP_API_KEY}Admin/Property/save`, formData, config)
       .then((res) => {
-        console.log("등록 성공:", res);
-        alert('매물이 등록되었습니다.');
         navigate('/property');
+        alert("매물 등록이 완료되었습니다.");
       })
       .catch((err) => {
         console.error("매물 등록 실패:", err);
@@ -305,7 +318,7 @@ console.log(process.env.REACT_APP_API_KEY + 'Admin/Property/save');
                 </div>
                 <div className="form_group">
                   <label>상세주소</label>
-                  <input type="text" name="" placeholder="상세 주소 입력 (동/호수 등)" />
+                  <input type="text" name="addr_detail" placeholder="상세 주소 입력 (동/호수 등)" />
                 </div>
               </div>
             </div>
@@ -404,19 +417,19 @@ console.log(process.env.REACT_APP_API_KEY + 'Admin/Property/save');
               <div className="grid_row col4">
                 <div className="form_group">
                   <label>매매가 (만원)</label>
-                  <input type="number" name="sale_price" placeholder="0" />
+                  <input type="number" name="sale_price" placeholder="0" defaultValue="0" />
                 </div>
                 <div className="form_group">
                   <label>전세가 (만원)</label>
-                  <input type="number" name="jeonse_price" placeholder="0" />
+                  <input type="number" name="jeonse_price" placeholder="0" defaultValue="0"/>
                 </div>
                 <div className="form_group">
                   <label>보증금</label>
-                  <input type="number" name="deposit_price" placeholder="보증금" />
+                  <input type="number" name="deposit_price" placeholder="보증금" defaultValue="0"/>
                 </div>
                 <div className="form_group">
                   <label>월세 (만원)</label>
-                  <input type="number" name="monthly_rent" placeholder="월세" />
+                  <input type="number" name="monthly_rent" placeholder="월세" defaultValue="0"/>
                 </div>
                 <div className="form_group">
                   <label>융자금</label>
@@ -464,6 +477,7 @@ console.log(process.env.REACT_APP_API_KEY + 'Admin/Property/save');
                       <label className="upload_box add_btn">
                         <input
                           type="file"
+                          // name="thumbnail_image"
                           accept="image/*"
                           onChange={(e) => previewThumb(e.target.files)}
                           style={{ display: 'none' }}
@@ -495,6 +509,7 @@ console.log(process.env.REACT_APP_API_KEY + 'Admin/Property/save');
                     <label className="upload_box add_btn">
                       <input
                         type="file"
+                        // name="detail_images"
                         accept="image/*"
                         multiple
                         onChange={(e) => previewDetails(e.target.files)}
