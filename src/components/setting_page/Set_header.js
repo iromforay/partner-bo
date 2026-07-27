@@ -158,10 +158,10 @@ function Set_header(props){
                 </li>
                 <li>
                   <div className="check_con">
-                    <h5 className="tit_menu">매물등록</h5>
+                    <h5 className="tit_menu">매물관리</h5>
                     <label>
-                      <input className="input_check_hidden" name="around_show" type="hidden" value='N'></input>
-                      <input className="check_menu input_check" name="around_show" type="checkbox"value='Y' defaultChecked={basicSetting.around_show === "Y" ? true : false}></input>
+                      <input className="input_check_hidden" name="charge_show" type="hidden" value='N'></input>
+                      <input className="check_menu input_check" name="charge_show" type="checkbox"value='Y' defaultChecked={basicSetting.charge_show === "Y" ? true : false}></input>
                       <div className="check_btn">
                         <span className="disabled">숨김</span>
                         <span className="abled">보임</span>
@@ -170,7 +170,7 @@ function Set_header(props){
                     </label>
                   </div>
                 </li>
-                <li>
+                {/* <li>
                   <div className="check_con">
                     <h5 className="tit_menu">이용요금</h5>
                     <label>
@@ -183,7 +183,7 @@ function Set_header(props){
                       </div>
                     </label>
                   </div>
-                </li>
+                </li> */}
                 <li>
                   <div className="check_con">
                     <h5 className="tit_menu">이용후기</h5>
@@ -392,7 +392,59 @@ function Set_header(props){
           </div>
           <p>사이트 내 최하단 영역에 들어가는 매장 세부사항들을 입력해주세요</p>
           <div className="input_con">
-            <input type="text" name="company_name" placeholder="회사상호명 입력" defaultValue={basicSetting.company_name}></input>
+            <input
+              type="text"
+              name="broker_office_name"
+              placeholder="중개사무소 명칭 입력"
+              required
+              defaultValue={basicSetting.broker_office_name}
+            />
+
+            <input
+              type="text"
+              name="broker_address"
+              placeholder="중개사무소 소재지 입력"
+              required
+              defaultValue={basicSetting.broker_address}
+            />
+
+            <input
+              type="text"
+              name="broker_phone"
+              placeholder="중개사무소 연락처 입력"
+              required
+              defaultValue={basicSetting.broker_phone}
+            />
+
+            <input
+              type="text"
+              name="broker_reg_no"
+              placeholder="중개사무소 등록번호 입력"
+              required
+              defaultValue={basicSetting.broker_reg_no}
+            />
+
+            <input
+              type="text"
+              name="broker_ceo_name"
+              placeholder="개업공인중개사 성명 입력"
+              required
+              defaultValue={basicSetting.broker_ceo_name}
+            />
+
+            <input
+              type="text"
+              name="broker_agent_name"
+              placeholder="소속공인중개사 성명 입력(선택)"
+              defaultValue={basicSetting.broker_agent_name}
+            />
+
+            <input
+              type="text"
+              name="broker_agent_phone"
+              placeholder="소속공인중개사 연락처 입력(선택)"
+              defaultValue={basicSetting.broker_agent_phone}
+            />
             <textarea name="footer_copy" placeholder="대표이사 : 나병연 | 개인정보관리책임자 : 나병연 | 사업자등록번호 : 000-00-00000 | 주소 경기 부천시 | TEL 02-1234-5678" defaultValue={basicSetting.footer_copy}></textarea>
           </div>
           <p className="copy">Copyrightⓒ 2023 all-teaching All rights reserved.</p>

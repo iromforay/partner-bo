@@ -126,7 +126,7 @@ function Basic(props){
                 2 : <Set_notice></Set_notice>,
                 3 : <Set_around></Set_around>,
                 4 : <Set_property></Set_property>,
-                5 : <Set_charge></Set_charge>,
+                // 5 : <Set_charge></Set_charge>,
                 6 : <Set_review></Set_review>,
                 7 : <Set_vod></Set_vod>,
                 8 : <Set_map></Set_map>
