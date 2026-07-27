@@ -174,7 +174,7 @@
 .sections.view .view_con .row5 .btns.del span { color: #fff;}
 
 /* 매물관리 리스트 */
-.brd .rows ul li.board_trade_type {width: 6%;}
+.brd .rows ul li.board_transaction_type {width: 6%;}
 .brd .rows ul li.board_property_type {width: 7%;}
 .brd .rows ul li.board_property_name {width: 27%;}
 .brd .rows ul li.board_sigungu {width: 10%;}
@@ -223,7 +223,7 @@
   flex-direction: column;
   /* gap: 8px; */
 }
-
+span.esenstial {margin: 0 0 0 5px; font-size: 0.8rem; line-height: 1rem; color: #f00;}
 .property_write .form_group label {
   font-size: 14px;
   font-weight: 600;
@@ -447,3 +447,4 @@
 .property_view .view_text{
   color:#000;
 }
+.property_pagenation{position:relative !important;}
