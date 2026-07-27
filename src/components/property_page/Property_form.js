@@ -586,7 +586,7 @@ console.log(
      3. JSX 렌더링 영역
      ========================================================================== */
   return (
-    <div className="sections write property_write">
+    <div className="sections write property_section">
       <div className="width_con">
         {/* 모드별 헤더 타이틀 분기 */}
         <h3>{isEditMode ? "매물 수정" : "매물 등록"}</h3>
