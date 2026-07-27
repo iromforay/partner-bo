@@ -73,10 +73,10 @@ useEffect(()=>{
 }, [now_page]);
   console.log(now_data, page, page_info)
 
-  //검색
+  //검색(미완)
   const handleSearch = (page = 1) => {
     let url = `${process.env.REACT_APP_API_KEY}Admin/Property/list?limit=8&page=${page}&code=${props.whats}`;
-
+console.log("검색 실행");
     if (propertyType !== 'all') {
       url += `&property_type=${propertyType}`;
     }
@@ -125,6 +125,7 @@ useEffect(()=>{
         <div className="fn_bar">
           <div className="search_con show">
             <select value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
+              <option value="all"disabled hidden>매물종류</option>
               <option value="apt">아파트</option>
               <option value="officetel">오피스텔</option>
               <option value="villa">빌라/연립</option>
