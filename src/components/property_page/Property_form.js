@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,14 +7,17 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
 
-/* ==========================================
-   주소 검색 팝업 모달
-   ========================================== */
+/* ==========================================================================
+   1. 주소 검색 팝업 모달 컴포넌트
+   - 다음(Kakao) 우편번호 서비스 모달을 출력하고 선택된 주소 데이터를 반환합니다.
+   ========================================================================== */
 function AddressSearchModal({ onComplete, onClose }) {
+  // 주소 선택 완료 처리 핸들러
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let extraAddress = "";
 
+    // 도로명 주소일 경우 참고항목(건물명, 동/리) 조합
     if (data.addressType === "R") {
       if (data.bname !== "") extraAddress += data.bname;
       if (data.buildingName !== "") {
@@ -23,6 +26,7 @@ function AddressSearchModal({ onComplete, onClose }) {
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
 
+    // 상위 컴포넌트로 정제된 주소 객체 전달
     onComplete({
       sido: data.sido,
       sigungu: data.sigungu,
@@ -58,6 +62,7 @@ function AddressSearchModal({ onComplete, onClose }) {
           position: "relative",
         }}
       >
+        {/* 모달 닫기 버튼 */}
         <button
           onClick={onClose}
           style={{
@@ -73,22 +78,29 @@ function AddressSearchModal({ onComplete, onClose }) {
         <h4 style={{ marginBottom: "15px", fontSize: "18px", fontWeight: "bold" }}>
           주소 검색
         </h4>
+        {/* 다음 주소 검색 API 컴포넌트 */}
         <DaumPostcode onComplete={handleComplete} />
       </div>
     </div>
   );
 }
 
-/* ==========================================
-   매물 등록/수정 통합 컴포넌트 (Property_form)
-   ========================================== */
+/* ==========================================================================
+   2. 매물 등록/수정 통합 메인 컴포넌트 (Property_form)
+   ========================================================================== */
 function Property_form() {
   const navigate = useNavigate();
+
+  const propertyNameRef = useRef(null);
+  const btn_addr_searchRef = useRef(null);
+
+  // URL 파라미터에서 property_no 추출 (수정 모드 여부 판단)
   const { property_no } = useParams();
   
-  // ★ property_no가 존재하면 수정 모드, 없으면 등록 모드
+  // ★ property_no가 존재하면 수정 모드(true), 없으면 신규 등록 모드(false)
   const isEditMode = Boolean(property_no);
 
+  // 인증 토큰 및 API 헤더 설정
   const login_key = window.localStorage.getItem("login_key");
   const config = {
     headers: {
@@ -96,7 +108,9 @@ function Property_form() {
     },
   };
 
-  // 건물명 Placeholder 맵핑
+  /* ------------------------------------------------------------------------
+     2-1. 매물 유형별 건물명 입력창 Placeholder 맵핑
+     ------------------------------------------------------------------------ */
   const buildingPlaceholders = {
     apt: "예) 래미안 대치팰리스",
     villa: "예) 더힐빌라",
@@ -108,7 +122,9 @@ function Property_form() {
     etc: "예) 건물명",
   };
 
-  // 숫자를 3자리마다 콤마 찍는 함수
+  /* ------------------------------------------------------------------------
+     2-2. 유틸리티 함수: 숫자에 천 단위 콤마(,) 추가
+     ------------------------------------------------------------------------ */
   const formatNumber = (numStr) => {
     if (numStr === null || numStr === undefined) return "";
     const cleanNum = numStr.toString().replace(/[^0-9]/g, "");
@@ -116,11 +132,13 @@ function Property_form() {
     return Number(cleanNum).toLocaleString("ko-KR");
   };
 
-  // 초기 폼 기본 데이터
+  /* ------------------------------------------------------------------------
+     2-3. 폼 상태(State) 초기값 정의
+     ------------------------------------------------------------------------ */
   const initialFormState = {
     property_no: "",
     property_type: "apt",
-    trade_type: "매매",
+    transaction_type:"sale",
     status: "1",
     display_yn: "1",
     property_name: "",
@@ -155,138 +173,254 @@ function Property_form() {
     description: "",
   };
 
+  // 폼입력 데이터 상태 관리
   const [formData, setFormData] = useState(initialFormState);
 
-  // 대표 이미지 State
-  const [thumbnailFile, setThumbnailFile] = useState(null);
+  /* ------------------------------------------------------------------------
+     2-4. 이미지 관련 상태(State) 관리
+     ------------------------------------------------------------------------ */
+  // 대표 이미지 파일 정보
+  const [mainImage, setMainImage] = useState(null);
+  // 대표 이미지 미리보기 URL
   const [upload_thumb_img, setUploadThumbImg] = useState("");
 
-  // 상세 이미지 State (기존 URL vs 신규 파일 분리)
-  const [existingDetailImgs, setExistingDetailImgs] = useState([]);
-  const [newDetailFiles, setNewDetailFiles] = useState([]); // [{ file: File, preview: string }]
+  // 상세 이미지 관리 (서버 기존 이미지 vs 클라이언트 신규 추가 이미지)
+  const [existingDetailImgs, setExistingDetailImgs] = useState([]); // 서버에 저장되어 있던 기존 이미지
+  const [newDetailFiles, setNewDetailFiles] = useState([]);       // 신규 추가된 이미지 파일 객체 및 미리보기 [{ path, name, preview }]
 
-  // UI 상태
-  const [isThumbDragging, setIsThumbDragging] = useState(false);
-  const [isDetailDragging, setIsDetailDragging] = useState(false);
-  const [isOpenPostcode, setIsOpenPostcode] = useState(false);
+  // 이미지 삭제 추적 상태
+  const [deleteImgNos, setDeleteImgNos] = useState([]); // 삭제할 기존 상세 이미지 번호 목록
+  const [deleteMain, setDeleteMain] = useState(false);  // 기존 대표 이미지 삭제 여부 플래그
 
-  // 1. [수정 모드일 때만] 기존 데이터 조회
+  /* ------------------------------------------------------------------------
+     2-5. UI 및 드래그 앤 드롭 상태(State) 관리
+     ------------------------------------------------------------------------ */
+  const [isThumbDragging, setIsThumbDragging] = useState(false);   // 대표 이미지 드래그 호버 상태
+  const [isDetailDragging, setIsDetailDragging] = useState(false); // 상세 이미지 드래그 호버 상태
+  const [isOpenPostcode, setIsOpenPostcode] = useState(false);     // 주소 검색 모달 열림/닫힘 상태
+
+  /* ------------------------------------------------------------------------
+     2-6. [수정 모드] 기존 매물 상세 정보 조회 API
+     ------------------------------------------------------------------------ */
   useEffect(() => {
-    if (!isEditMode) return;
+      if (!isEditMode) return;
 
-    axios
-      .get(`${process.env.REACT_APP_API_KEY}API/Property/detail?property_no=${property_no}`, config)
-      .then((res) => {
-        const data = res.data?.RECORD?.rows?.[0];
-        if (data) {
-          setFormData({
-            property_no: property_no,
-            property_type: data.property_type || "apt",
-            trade_type: data.trade_type || "매매",
-            status: String(data.status || "1"),
-            display_yn: String(data.display_yn || "1"),
-            property_name: data.property_name || "",
-            building_name: data.building_name || "",
-            addr_sido: data.addr_sido || "",
-            addr_sigungu: data.addr_sigungu || "",
-            addr_dong: data.addr_dong || "",
-            addr_road: data.addr_road || "",
-            addr_detail: data.addr_detail || "",
-            lat: data.lat || "",
-            lng: data.lng || "",
-            supply_area: data.supply_area || "",
-            exclusive_area: data.exclusive_area || "",
-            total_floor: data.total_floor || "",
-            current_floor: data.current_floor || "",
-            room_count: data.room_count || "",
-            bathroom_count: data.bathroom_count || "",
-            parking_available: data.parking_available || "Y",
-            parking_count: data.parking_count || "",
-            completion_date: data.completion_date || "",
-            move_in_date: data.move_in_date || "",
-            direction: data.direction || "S",
-            heating_fuel: String(data.heating_fuel || "1"),
-            heating_type: String(data.heating_type || "1"),
-            sale_price: formatNumber(data.sale_price),
-            jeonse_price: formatNumber(data.jeonse_price),
-            deposit_price: formatNumber(data.deposit_price),
-            monthly_rent: formatNumber(data.monthly_rent),
-            loan_amount: formatNumber(data.loan_amount),
-            maintenance_fee: formatNumber(data.maintenance_fee),
-            summary: data.summary || "",
-            description: data.description || "",
-          });
+      axios
+        .get(
+          `${process.env.REACT_APP_API_KEY}API/Property/detail?property_no=${property_no}`,
+          config
+        )
+        .then((res) => {
 
-          setUploadThumbImg(data.thumbnail_image || data.thumbnail_url || "");
-          setExistingDetailImgs(data.detail_images || data.detail_image_urls || []);
+        console.log("상세 API 전체:", res.data);
+
+        // 성공 여부 확인
+        if (res.data.SUCCESS !== "TRUE") {
+          console.error("상세 조회 실패:", res.data.MSG);
+          return;
         }
+
+        const data = res.data?.RECORD?.rows?.[0];
+
+        console.log("상세 rows 데이터:", data);
+
+        if (!data) {
+          console.error("rows 데이터 없음");
+          return;
+        }
+        //detail 조회 후 바인딩 코드 추가
+        setFormData(prev => ({
+          ...prev,
+          property_no: data.property_no ?? "",
+          property_type: data.property_type ?? "apt",
+          transaction_type: data.transaction_type ?? "sale",
+          status: String(data.status ?? "1"),
+          display_yn: String(data.display_yn ?? "1"),
+
+          property_name: data.property_name ?? "",
+          building_name: data.building_name ?? "",
+
+          addr_sido: data.addr_sido ?? "",
+          addr_sigungu: data.addr_sigungu ?? "",
+          addr_dong: data.addr_dong ?? "",
+          addr_road: data.addr_road ?? "",
+
+          supply_area: data.supply_area ?? "",
+          exclusive_area: data.exclusive_area ?? "",
+          total_floor: data.total_floor ?? "",
+          current_floor: data.current_floor ?? "",
+          room_count: data.room_count ?? "",
+          bathroom_count: data.bathroom_count ?? "",
+
+          parking_available: data.parking_available ?? "Y",
+          parking_count: data.parking_count ?? "",
+
+          completion_date:
+            data.completion_date?.substring(0,10) ?? "",
+
+          move_in_date:
+            data.move_in_date?.substring(0,10) ?? "",
+
+          direction: data.direction ?? "S",
+
+          heating_fuel:String(data.heating_fuel ?? "1"),
+          heating_type:String(data.heating_type ?? "1"),
+
+          sale_price:formatNumber(data.sale_price),
+          jeonse_price:formatNumber(data.jeonse_price),
+          deposit_price:formatNumber(data.deposit_price),
+          monthly_rent:formatNumber(data.monthly_rent),
+          loan_amount:formatNumber(data.loan_amount),
+          maintenance_fee:formatNumber(data.maintenance_fee),
+
+          summary:data.summary ?? "",
+          description:data.description ?? "",
+        }));
+
+        // 대표 이미지 바인딩
+        if (data.main_image) {
+          setUploadThumbImg(data.main_image.full_url);
+          setMainImage({
+            path: data.main_image.img_dir,
+            name: data.main_image.img_name,
+            url: data.main_image.full_url,
+          });
+        }
+
+        // 상세 이미지 바인딩
+        if (data.detail_images) {
+
+          let detailImgs = data.detail_images;
+
+          // 문자열 JSON이면 변환
+          if (typeof detailImgs === "string") {
+            try {
+              detailImgs = JSON.parse(detailImgs);
+            } catch (e) {
+              detailImgs = [];
+            }
+          }
+
+          setExistingDetailImgs(detailImgs);
+        }
+
       })
       .catch((err) => {
         console.error("상세 데이터 조회 실패:", err);
       });
   }, [property_no, isEditMode]);
 
-  // 폼 입력 핸들러
+  /* ------------------------------------------------------------------------
+     2-7. 폼 입력 이벤트 핸들러
+     ------------------------------------------------------------------------ */
+  // 일반 텍스트 및 셀렉트 박스 입력 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 가격 콤마 포맷팅 핸들러
+  // 금액 입력 전용 핸들러 (실시간으로 숫자만 추출 후 콤마 포맷팅)
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: formatNumber(value) }));
   };
 
-  // 대표 이미지 프리뷰
-  const previewThumb = (files) => {
-    if (files && files.length > 0) {
-      const file = files[0];
-      const reader = new FileReader();
-      reader.onload = (e) => setUploadThumbImg(e.target.result);
-      reader.readAsDataURL(file);
-      setThumbnailFile(file);
+  /* ------------------------------------------------------------------------
+     2-8. 이미지 업로드/미리보기/삭제 관련 함수들
+     ------------------------------------------------------------------------ */
+  // 이미지 서버 업로드 API 요청
+  const uploadImage = async (file) => {
+    const fd = new FormData();
+    fd.append("image", file);
+
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_KEY}Admin/Property/upload_images`,
+      fd,
+      config
+    );
+
+    console.log("이미지 업로드 결과:", res.data);
+
+    if (res.data.SUCCESS !== "TRUE") {
+      alert(res.data.MSG);
+      throw new Error(res.data.MSG);
     }
+
+    return res.data.RECORD;
   };
 
-  // 상세 이미지 추가 프리뷰
-  const previewDetails = (files) => {
-    if (files && files.length > 0) {
-      const fileArray = Array.from(files);
+  // 대표 이미지 선택 및 프리뷰 처리
+  const previewThumb = async (files) => {
+    if (!files.length) return;
+    const file = files[0];
 
-      if (existingDetailImgs.length + newDetailFiles.length + fileArray.length > 10) {
-        alert("추가 이미지: 최대 10장까지 선택 가능합니다.");
-        return;
-      }
+    try {
+      const rows = await uploadImage(file);
 
-      fileArray.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setNewDetailFiles((prev) => [
-            ...prev,
-            { file: file, preview: e.target.result },
-          ]);
-        };
-        reader.readAsDataURL(file);
+      // 새 이미지가 등록되면 기존 대표 이미지 삭제 플래그 해제
+      setDeleteMain(false);
+
+      setMainImage({
+        path: rows.file_path,
+        name: rows.file_name,
+        url: rows.file_url,
       });
+
+      setUploadThumbImg(rows.file_url);
+    } catch (e) {
+      alert("대표 이미지 업로드 실패");
     }
   };
 
-  // 이미지 삭제
+  // 상세 이미지 다중 선택 및 프리뷰 처리 (최대 10장 제한)
+  const previewDetails = async (files) => {
+    const fileArray = Array.from(files);
+
+    if (existingDetailImgs.length + newDetailFiles.length + fileArray.length > 10) {
+      alert("최대 10장까지 등록 가능합니다.");
+      return;
+    }
+
+    for (const file of fileArray) {
+      const rows = await uploadImage(file);
+
+      setNewDetailFiles((prev) => [
+        ...prev,
+        {
+          path: rows.file_path,
+          name: rows.file_name,
+          preview: rows.file_url,
+        },
+      ]);
+    }
+  };
+
+  // 기존 상세 이미지 삭제 핸들러 (서버 DB 삭제 대상 배열에 추가)
   const handleRemoveExistingDetailImg = (index) => {
+    const deleteImg = existingDetailImgs[index];
+    if (!deleteImg?.img_no) return;
+
+    // 삭제할 img_no 중복 없이 수집
+    setDeleteImgNos((prev) => [...new Set([...prev, deleteImg.img_no])]);
+
+    // 화면 목록에서 제거
     setExistingDetailImgs((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // 신규 추가된 상세 이미지 삭제 핸들러 (클라이언트 배열에서 제거)
   const handleRemoveNewDetailFile = (index) => {
     setNewDetailFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Drag & Drop
+  /* ------------------------------------------------------------------------
+     2-9. 이미지 드래그 앤 드롭(Drag & Drop) 이벤트 핸들러
+     ------------------------------------------------------------------------ */
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
+  // 대표 이미지 드롭
   const handleThumbDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -294,6 +428,7 @@ function Property_form() {
     if (e.dataTransfer.files?.length) previewThumb(e.dataTransfer.files);
   };
 
+  // 상세 이미지 드롭
   const handleDetailDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -301,11 +436,14 @@ function Property_form() {
     if (e.dataTransfer.files?.length) previewDetails(e.dataTransfer.files);
   };
 
-  // 주소 완료
+  /* ------------------------------------------------------------------------
+     2-10. 주소 선택 완료 핸들러 (Kakao Map 지오코딩으로 위경도 좌표 산출)
+     ------------------------------------------------------------------------ */
   const handleAddressComplete = (data) => {
     let latVal = "";
     let lngVal = "";
 
+    // 주소 상태 업데이트 함수
     const updateAddressState = (lat, lng) => {
       setFormData((prev) => ({
         ...prev,
@@ -318,12 +456,13 @@ function Property_form() {
       }));
     };
 
+    // 카카오지도 SDK가 로드되어 있는 경우 좌표 검색 수행
     if (window.kakao && window.kakao.maps && window.kakao.maps.services) {
       const geocoder = new window.kakao.maps.services.Geocoder();
       geocoder.addressSearch(data.roadAddress, (result, status) => {
         if (status === window.kakao.maps.services.Status.OK) {
-          latVal = result[0].y;
-          lngVal = result[0].x;
+          latVal = result[0].y; // 위도
+          lngVal = result[0].x; // 경도
         }
         updateAddressState(latVal, lngVal);
       });
@@ -333,10 +472,19 @@ function Property_form() {
     setIsOpenPostcode(false);
   };
 
-  // 2. 통합 Submit 처리 (등록 vs 수정 분기)
+  /* ------------------------------------------------------------------------
+     2-11. 폼 최종 제출(Submit) 처리 (등록 및 수정 공통 처리)
+     ------------------------------------------------------------------------ */
   const handleSubmit = () => {
+    // 유효성 검사
     if (!formData.property_name.trim()) {
       alert("매물명을 입력해주세요.");
+      propertyNameRef.current?.focus();
+      return;
+    }
+    if (!formData.addr_sido || !formData.addr_sigungu || !formData.addr_dong) {
+      alert("주소 검색을 통해 주소를 선택해주세요.");
+      btn_addr_searchRef.current?.focus();
       return;
     }
 
@@ -345,7 +493,7 @@ function Property_form() {
 
     const submitFormData = new FormData();
 
-    // 콤마 제거 후 FormData 바인딩
+    // 1) 가격 항목 콤마 제거 후 FormData에 바인딩
     const priceKeys = [
       "sale_price",
       "jeonse_price",
@@ -354,7 +502,6 @@ function Property_form() {
       "loan_amount",
       "maintenance_fee",
     ];
-
     Object.keys(formData).forEach((key) => {
       if (priceKeys.includes(key)) {
         const rawPrice = (formData[key] || "0").toString().replace(/,/g, "");
@@ -364,25 +511,44 @@ function Property_form() {
       }
     });
 
-    // 대표 이미지
-    if (thumbnailFile) {
-      submitFormData.append("thumbnail_image", thumbnailFile);
+    // 2) 대표 이미지 바인딩
+    if (mainImage) {
+      submitFormData.append(
+        "main_image",
+        mainImage
+          ? JSON.stringify({
+              path: mainImage.path,
+              name: mainImage.name,
+            })
+          : ""
+      );
     }
+    submitFormData.append("main_image_url", mainImage?.url || "");
 
-    // 기존 유지할 상세 이미지 URL (수정 모드 시)
-    existingDetailImgs.forEach((url) => {
-      submitFormData.append("existing_detail_images[]", url);
-    });
+    // 3) 기존 + 신규 상세 이미지 통합 데이터 조합
+    const detailImages = [
+      ...existingDetailImgs.map((img) => ({
+        path: img.img_dir,
+        name: img.img_name,
+      })),
+      ...newDetailFiles.map((img) => ({
+        path: img.path,
+        name: img.name,
+      })),
+    ];
+    submitFormData.append("detail_images", JSON.stringify(detailImages));
 
-    // 새로 추가된 상세 이미지 File 객체
-    newDetailFiles.forEach((item) => {
-      submitFormData.append("detail_images[]", item.file);
-    });
+    // 4) 삭제 대상 이미지 정보 바인딩 (기존 대표 이미지 삭제 여부, 상세 이미지 ID 배열)
+    submitFormData.append(
+      "del_img",
+      JSON.stringify({
+        main: deleteMain,
+        img_no: deleteImgNos,
+      })
+    );
 
-    // ★ API URL 분기
-    const apiUrl = isEditMode
-      ? `${process.env.REACT_APP_API_KEY}Admin/Property/update`
-      : `${process.env.REACT_APP_API_KEY}Admin/Property/insert`;
+    // 저장 API 호출
+    const apiUrl = `${process.env.REACT_APP_API_KEY}Admin/Property/save`;
 
     axios
       .post(apiUrl, submitFormData, config)
@@ -396,6 +562,9 @@ function Property_form() {
       });
   };
 
+  /* ------------------------------------------------------------------------
+     2-12. ReactQuill 텍스트 에디터 툴바 옵션 설정
+     ------------------------------------------------------------------------ */
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -406,15 +575,18 @@ function Property_form() {
     ],
   };
 
+  /* ==========================================================================
+     3. JSX 렌더링 영역
+     ========================================================================== */
   return (
     <div className="sections write property_write">
       <div className="width_con">
-        {/* 타이틀 분기 */}
+        {/* 모드별 헤더 타이틀 분기 */}
         <h3>{isEditMode ? "매물 수정" : "매물 등록"}</h3>
         <div className="form_con">
           <form id="propertyForm" onSubmit={(e) => e.preventDefault()}>
             
-            {/* 기본정보 */}
+            {/* 3-1. 기본정보 섹션 */}
             <div className="section_box">
               <div className="sec_title_bar">
                 <h4>기본정보</h4>
@@ -424,18 +596,23 @@ function Property_form() {
                   <label>매물종류</label>
                   <select name="property_type" value={formData.property_type} onChange={handleChange}>
                     <option value="apt">아파트</option>
+                    <option value="officetel">오피스텔</option>
                     <option value="villa">빌라/연립</option>
-                    <option value="house">주택</option>
+                    <option value="house">단독주택</option>
+                    <option value="land">토지</option>
                     <option value="commercial">상가</option>
                     <option value="office">사무실</option>
-                    <option value="land">토지</option>
-                    <option value="factory">공장/창고</option>
+                    <option value="factory">공장</option>
+                    <option value="warehouse">창고</option>
+                    <option value="knowledge">지식산업센터</option>
+                    <option value="building">건물</option>
+                    <option value="motel">숙박</option>
                     <option value="etc">기타</option>
                   </select>
                 </div>
                 <div className="form_group">
                   <label>거래방식</label>
-                  <select name="trade_type" value={formData.trade_type} onChange={handleChange}>
+                  <select name="transaction_type" value={formData.transaction_type} onChange={handleChange}>
                     <option value="sale">매매</option>
                     <option value="jeonse">전세</option>
                     <option value="monthly">월세</option>
@@ -462,8 +639,9 @@ function Property_form() {
 
               <div className="grid_row col2">
                 <div className="form_group">
-                  <label>매물명</label>
+                  <label>매물명<span className="esenstial">*필수</span></label>
                   <input
+                    ref={propertyNameRef}
                     type="text"
                     name="property_name"
                     value={formData.property_name}
@@ -484,26 +662,31 @@ function Property_form() {
               </div>
             </div>
 
-            {/* 위치정보 */}
+            {/* 3-2. 위치정보 섹션 (주소검색 API 연결) */}
             <div className="section_box">
               <div className="sec_title_bar">
                 <h4>위치정보</h4>
-                <div className="btn_search btn_addr_search" onClick={() => setIsOpenPostcode(true)}>
+                <div 
+                  ref={btn_addr_searchRef}
+                  tabIndex="0"//포커스를 받을 수 있게 만드는 HTML 속성
+                  className="btn_search btn_addr_search" 
+                  onClick={() => setIsOpenPostcode(true)}
+                  >
                   <span>주소 검색</span>
                 </div>
               </div>
 
               <div className="grid_row col4">
                 <div className="form_group">
-                  <label>주소(시도)</label>
+                  <label>주소(시도)<span className="esenstial">*필수</span></label>
                   <input type="text" name="addr_sido" value={formData.addr_sido} readOnly placeholder="시/도" />
                 </div>
                 <div className="form_group">
-                  <label>주소(시군구)</label>
+                  <label>주소(시군구)<span className="esenstial">*필수</span></label>
                   <input type="text" name="addr_sigungu" value={formData.addr_sigungu} readOnly placeholder="시/군/구" />
                 </div>
                 <div className="form_group">
-                  <label>주소(읍면동)</label>
+                  <label>주소(읍면동)<span className="esenstial">*필수</span></label>
                   <input type="text" name="addr_dong" value={formData.addr_dong} readOnly placeholder="읍/면/동" />
                 </div>
                 <div className="form_group display_none">
@@ -532,7 +715,7 @@ function Property_form() {
               </div>
             </div>
 
-            {/* 매물 정보 */}
+            {/* 3-3. 매물 상세 수치 정보 섹션 */}
             <div className="section_box">
               <div className="sec_title_bar">
                 <h4>매물 정보</h4>
@@ -615,7 +798,7 @@ function Property_form() {
               </div>
             </div>
 
-            {/* 가격 및 소개 */}
+            {/* 3-4. 가격 및 상세 설명 섹션 (Quill 에디터 연동) */}
             <div className="section_box">
               <div className="sec_title_bar">
                 <h4>가격 및 소개</h4>
@@ -662,6 +845,7 @@ function Property_form() {
               <div>
                 <div className="form_group">
                   <label>상세설명</label>
+                  {/* ReactQuill 웹 에디터 */}
                   <ReactQuill
                     modules={modules}
                     value={formData.description}
@@ -673,17 +857,19 @@ function Property_form() {
               </div>
             </div>
 
-            {/* 사진 정보 */}
+            {/* 3-5. 사진 업로드 영역 (대표 이미지 & 상세 이미지 드래그앤드롭 지원) */}
             <div className="section_box">
               <div className="sec_title_bar">
                 <h4>사진 정보</h4>
               </div>
               <div className="image_upload_container">
-                {/* 대표 이미지 */}
+                
+                {/* (1) 대표 이미지 업로드 영역 */}
                 <div className="thumb_upload_area">
                   <p className="row_desc">대표 이미지 (파일을 드래그하여 업로드하세요)</p>
                   <div className="detail_grid">
                     {upload_thumb_img === "" ? (
+                      /* 대표 이미지 미등록 상태 - 파일 입력/드래그앤드롭 박스 */
                       <label
                         className={`upload_box add_btn ${isThumbDragging ? "dragging" : ""}`}
                         onDragOver={handleDragOver}
@@ -692,7 +878,7 @@ function Property_form() {
                         onDrop={handleThumbDrop}
                       >
                         <input
-                          type="file"
+                          // type="file"
                           accept="image/*"
                           onChange={(e) => previewThumb(e.target.files)}
                           style={{ display: "none" }}
@@ -700,6 +886,7 @@ function Property_form() {
                         <span className="upload_placeholder">+ 대표사진 / 드래그</span>
                       </label>
                     ) : (
+                      /* 대표 이미지 등록된 상태 - 미리보기 & 삭제 버튼 */
                       <div className="upload_img_item upload_img">
                         <img src={upload_thumb_img} alt="대표 미리보기" />
                         <button
@@ -707,7 +894,11 @@ function Property_form() {
                           className="btn_del_img_overlay"
                           onClick={() => {
                             setUploadThumbImg("");
-                            setThumbnailFile(null);
+                            setMainImage(null);
+
+                            if (isEditMode) {//수정시에만 기존 대표이미지 삭제 플레그 설정
+                              setDeleteMain(true);
+                            }
                           }}
                         >
                           <FontAwesomeIcon icon={faTrashCan} />
@@ -717,10 +908,11 @@ function Property_form() {
                   </div>
                 </div>
 
-                {/* 추가 이미지 */}
+                {/* (2) 상세 이미지 추가 및 목록 영역 */}
                 <div className="detail_upload_area">
                   <p className="row_desc">추가 이미지 (최대 10장 / 파일을 드래그하여 업로드하세요)</p>
                   <div className="detail_grid">
+                    {/* 추가 버튼 / 드래그 앤 드롭 존 */}
                     <label
                       className={`upload_box add_btn ${isDetailDragging ? "dragging" : ""}`}
                       onDragOver={handleDragOver}
@@ -729,7 +921,7 @@ function Property_form() {
                       onDrop={handleDetailDrop}
                     >
                       <input
-                        type="file"
+                        // type="file"
                         accept="image/*"
                         multiple
                         onChange={(e) => previewDetails(e.target.files)}
@@ -738,10 +930,10 @@ function Property_form() {
                       <span className="upload_placeholder">+ 사진 추가 / 드래그</span>
                     </label>
 
-                    {/* 기존 서버 이미지 목록 (수정 모드 시) */}
-                    {existingDetailImgs.map((imgUrl, idx) => (
+                    {/* 기존 서버에 등록된 상세 이미지 목록 출력 */}
+                    {existingDetailImgs.map((img, idx) => (
                       <div className="upload_img_item upload_img" key={`existing-${idx}`}>
-                        <img src={imgUrl} alt={`기존 사진 ${idx}`} />
+                        <img src={img.full_url} alt={`기존 사진 ${idx}`} />
                         <button
                           type="button"
                           className="btn_del_img_overlay"
@@ -752,7 +944,7 @@ function Property_form() {
                       </div>
                     ))}
 
-                    {/* 신규 등록된 이미지 목록 */}
+                    {/* 새로 첨부된 상세 이미지 목록 출력 */}
                     {newDetailFiles.map((item, idx) => (
                       <div className="upload_img_item upload_img" key={`new-${idx}`}>
                         <img src={item.preview} alt={`신규 사진 ${idx}`} />
@@ -767,10 +959,11 @@ function Property_form() {
                     ))}
                   </div>
                 </div>
+
               </div>
             </div>
 
-            {/* 하단 버튼 분기 */}
+            {/* 3-6. 하단 저장 / 취소 버튼 */}
             <div className="row row5">
               <div className="btn_con">
                 <button type="button" className="btns apply" onClick={handleSubmit}>
@@ -788,6 +981,7 @@ function Property_form() {
         </div>
       </div>
 
+      {/* 3-7. 주소 검색 모달 조건부 렌더링 */}
       {isOpenPostcode && (
         <AddressSearchModal
           onComplete={handleAddressComplete}

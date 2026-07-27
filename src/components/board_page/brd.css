@@ -354,7 +354,8 @@ span.esenstial {margin: 0 0 0 5px; font-size: 0.8rem; line-height: 1rem; color: 
   transition: all 0.2s ease;
 }
 
-.image_upload_container .upload_box:hover {
+.image_upload_container .upload_box:hover,
+.image_upload_container .upload_box.dragging {
   border-color: #3182ce;
   background-color: #ebf8ff;
 }
