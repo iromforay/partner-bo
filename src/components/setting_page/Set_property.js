@@ -18,71 +18,61 @@ function Set_property(props){
       'Authorization': `Bearer ${login_key}`
     }
   }
-  useMemo(()=>{
-    //code=다른 거로 수정해야함, 임시로 map쓰는 중
-    return axios.get(process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=map', config).then((result)=>{console.log(result); setPropertySetting(result.data.RECORD)}).catch(()=>{alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); window.location.href = '/';});
-  }, []);
 
-  const menuData = [
-    {
-      category: "기본 정보",
-      items: [
-        { id: "item1", label: "매물명", key: "property_name_show" },
-        { id: "item2", label: "건물명", key: "building_name_show" },
-      ]
-    },
-    {
-      category: "주소 정보",
-      items: [
-        { id: "item3", label: "시도", key: "addr_sido_show" },
-        { id: "item4", label: "시군구", key: "addr_sigungu_show" },
-        { id: "item5", label: "읍면동", key: "addr_dong_show" },
-        { id: "item6", label: "도로명", key: "addr_road_show" },
-      ]
-    },
-    {
-      category: "매물 정보",
-      items: [
-        { id: "item7", label: "공급면적", key: "supply_area_show" },
-        { id: "item8", label: "전용면적", key: "exclusive_area_show" },
-        { id: "item9", label: "총층수", key: "total_floors_show" },
-        { id: "item10", label: "해당층", key: "current_floor_show" },
-        { id: "item11", label: "방수", key: "room_count_show" },
-        { id: "item12", label: "욕실수", key: "bathroom_count_show" },
-        { id: "item13", label: "주차여부", key: "parking_available_show" },
-        { id: "item14", label: "주차대수", key: "parking_count_show" },
-        { id: "item15", label: "준공일", key: "completion_date_show" },
-        { id: "item16", label: "입주가능일", key: "move_in_date_show" },
-        { id: "item17", label: "방향", key: "direction_show" },
-        { id: "item18", label: "난방방식", key: "heating_type_show" },
-        { id: "item19", label: "난방연료", key: "heating_fuel_show" },
-      ]
-    },
-    {
-      category: "가격 정보",
-      items: [
-        { id: "item20", label: "매매가", key: "sale_price_show" },
-        { id: "item21", label: "전세가", key: "jeonse_price_show" },
-        { id: "item22", label: "보증금", key: "deposit_price_show" },
-        { id: "item23", label: "월세", key: "monthly_rent_show" },
-        { id: "item24", label: "융자금", key: "loan_amount_show" },
-        { id: "item25", label: "관리비", key: "maintenance_fee_show" },
-      ]
-    },
-    {
-      category: "기타 정보",
-      items: [
-        { id: "item26", label: "거래상태", key: "status_show" },
-        { id: "item27", label: "노출상태", key: "display_yn_show" },
-        { id: "item28", label: "한줄소개", key: "summary_show" },
-        { id: "item29", label: "상세설명", key: "description_show" },
-        { id: "item30", label: "대표이미지", key: "thumbnail_image_show" },
-        { id: "item31", label: "추가이미지", key: "detail_images_show" },
-      ]
-    }
-  ];
+  useEffect(()=>{
+    axios.get(
+      process.env.REACT_APP_API_KEY+'Admin/FunctionMenu/data',
+      config
+    )
+    .then((result)=>{
+      setPropertySetting(result.data.RECORD);
+    })
+    .catch(()=>{
+      alert('서버와의 연결이 끊겼습니다. 잠시후 다시 시도해주세요.');
+      // window.location.href='/';
+    });
+
+  },[]);
+
+  //메뉴 카테고리명
+  const category = {
+    "기본 정보": ["property_name", "building_name"],
+    "주소 정보": ["addr_sido", "addr_sigungu", "addr_dong", "addr_road"],
+    "매물 정보": [
+      "supply_area",
+      "exclusive_area",
+      "total_floor",
+      "current_floor",
+      "room_count",
+      "bathroom_count",
+      "parking_available",
+      "parking_count",
+      "completion_date",
+      "move_in_date",
+      "direction",
+      "heating_type",
+      "heating_fuel",
+    ],
+    "가격 정보": [
+      "sale_price",
+      "jeonse_price",
+      "deposit_price",
+      "monthly_rent",
+      "loan_amount",
+      "maintenance_fee",
+    ],
+    "기타 정보": [
+      "status",
+      "display_yn",
+      "summary",
+      "description",
+      "thumbnail_image",
+      "detail_images",
+    ],
+  };
 
   console.log(propertySetting);
+  
   if(propertySetting){
     return(
       <form id="propertySetting" data-whats="property">
@@ -120,42 +110,45 @@ function Set_property(props){
 
         <div className="row">
           <div className="setting-container">
-            {menuData.map((column, index) => (
-              <div className="setting-card" key={index}>
-                {/* 상단 회색 제목 영역 */}
+            {Object.entries(category).map(([categoryName, keys]) => (
+              <div className="setting-card" key={categoryName}>
                 <div className="card-header">
-                  <h5>{column.category}</h5>
+                  <h5>{categoryName}</h5>
                 </div>
 
-                {/* 하단 항목 리스트 영역 */}
                 <div className="card-body">
-                  {column.items.map((item) => (
-                    <div className="setting-item" key={item.id}>
-                      <p className="item-label">{item.label}</p>
-                      <div className="check_con">
-                        <label>
-                          <input
-                            className="input_check_hidden"
-                            name={item.key}
-                            type="hidden"
-                            value='N'
-                          />
-                          <input
-                            className="check_menu input_check"
-                            name={item.key}
-                            type="checkbox"
-                            value='Y'
-                            defaultChecked={propertySetting[item.key] === "Y" ? true : false}
-                          />
-                          <div className="check_btn">
-                            <span className="disabled">숨김</span>
-                            <span className="abled">보임</span>
-                            <div className="circle"></div>
-                          </div>
-                        </label>
+                  {propertySetting
+                    .filter(item => keys.includes(item.function_menu_key))
+                    .map(item => (
+                      <div className="setting-item" key={item.function_menu_no}>
+                        <p className="item-label">{item.function_menu_name}</p>
+
+                        <div className="check_con">
+                          <label>
+                            <input
+                              className="input_check_hidden"
+                              name={item.function_menu_key}
+                              type="hidden"
+                              value="N"
+                            />
+
+                            <input
+                              className="check_menu input_check"
+                              name={item.function_menu_key}
+                              type="checkbox"
+                              value="Y"
+                              defaultChecked={item.function_menu_value === "Y"}
+                            />
+
+                            <div className="check_btn">
+                              <span className="disabled">숨김</span>
+                              <span className="abled">보임</span>
+                              <div className="circle"></div>
+                            </div>
+                          </label>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             ))}
