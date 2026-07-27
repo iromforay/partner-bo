@@ -119,6 +119,7 @@ console.log("검색 실행");
   //   handleSearch(now_page);
   // }, [now_page]);
 
+
   if(now_data){
     return(
       <div className="brd all_brd">
@@ -248,25 +249,72 @@ function Rows(props){
 
   console.log(page_datas);
 
-  let price = "-";
-
   const data = datas[props.val];
 
-  if (data.transaction_type === "monthly") {
-    price = `${Number(data.deposit_price).toLocaleString()} / ${Number(data.monthly_rent).toLocaleString()}만원`;
-  }
-  else if (data.transaction_type === "jeonse") {
-    price = `${Number(data.jeonse_price).toLocaleString()}만원`;
-  }
-  else if (data.transaction_type === "sale") {
-    price = `${Number(data.sale_price).toLocaleString()}만원`;
+// 금액 표시 함수 (만원 → 억/만원)
+const formatPrice = (price) => {
+
+  if (!price || Number(price) === 0) {
+    return "-";
   }
 
+  const num = Number(price);
+
+  const eok = Math.floor(num / 10000);
+  const man = num % 10000;
+
+  if (eok > 0 && man > 0) {
+    return `${eok}억 ${man.toLocaleString()}`;
+  }
+
+  if (eok > 0) {
+    return `${eok}억`;
+  }
+
+  return `${num.toLocaleString()}`;
+};
+
+// 월세 표시용 (보증금/월세)
+const formatMonthlyPrice = (deposit, rent) => {
+
+  const depositText = Number(deposit) > 0
+    ? formatPrice(deposit)
+    : "-";
+
+  const rentText = Number(rent) > 0
+    ? Number(rent).toLocaleString()
+    : "-";
+
+  return `${depositText} / ${rentText}`;
+};
+
+//매물 방식별 가격 표시
+const getTradePrice = (data) => {
+
+  switch(data.transaction_type){
+
+    case "sale":
+      return formatPrice(data.sale_price);
+
+    case "jeonse":
+      return formatPrice(data.jeonse_price);
+
+    case "monthly":
+      return formatMonthlyPrice(
+        data.deposit_price,
+        data.monthly_rent
+      );
+
+    default:
+      return "-";
+  }
+
+};
+
+  //클래스명 변경
   const statusClassMap = { '1': 'possible', '2': 'ing', '3': 'complete', '4': 'pending', '5': 'private' };
-
   const statusKey = datas[props.val].status ? String(datas[props.val].status) : '1';
   const targetClass = statusClassMap[statusKey] || 'possible';
-
   const displayClassMap = { '1': 'display_y', '2': 'display_n' };
   const displayKey = datas[props.val].display_yn ? String(datas[props.val].display_yn) : '1';  const targetDisplayClass = displayClassMap[displayKey] || 'display_y';
 
@@ -274,8 +322,8 @@ function Rows(props){
     <div className={"rows row"+(props.val+1)}>
       <ul className={datas[props.val].display_yn === "N" ? "deleted" : null}>
         <li className="board_no">
-  {Number(page_datas.item_num_start) - props.val}
-</li>
+          {Number(page_datas.item_num_start) - props.val}
+        </li>
         <li className="board_transaction_type">{datas[props.val].transaction_type_txt || ''}</li>
         <li className="board_property_type">{datas[props.val].property_type_txt || ''}</li>
         <li className="board_property_name board_title" onClick={()=>{ dispatch(now_property_view(datas[props.val])); }}>
@@ -283,7 +331,7 @@ function Rows(props){
         <li className="board_sigungu">
           {`${datas[props.val].addr_sigungu || ''} ${datas[props.val].addr_dong || ''}`.trim() || ''}
         </li>
-        <li className="board_price">{price}</li>
+        <li className="board_price">{getTradePrice(data)}</li>
         <li className="board_status"><span className={`badge ${targetClass}`}>{datas[props.val].status_txt || ''}</span></li>
         <li className="board_display_yn"><span className={`${targetDisplayClass}`}>{datas[props.val].display_yn_txt || ''}</span></li>
         <li className="board_hit">{datas[props.val].view_count}</li>

@@ -38,7 +38,7 @@
 .brd .rows ul li.board_type .vod {background: #AF41CB;}
 .brd .rows ul li.score {width: 10%;}
 .brd .rows ul li.board_title {
-  width: 28%;
+  width: 25%;
   white-space: nowrap;      /* 줄바꿈 금지 */
   text-overflow: ellipsis;  /* 초과된 텍스트를 ...으로 표시 */
   overflow: hidden;         /* 영역 밖 텍스트 숨김 */
@@ -178,7 +178,7 @@
 .brd .rows ul li.board_property_type {width: 7%;}
 .brd .rows ul li.board_property_name {width: 27%;}
 .brd .rows ul li.board_sigungu {width: 10%;}
-.brd .rows ul li.board_price {width: 7%;}
+.brd .rows ul li.board_price {width: 10%;}
 .brd .rows ul li.board_status {width: 7%;}
 .brd .rows ul li.board_display_yn {width: 5%;}
 
