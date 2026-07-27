@@ -80,6 +80,12 @@ function Set_header(props){
               <span>초기화</span>
             </div>
             <div className="btns apply" onClick={()=>{
+                const form = document.getElementById("headerSetting");
+                //required 속성체크
+                if(!form.checkValidity()){
+                  form.reportValidity();
+                  return;
+                }
                 const this_form = $("form").attr("id");
                 let whats = $("form").attr("data-whats");
                 if(window.confirm('저장하시겠습니까?')){
@@ -392,59 +398,87 @@ function Set_header(props){
           </div>
           <p>사이트 내 최하단 영역에 들어가는 매장 세부사항들을 입력해주세요</p>
           <div className="input_con">
-            <input
-              type="text"
-              name="broker_office_name"
-              placeholder="중개사무소 명칭 입력"
-              required
-              defaultValue={basicSetting.broker_office_name}
-            />
+            <div>
+              <label htmlFor="broker_office_name">중개사무소 명칭</label>
+              <input
+                type="text"
+                id="broker_office_name"
+                name="broker_office_name"
+                placeholder="중개사무소 명칭 입력"
+                required
+                defaultValue={basicSetting.broker_office_name}
+              />
+            </div>
 
-            <input
-              type="text"
-              name="broker_address"
-              placeholder="중개사무소 소재지 입력"
-              required
-              defaultValue={basicSetting.broker_address}
-            />
+            <div>
+              <label htmlFor="broker_address">중개사무소 소재지</label>
+              <input
+                type="text"
+                id="broker_address"
+                name="broker_address"
+                placeholder="중개사무소 소재지 입력"
+                required
+                defaultValue={basicSetting.broker_address}
+              />
+            </div>
 
-            <input
-              type="text"
-              name="broker_phone"
-              placeholder="중개사무소 연락처 입력"
-              required
-              defaultValue={basicSetting.broker_phone}
-            />
+            <div>
+              <label htmlFor="broker_phone">중개사무소 연락처</label>
+              <input
+                type="text"
+                id="broker_phone"
+                name="broker_phone"
+                placeholder="중개사무소 연락처 입력"
+                required
+                defaultValue={basicSetting.broker_phone}
+              />
+            </div>
 
-            <input
-              type="text"
-              name="broker_reg_no"
-              placeholder="중개사무소 등록번호 입력"
-              required
-              defaultValue={basicSetting.broker_reg_no}
-            />
+            <div>
+              <label htmlFor="broker_reg_no">중개사무소 등록번호</label>
+              <input
+                type="text"
+                id="broker_reg_no"
+                name="broker_reg_no"
+                placeholder="중개사무소 등록번호 입력"
+                required
+                defaultValue={basicSetting.broker_reg_no}
+              />
+            </div>
 
-            <input
-              type="text"
-              name="broker_ceo_name"
-              placeholder="개업공인중개사 성명 입력"
-              required
-              defaultValue={basicSetting.broker_ceo_name}
-            />
+            <div>
+              <label htmlFor="broker_ceo_name">개업공인중개사 성명</label>
+              <input
+                type="text"
+                id="broker_ceo_name"
+                name="broker_ceo_name"
+                placeholder="개업공인중개사 성명 입력"
+                required
+                defaultValue={basicSetting.broker_ceo_name}
+              />
+            </div>
 
-            <input
-              type="text"
-              name="broker_agent_name"
-              placeholder="소속공인중개사 성명 입력(선택)"
-              defaultValue={basicSetting.broker_agent_name}
-            />
+            <div>
+              <label htmlFor="broker_agent_name">소속공인중개사 성명</label>
+              <input
+                type="text"
+                id="broker_agent_name"
+                name="broker_agent_name"
+                placeholder="소속공인중개사 성명 입력(선택)"
+                defaultValue={basicSetting.broker_agent_name}
+              />
+            </div>
 
-            <input
-              type="text"
-              name="broker_agent_phone"
-              placeholder="소속공인중개사 연락처 입력(선택)"
-              defaultValue={basicSetting.broker_agent_phone}
-            />
+            <div>
+              <label htmlFor="broker_agent_phone">소속공인중개사 연락처</label>
+              <input
+                type="text"
+                id="broker_agent_phone"
+                name="broker_agent_phone"
+                placeholder="소속공인중개사 연락처 입력(선택)"
+                defaultValue={basicSetting.broker_agent_phone}
+              />
+            </div>
             <textarea name="footer_copy" placeholder="대표이사 : 나병연 | 개인정보관리책임자 : 나병연 | 사업자등록번호 : 000-00-00000 | 주소 경기 부천시 | TEL 02-1234-5678" defaultValue={basicSetting.footer_copy}></textarea>
           </div>
           <p className="copy">Copyrightⓒ 2023 all-teaching All rights reserved.</p>
