@@ -278,12 +278,13 @@ function Property_form() {
         }));
 
         // 대표 이미지 바인딩
-        if (data.main_image) {
-          setUploadThumbImg(data.main_image.full_url);
+        if (data.main_image_url) {
+          setUploadThumbImg(data.main_image_url);
+
           setMainImage({
-            path: data.main_image.img_dir,
-            name: data.main_image.img_name,
-            url: data.main_image.full_url,
+            path: data.main_path,
+            name: data.main_image,
+            url: data.main_image_url,
           });
         }
 
@@ -546,7 +547,13 @@ function Property_form() {
         img_no: deleteImgNos,
       })
     );
-
+console.log(
+  "삭제 데이터",
+  {
+    main: deleteMain,
+    img_no: deleteImgNos
+  }
+);
     // 저장 API 호출
     const apiUrl = `${process.env.REACT_APP_API_KEY}Admin/Property/save`;
 
@@ -813,15 +820,15 @@ function Property_form() {
                   <input type="text" name="jeonse_price" placeholder="0" value={formData.jeonse_price} onChange={handlePriceChange} />
                 </div>
                 <div className="form_group">
-                  <label>보증금</label>
-                  <input type="text" name="deposit_price" placeholder="보증금" value={formData.deposit_price} onChange={handlePriceChange} />
+                  <label>보증금 (만원)</label>
+                  <input type="text" name="deposit_price" placeholder="0" value={formData.deposit_price} onChange={handlePriceChange} />
                 </div>
                 <div className="form_group">
                   <label>월세 (만원)</label>
-                  <input type="text" name="monthly_rent" placeholder="월세" value={formData.monthly_rent} onChange={handlePriceChange} />
+                  <input type="text" name="monthly_rent" placeholder="0" value={formData.monthly_rent} onChange={handlePriceChange} />
                 </div>
                 <div className="form_group">
-                  <label>융자금</label>
+                  <label>융자금 (만원)</label>
                   <input type="text" name="loan_amount" placeholder="0" value={formData.loan_amount} onChange={handlePriceChange} />
                 </div>
                 <div className="form_group">
@@ -898,6 +905,7 @@ function Property_form() {
 
                             if (isEditMode) {//수정시에만 기존 대표이미지 삭제 플레그 설정
                               setDeleteMain(true);
+                              console.log("대표이미지 삭제 체크");
                             }
                           }}
                         >
