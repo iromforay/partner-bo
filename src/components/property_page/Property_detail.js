@@ -24,7 +24,7 @@ const MOCK_DATA = {
   display_yn: "1",
   display_yn_txt: "노출",
 
-  property_name: "사진 test",
+  property_name: "더미데이터 ",
   building_name: null,
 
 
@@ -126,41 +126,53 @@ function Property_detail() {
     }
   };
 
-  let url = `${process.env.REACT_APP_API_KEY}Admin/Property/list?property_no=${property_no}`;
+  let url = `${process.env.REACT_APP_API_KEY}Admin/Property/detail?property_no=${property_no}`;
 
+  //상세 데이터 바인딩
   useEffect(() => {
     axios
-      .get(url, config)
-      .then((result) => {
+      .get(
+        `${process.env.REACT_APP_API_KEY}Admin/Property/detail?property_no=${property_no}`,
+        config
+      )
+      .then((res) => {
 
-        console.log("상세 API 전체:", result.data);
+        console.log("상세 API 전체:", res.data);
+        console.log("SUCCESS 값:", res.data.SUCCESS);
+        console.log("RECORD:", res.data.RECORD);
+        console.log("rows:", res.data.RECORD?.rows);
 
-        if (result.data.SUCCESS !== "TRUE") {
-          console.error("상세 조회 실패:", result.data.MSG);
+        if (res.data.SUCCESS !== "TRUE") {
+          console.error("상세 조회 실패:", res.data.MSG);
           setData(MOCK_DATA);
           return;
         }
 
-        const detailData = result.data?.RECORD?.rows?.[0];
+        const data = res.data?.RECORD?.[0];
 
-        console.log("상세 rows 데이터:", detailData);
+        console.log("상세 데이터:", data);
 
-        if (!detailData) {
-          console.error("rows 데이터 없음");
+        if (!data) {
+          console.error("데이터 없음");
           setData(MOCK_DATA);
           return;
         }
 
-        setData(detailData);
+        setData(data);
 
       })
       .catch((err) => {
-        console.error("상세 데이터 조회 실패:", err);
+        console.error(
+          "상세 데이터 조회 실패:",
+          err.response?.data || err
+        );
+
         setData(MOCK_DATA);
       })
       .finally(() => {
         setLoading(false);
       });
+
   }, [property_no]);
 
 // 금액 표시 함수 (만원 → 억/만원)
@@ -361,13 +373,13 @@ const formatPrice = (price) => {
               <div className="form_group">
                 <label>보증금</label>
                 <div className="view_text">
-                  {formatPrice(data.monthly_rent)}
+                  {formatPrice(data.deposit_price)}                  
                 </div>
               </div>
               <div className="form_group">
                 <label>월세</label>
                 <div className="view_text">
-                  {formatPrice(data.deposit_price)}                  
+                  {formatPrice(data.monthly_rent)}
                 </div>
               </div>
               <div className="form_group">

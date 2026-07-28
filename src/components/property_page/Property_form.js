@@ -102,6 +102,7 @@ function Property_form() {
 
   // 인증 토큰 및 API 헤더 설정
   const login_key = window.localStorage.getItem("login_key");
+  console.log("login_key:", login_key);
   const config = {
     headers: {
       Authorization: `Bearer ${login_key}`,
@@ -207,20 +208,22 @@ function Property_form() {
 
       axios
         .get(
-          `${process.env.REACT_APP_API_KEY}API/Property/detail?property_no=${property_no}`,
+          `${process.env.REACT_APP_API_KEY}Admin/Property/detail?property_no=${property_no}`,
           config
         )
         .then((res) => {
 
-        console.log("상세 API 전체:", res.data);
-
+  console.log("상세 API 전체:", res.data);
+  console.log("SUCCESS 값:", res.data.SUCCESS);
+  console.log("RECORD:", res.data.RECORD);
+  console.log("rows:", res.data.RECORD?.rows);
         // 성공 여부 확인
         if (res.data.SUCCESS !== "TRUE") {
           console.error("상세 조회 실패:", res.data.MSG);
           return;
         }
 
-        const data = res.data?.RECORD?.rows?.[0];
+        const data = res.data?.RECORD?.[0];
 
         console.log("상세 rows 데이터:", data);
 
@@ -307,7 +310,10 @@ function Property_form() {
 
       })
       .catch((err) => {
-        console.error("상세 데이터 조회 실패:", err);
+        console.error(
+          "상세 데이터 조회 실패:",
+          err.response?.data || err
+        );
       });
   }, [property_no, isEditMode]);
 
@@ -938,14 +944,16 @@ console.log(
                       <span className="upload_placeholder">+ 사진 추가 / 드래그</span>
                     </label>
 
-                    {/* 기존 서버에 등록된 상세 이미지 목록 출력 */}
+                    {/* 기존 서버에 등록된 상세 이미지 목록 출력, 삭제 */}
                     {existingDetailImgs.map((img, idx) => (
                       <div className="upload_img_item upload_img" key={`existing-${idx}`}>
                         <img src={img.full_url} alt={`기존 사진 ${idx}`} />
                         <button
                           type="button"
                           className="btn_del_img_overlay"
-                          onClick={() => handleRemoveExistingDetailImg(idx)}
+                          onClick={() => {
+                            handleRemoveExistingDetailImg(idx);
+                          }}
                         >
                           <FontAwesomeIcon icon={faTrashCan} />
                         </button>
