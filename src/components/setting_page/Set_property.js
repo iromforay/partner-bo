@@ -10,13 +10,7 @@ import axios from "axios";
 import del_img from './del_fn';
 
 function Set_property(props){
-  let [propertySetting, setPropertySetting] = useState({
-    row: {
-      bgcolor: "#f5f5f5",
-      transparent: 0
-    },
-    img: null
-  });//배경
+  let [propertySetting, setPropertySetting] = useState();//배경
   let [functionMenuSetting, setFunctionMenuSetting] = useState();//메뉴
 
   let [contents, setContents] = useState("");
@@ -44,14 +38,14 @@ function Set_property(props){
 useEffect(()=>{
 
   // 배경 설정
-  // axios.get(
-  //   process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=property',
-  //   config
-  // )
-  // .then((result)=>{
-  //   console.log("property 배경:", result.data);
-  //   setPropertySetting(result.data.RECORD);
-  // });
+  axios.get(
+    process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=property',
+    config
+  )
+  .then((result)=>{
+    console.log("property 배경:", result.data);
+    setPropertySetting(result.data.RECORD);
+  });
 
 
   // 메뉴 설정
@@ -207,7 +201,7 @@ useEffect(()=>{
                       let val = e.target.value;
                       $(".opa span").text(val+"%")
                     }}></input>
-                    <p className="opa"><span>{propertySetting.row.transparent}%</span>배경색 투명도</p>
+                    <p className="opa"><span>{propertySetting.row?.transparent ?? 0}%</span>배경색 투명도</p>
                   </div>
                 </div>
                 <div className="ex_con">
