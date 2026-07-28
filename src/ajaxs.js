@@ -28,7 +28,16 @@ function post_ajax(this_form, whats, config, contents){
       window.location.href = '/';
     });
   
-  }else if(whats === 'property'){
+  } else if(whats === 'menu'){
+
+    formData.append('code','property');
+
+    axios.post(
+      process.env.REACT_APP_API_KEY+'Admin/Menu/save',
+      formData,
+      config
+    )
+  } else if(whats === 'property'){
 
     axios.post(
       process.env.REACT_APP_API_KEY+'Admin/FunctionMenu/save_property',

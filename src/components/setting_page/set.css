@@ -172,6 +172,7 @@
 #mapSetting .row3 .main_con .conts .map_link_con input {width: 80%; height: 40px; border-radius: 4px; background: #EBEFF2; padding-left: 10px;}
 #mapSetting .row3 .main_con .conts .map_link_con input::placeholder {font-size: 0.8rem; line-height: 1.2rem; color: #A2ABB1;}
 
+#propertySet .row2 .inner_con,
 #noticeSetting .row2 .inner_con,
 #aroundSetting .row2 .inner_con,
 #chargeSetting .row2 .inner_con,
@@ -179,6 +180,7 @@
 #vodSetting .row2 .inner_con,
 #mapSetting .row2 .inner_con {display: flex; align-items: flex-start; margin: 10px 0 0 0;}
 
+#propertySet .row2 .inner_con .input_con.img_input,
 #noticeSetting .row2 .inner_con .input_con.img_input,
 #aroundSetting .row2 .inner_con .input_con.img_input,
 #chargeSetting .row2 .inner_con .input_con.img_input,
