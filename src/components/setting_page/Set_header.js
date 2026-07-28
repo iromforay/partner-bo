@@ -166,8 +166,8 @@ function Set_header(props){
                   <div className="check_con">
                     <h5 className="tit_menu">매물관리</h5>
                     <label>
-                      <input className="input_check_hidden" name="charge_show" type="hidden" value='N'></input>
-                      <input className="check_menu input_check" name="charge_show" type="checkbox"value='Y' defaultChecked={basicSetting.charge_show === "Y" ? true : false}></input>
+                      <input className="input_check_hidden" name="property_show" type="hidden" value='N'></input>
+                      <input className="check_menu input_check" name="property_show" type="checkbox"value='Y' defaultChecked={basicSetting.property_show === "Y" ? true : false}></input>
                       <div className="check_btn">
                         <span className="disabled">숨김</span>
                         <span className="abled">보임</span>

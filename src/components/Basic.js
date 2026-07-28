@@ -73,7 +73,7 @@ function Basic(props){
               <h5>매물관리</h5>
               <div className="status">
                 {
-                  menuSetting.charge_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+                  menuSetting.property_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
                 }
               </div>
             </li>
