@@ -102,32 +102,73 @@ function Note_list(props){
     setMemoModalData(null);
   };
 
-  // 신규 메모 등록
-  const handleMemoSubmit = (e) => {
-    e.preventDefault();
-    if (!newMemoText.trim() || !memoModalData) return;
+  // 신규 메모 등록 
+const handleMemoSubmit = (e) => {
+  e.preventDefault();
 
-    const newMemoItem = {
-      memo_no: '',
-      name: '',
-      memo: newMemoText.trim()
-    };
+  if (!newMemoText.trim() || !memoModalData) {
+    return;
+  }
 
-    // 로컬 State 반영 (API 연결 시 POST 요청 후 리로드 처리 권장)
-    const updatedNotes = now_data.map(item => {
-      if (item.note_no === memoModalData.note_no) {
-        const updatedMemos = [...(item.memos || []), newMemoItem];
-        const updatedNote = { ...item, memos: updatedMemos };
-        setMemoModalData(updatedNote); // 모달 내 데이터 즉시 갱신
-        return updatedNote;
-      }
-      return item;
-    });
+  const formData = new FormData();
 
-    setNow_data(updatedNotes);
-    setNewMemoText('');
-  };
+  formData.append("note_no", memoModalData.note_no);
+  formData.append("memo", newMemoText.trim());
+  formData.append("name", "");
 
+
+  axios.post(
+    process.env.REACT_APP_API_KEY + "Admin/memo/save",
+    formData,
+    config
+  )
+  .then((res)=>{
+
+    console.log("팝업 메모 등록:", res.data);
+    if(res.data.SUCCESS === "TRUE"){
+
+      alert("메모가 등록되었습니다.");
+
+      // 리스트 데이터 갱신
+      axios.get(
+        process.env.REACT_APP_API_KEY
+        + 'Admin/Note/list?limit=8&page='
+        + now_page
+        + '&code='
+        + props.whats,
+        config
+      )
+      .then((result)=>{
+
+        const rows = result.data.RECORD.rows;
+
+        setNow_data(rows);
+
+
+        // 현재 열린 팝업도 갱신
+        const updateNote = rows.find(
+          item => item.note_no === memoModalData.note_no
+        );
+
+        if(updateNote){
+          setMemoModalData(updateNote);
+        }
+
+      });
+
+      setNewMemoText("");
+
+    }else{
+      alert(res.data.MSG);
+    }
+
+  })
+  .catch((err)=>{
+    console.error("팝업 메모 등록 실패:", err);
+    alert("메모 등록 실패");
+  });
+
+};
 
   // 페이지네이션 번호 배열 생성
   const totalPages = page_info ? Number(page_info.total_page || 1) : 1;
