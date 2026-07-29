@@ -69,8 +69,10 @@ input {outline: none;}
 
 
 .container {margin: 0 0 0 250px;}
-.container .sections {width: calc(100vw - 250px); height: 100vh; background: #EBEFF2;}
-.container .sections .width_con {position: relative; width: 1270px; padding: 40px 0px 0px 20px;}
+.container .sections {width: calc(100vw - 250px); 
+  /* height: 100vh;  */
+  background: #EBEFF2;}
+.container .sections .width_con {position: relative; width: 1270px; padding: 40px;}
 .container .sections .width_con > h3 {pointer-events: none;}
 .container .sections .width_con:before {position: absolute; bottom: 0; left: 20px; content: ''; width: calc(100% - 20px); height: 15px; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);}
 .container .sections.basic .width_con > h3{}

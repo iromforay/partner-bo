@@ -346,7 +346,7 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
   });
 
   return (
-    <div className="sections write note_section">
+    <div className="sections write note_section note_form">
       
       <div className="width_con">
         <Link to="/note" className="back-link">
@@ -354,266 +354,265 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
         </Link>
         {/* 모드별 헤더 타이틀 분기 */}
         <h3>{isEditMode ? `노트 수정 (#${note_no})` : "노트 등록"}</h3>
-        <div className="form_con">
           <form 
             ref={formRef}
             id="noteForm" 
             onSubmit={(e) => e.preventDefault()}>
-            
-            {/* 1. 방문자 정보 섹션 */}
-            <div className="section_box">
-              <div className="sec_title_bar">
-                <h4>방문자 정보</h4>
-              </div>
-
-              <div className="grid_row col2">
-
-                <div className="form_group">
-                  <label>
-                    방문자명<span className="esenstial">*</span>
-                  </label>
-
-                  <input
-                    type="text"
-                    name="visitor_name"
-                    value={formData.visitor_name}
-                    onChange={handleChange}
-                    placeholder="예) 김도윤"
-                  />
-                </div>
-                <div className="form_group">
-                  <label>
-                    연락처<span className="esenstial">*</span>
-                  </label>
-
-                  <input
-                    type="text"
-                    name="visitor_phone"
-                    value={formData.visitor_phone}
-                    onChange={handleChange}
-                    placeholder="010-0000-0000"
-                  />
-                </div>
-              </div>
-
-              <div className="grid_row col2">
-                <div className="form_group">
-
-                  <label>
-                    방문형태<span className="esenstial">*</span>
-                  </label>
-
-                  <select
-                    name="visit_type"
-                    value={formData.visit_type}
-                    onChange={handleChange}
-                  >
-
-                    <option value="tenant">
-                      세입자
-                    </option>
-
-                    <option value="landlord">
-                      임대인
-                    </option>
-
-                  </select>
-
-                </div>
-                <div className="form_group">
-
-                  <label>
-                    유입경로<span className="esenstial">*</span>
-                  </label>
-
-                  <select
-                    name="inflow_type"
-                    value={formData.inflow_type}
-                    onChange={handleChange}
-                  >
-
-                    <option value="visit">방문</option>
-                    <option value="phone">전화</option>
-                    <option value="web">웹신청</option>
-                    <option value="naver">네이버</option>
-                    <option value="referral">지인소개</option>
-                    <option value="etc">기타</option>
-
-                  </select>
-
-                </div>
-              </div>
-            </div>
-
-            {/* 2. 상담 정보 섹션  */}
-            <div className="section_box">
-              <div className="sec_title_bar">
-                <h4>상담 정보</h4>
-              </div>
-              <div className="grid_row col2">
-                <div className="form_group">
-                  <label>거래방식<span className="esenstial">*</span></label>
-                  <select
-                    name="transaction_type"
-                    value={formData.transaction_type}
-                    onChange={handleChange}
-                  >
-                    <option value="sale">매매</option>
-                    <option value="jeonse">전세</option>
-                    <option value="monthly">월세</option>
-                  </select>
+            <div className="panel">
+              {/* 1. 방문자 정보 섹션 */}
+              <div className="section_box">
+                <div className="sec_title_bar">
+                  <h4>방문자 정보</h4>
                 </div>
 
-                <div className="form_group">
-                  <label>예산
-                    <span className="esenstial">*</span>
-                    <span className="opt">만원 단위</span>
-                  </label>
+                <div className="grid_row col2">
 
-                  <input
-                    type="number"
-                    name="budget"
-                    value={formData.budget}
-                    onChange={handleChange}
-                    placeholder="예) 25000"
-                  />
-                </div>
-              </div>
-              <div className="grid_row full">
-                <div className="form_group">
-                  <label>희망지역<span className="esenstial">*</span></label>
-                  <input
-                    type="text"
-                    name="preferred_area"
-                    value={formData.preferred_area}
-                    onChange={handleChange}
-                    placeholder="예) 부천시 원미구 상동"
-                  />
-                </div>
-              </div>
-              <div className="grid_row full">
-                <div className="form_group">
-                  <label>진행상태<span className="esenstial">*</span></label>
-                  <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                  >
-                    <option value="consulting">상담중</option>
-                    <option value="proposed">매물제안</option>
-                    <option value="contracted">계약완료</option>
-                    <option value="lost">이탈</option>
-                      
-                    
+                  <div className="form_group">
+                    <label>
+                      방문자명<span className="esenstial">*</span>
+                    </label>
 
-                  </select>
-
-                </div>
-              </div>
-            </div>
-
-            {/* 3. 일정 섹션 */}
-            <div className="section_box">
-              <div className="sec_title_bar">
-                <h4>일정</h4>
-              </div>
-
-              <div className="grid_row col2">
-                <div className="form_group">
-                  <label>방문예정일<span className="esenstial">*</span></label>
-                  <input
-                    type="datetime-local"
-                    name="visit_date"
-                    value={formData.visit_date}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="form_group">
-                  <label>다음연락예정일<span className="esenstial">*</span></label>
-                  <input
-                    type="datetime-local"
-                    name="next_contact_date"
-                    value={formData.next_contact_date}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 4. 배정 섹션 */}
-            <div className="section_box">
-              <div className="sec_title_bar"><h4>배정 (선택)</h4></div>
-              <div className="grid_row col2">
-                <div className="form_group">
-                  <label>접수자<span className="opt">(담당 중개사)</span></label>
-                  <select
-                    name="agent_no"
-                    value={formData.agent_no}
-                    onChange={handleChange}
-                  >
-                    <option value="">미배정</option>
-                    <option value="1">나병연</option>
-                    <option value="2">김상담</option>
-                  </select>
-                </div>
-
-                <div className="form_group">
-                  <label>
-                    관심매물
-                    <span className="opt">등록된 매물과 연결</span>
-                  </label>
-
-                  <div className="property_pick">
                     <input
                       type="text"
-                      placeholder="매물명으로 검색"
+                      name="visitor_name"
+                      value={formData.visitor_name}
+                      onChange={handleChange}
+                      placeholder="예) 김도윤"
                     />
+                  </div>
+                  <div className="form_group">
+                    <label>
+                      연락처<span className="esenstial">*</span>
+                    </label>
 
-                    <button
-                      type="button"
-                      className="btn btn-muted search_btn"
-                      onClick={() =>
-                        setSelectedProperty({
-                          property_no: 108,
-                          property_name: "여의도 25시 공장",
-                        })
-                      }
+                    <input
+                      type="text"
+                      name="visitor_phone"
+                      value={formData.visitor_phone}
+                      onChange={handleChange}
+                      placeholder="010-0000-0000"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid_row col2">
+                  <div className="form_group">
+
+                    <label>
+                      방문형태<span className="esenstial">*</span>
+                    </label>
+
+                    <select
+                      name="visit_type"
+                      value={formData.visit_type}
+                      onChange={handleChange}
                     >
-                      검색
-                    </button>
+
+                      <option value="tenant">
+                        세입자
+                      </option>
+
+                      <option value="landlord">
+                        임대인
+                      </option>
+
+                    </select>
+
+                  </div>
+                  <div className="form_group">
+
+                    <label>
+                      유입경로<span className="esenstial">*</span>
+                    </label>
+
+                    <select
+                      name="inflow_type"
+                      value={formData.inflow_type}
+                      onChange={handleChange}
+                    >
+
+                      <option value="visit">방문</option>
+                      <option value="phone">전화</option>
+                      <option value="web">웹신청</option>
+                      <option value="naver">네이버</option>
+                      <option value="referral">지인소개</option>
+                      <option value="etc">기타</option>
+
+                    </select>
+
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. 상담 정보 섹션  */}
+              <div className="section_box">
+                <div className="sec_title_bar">
+                  <h4>상담 정보</h4>
+                </div>
+                <div className="grid_row col2">
+                  <div className="form_group">
+                    <label>거래방식<span className="esenstial">*</span></label>
+                    <select
+                      name="transaction_type"
+                      value={formData.transaction_type}
+                      onChange={handleChange}
+                    >
+                      <option value="sale">매매</option>
+                      <option value="jeonse">전세</option>
+                      <option value="monthly">월세</option>
+                    </select>
                   </div>
 
-                  {/* 실제 저장될 값 */}
-                  <input
-                    type="hidden"
-                    name="property_no"
-                    value={selectedProperty?.property_no || ""}
-                  />
+                  <div className="form_group">
+                    <label>예산
+                      <span className="esenstial">*</span>
+                      <span className="opt">만원 단위</span>
+                    </label>
 
-                  {selectedProperty && (
-                    <div className="picked_property">
-                      <span>{selectedProperty.property_name}</span>
+                    <input
+                      type="number"
+                      name="budget"
+                      value={formData.budget}
+                      onChange={handleChange}
+                      placeholder="예) 25000"
+                    />
+                  </div>
+                </div>
+                <div className="grid_row full">
+                  <div className="form_group">
+                    <label>희망지역<span className="esenstial">*</span></label>
+                    <input
+                      type="text"
+                      name="preferred_area"
+                      value={formData.preferred_area}
+                      onChange={handleChange}
+                      placeholder="예) 부천시 원미구 상동"
+                    />
+                  </div>
+                </div>
+                <div className="grid_row full">
+                  <div className="form_group">
+                    <label>진행상태<span className="esenstial">*</span></label>
+                    <select
+                      name="status"
+                      value={formData.status}
+                      onChange={handleChange}
+                    >
+                      <option value="consulting">상담중</option>
+                      <option value="proposed">매물제안</option>
+                      <option value="contracted">계약완료</option>
+                      <option value="lost">이탈</option>
+                        
+                      
+
+                    </select>
+
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. 일정 섹션 */}
+              <div className="section_box">
+                <div className="sec_title_bar">
+                  <h4>일정</h4>
+                </div>
+
+                <div className="grid_row col2">
+                  <div className="form_group">
+                    <label>방문예정일<span className="esenstial">*</span></label>
+                    <input
+                      type="datetime-local"
+                      name="visit_date"
+                      value={formData.visit_date}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="form_group">
+                    <label>다음연락예정일<span className="esenstial">*</span></label>
+                    <input
+                      type="datetime-local"
+                      name="next_contact_date"
+                      value={formData.next_contact_date}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* 4. 배정 섹션 */}
+              <div className="section_box">
+                <div className="sec_title_bar"><h4>배정 (선택)</h4></div>
+                <div className="grid_row col2">
+                  <div className="form_group">
+                    <label>접수자<span className="opt">(담당 중개사)</span></label>
+                    <select
+                      name="agent_no"
+                      value={formData.agent_no}
+                      onChange={handleChange}
+                    >
+                      <option value="">미배정</option>
+                      <option value="1">나병연</option>
+                      <option value="2">김상담</option>
+                    </select>
+                  </div>
+
+                  <div className="form_group">
+                    <label>
+                      관심매물
+                      <span className="opt">등록된 매물과 연결</span>
+                    </label>
+
+                    <div className="property_pick">
+                      <input
+                        type="text"
+                        placeholder="매물명으로 검색"
+                      />
 
                       <button
                         type="button"
-                        onClick={() => setSelectedProperty(null)}
+                        className="btn btn-muted search_btn"
+                        onClick={() =>
+                          setSelectedProperty({
+                            property_no: 108,
+                            property_name: "여의도 25시 공장",
+                          })
+                        }
                       >
-                        해제 ✕
+                        검색
                       </button>
                     </div>
-                  )}
 
-                  <p className="help">
-                    비워두면 특정 매물과 연결하지 않고 저장됩니다.
-                  </p>
+                    {/* 실제 저장될 값 */}
+                    <input
+                      type="hidden"
+                      name="property_no"
+                      value={selectedProperty?.property_no || ""}
+                    />
+
+                    {selectedProperty && (
+                      <div className="picked_property">
+                        <span>{selectedProperty.property_name}</span>
+
+                        <button
+                          type="button"
+                          onClick={() => setSelectedProperty(null)}
+                        >
+                          해제 ✕
+                        </button>
+                      </div>
+                    )}
+
+                    <p className="help">
+                      비워두면 특정 매물과 연결하지 않고 저장됩니다.
+                    </p>
+                  </div>
+
                 </div>
-
               </div>
-            </div>
-
+            </div>      
             {/* 3-6. 하단 삭제 / 저장 / 취소 버튼 */}
-            <div className="row row5">
+            <div className="panel">
               <div className="btn_con">
 
                 {isEditMode && (
@@ -650,7 +649,6 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
             </div>
 
           </form>
-        </div>
       </div>
 
       {/* 3-7. 주소 검색 모달 조건부 렌더링 */}

@@ -88,16 +88,18 @@
     color: var(--text-muted);
     text-decoration: none;
     display: inline-block;
-    /* margin-bottom: 14px; */
+    margin-bottom: 14px;
   }
   .back-link:hover {
     color: var(--accent);
   }
   .panel {
     background: var(--surface);
-    border-radius: 0 10px 10px 10px;
+    border-radius: 10px;
     box-shadow: var(--shadow);
     overflow: hidden;
+    padding:20px 24px;
+    margin-bottom: 16px;
   }
 
   .toolbar {
@@ -169,12 +171,12 @@
 
   .tag {
     display: inline-block;
-    font-size: 11.5px;
-    font-weight: 700;
-    border-radius: 5px;
-    padding: 3px 8px;
     color: #fff;
     white-space: nowrap;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
   }
   .tag-tenant { background: #4b5563; }
   .tag-landlord { background: #6b5bd6; }
@@ -258,7 +260,16 @@
   .memo-modal-head h2 { font-size: 16px; font-weight: 800; margin: 0 0 3px; }
   .memo-modal-head .phone { font-size: 12.5px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
   .memo-modal-head .head-actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
-  .memo-modal-head .detail-link { font-size: 12px; color: var(--accent); text-decoration: none; font-weight: 700; white-space: nowrap; }
+  .memo-modal-head .detail-link { 
+    background: #e8f3ff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 12px; color: #3182f6; 
+    text-decoration: none; font-weight: 700; white-space: nowrap; }
   .memo-modal-close {
     border: none; background: var(--surface-sunken); color: var(--text-muted);
     width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-size: 14px; flex: 0 0 auto;
@@ -272,7 +283,7 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 11px; font-weight: 800; flex: 0 0 auto;
   }
-  .memo-modal .memo-bubble { background: var(--surface-sunken); border: 1px solid var(--border); border-radius: 10px; padding: 9px 12px; font-size: 13px; line-height: 1.55; }
+  .memo-modal .memo-bubble { width:100%; background: var(--surface-sunken); border: 1px solid var(--border); border-radius: 10px; padding: 9px 12px; font-size: 13px; line-height: 1.55; }
   .memo-modal .memo-byline { display: flex; gap: 8px; align-items: baseline; margin-bottom: 3px; }
   .memo-modal .memo-writer { font-size: 12.5px; font-weight: 700; }
   .memo-modal .memo-time { font-size: 10.5px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
@@ -293,633 +304,222 @@
 ========================= */
 
 /* 상세 상단 영역 */
-.detail-head {
-  padding: 22px 24px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
+.detail-head {  padding: 22px 24px;  border-bottom: 1px solid var(--border);  display: flex;  align-items: flex-start;  justify-content: space-between;  gap: 16px;}
+.detail-head h1 {  font-size: 20px;  font-weight: 800;  margin: 0 0 6px;  letter-spacing: -0.02em;}
+.detail-head .phone {  font-size: 13.5px;  color: var(--text-muted);  font-variant-numeric: tabular-nums;}
 
-.detail-head h1 {
-  font-size: 20px;
-  font-weight: 800;
-  margin: 0 0 6px;
-  letter-spacing: -0.02em;
-}
-
-.detail-head .phone {
-  font-size: 13.5px;
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.badges {
-  display: flex;
-  gap: 6px;
-  margin-top: 10px;
-}
-
+.badges {  display: flex;  gap: 6px;  margin-top: 10px;}
 
 /* 상세 버튼 영역 */
-.actions {
-  display: flex;
-  gap: 8px;
-  flex: 0 0 auto;
-}
-
+.actions {  display: flex;  gap: 8px;  flex: 0 0 auto;}
 
 /* 상태 pill */
-.pill {
-  display: inline-block;
-  font-size: 11.5px;
-  font-weight: 700;
-  border-radius: 5px;
-  padding: 4px 10px;
-  color: #fff;
-}
+.pill {  display: inline-block;  font-size: 11.5px;  font-weight: 700;  border-radius: 5px;  padding: 4px 10px;  color: #fff;}
 
-.tag-consulting {
-  background: var(--st-consulting);
-}
-
-.tag-proposed {
-  background: var(--st-proposed);
-}
-
-.tag-contracted {
-  background: var(--st-contracted);
-}
-
-.tag-lost {
-  background: var(--st-lost);
-}
-
+.tag-consulting {  background: var(--st-consulting);}
+.tag-proposed {  background: var(--st-proposed);}
+.tag-contracted {  background: var(--st-contracted);}
+.tag-lost {  background: var(--st-lost);}
 
 /* 상세 정보 */
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px 20px;
-  padding: 20px 24px;
-}
-
-.info-grid dt {
-  font-size: 11.5px;
-  color: var(--text-faint);
-  margin-bottom: 4px;
-}
-
-.info-grid dd {
-  margin: 0;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--text);
-}
-
+.card-body{padding: 0;}
+.info-grid {  display: grid;  grid-template-columns: repeat(3, 1fr);  gap: 18px 20px;}
 
 /* 메모 영역 */
-.memo-wrap {
-  padding: 20px 24px;
-}
-
-.memo-wrap h2 {
-  font-size: 14.5px;
-  font-weight: 800;
-  margin: 0 0 16px;
-}
-
+.memo-wrap h2 {  font-size: 14.5px;  font-weight: 800;  margin: 0 0 16px;}
 
 /* 메모 리스트 */
-.memo-thread {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-bottom: 18px;
-}
-
-.memo-item {
-  display: flex;
-  gap: 10px;
-}
-
-.memo-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11.5px;
-  font-weight: 800;
-  flex: 0 0 auto;
-}
-
-.memo-body {
-  flex: 1;
-}
-
-.memo-bubble {
-  background: var(--surface-sunken);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 13px;
-  font-size: 13.5px;
-  line-height: 1.6;
-}
-
-.memo-byline {
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
-  margin-bottom: 4px;
-}
-
-.memo-writer {
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.memo-time {
-  font-size: 11px;
-  color: var(--text-faint);
-}
-
-.memo-empty {
-  font-size: 13px;
-  color: var(--text-faint);
-  padding: 12px 0;
-}
-
+.memo-thread {  display: flex;  flex-direction: column;  gap: 14px;  margin-bottom: 18px;}
+.memo-item {  display: flex;  gap: 10px;}
+.memo-avatar {  width: 30px;  height: 30px;  border-radius: 50%;  background: var(--accent-soft);  color: var(--accent);  display: flex;  align-items: center;  justify-content: center;  font-size: 11.5px;  font-weight: 800;  flex: 0 0 auto;}
+.memo-body {  flex: 1;}
+.memo-bubble {  background: var(--surface-sunken);  border: 1px solid var(--border);  border-radius: 10px;  padding: 10px 13px;  font-size: 13.5px;  line-height: 1.6;}
+.memo-byline {  display: flex;  gap: 8px;  align-items: baseline;  margin-bottom: 4px;}
+.memo-writer {  font-size: 13px;  font-weight: 700;}
+.memo-time {  font-size: 11px;  color: var(--text-faint);}
+.memo-empty {  font-size: 13px;  color: var(--text-faint);  padding: 12px 0;}
 
 /* 메모 입력 */
-.memo-form {
-  display: flex;
-  gap: 8px;
-  border-top: 1px solid var(--border);
-  padding-top: 16px;
-}
-
-.memo-form textarea {
-  flex: 1;
-  font-family: inherit;
-  font-size: 13.5px;
-  color: var(--text);
-  background: var(--surface-sunken);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 12px;
-  resize: none;
-  min-height: 44px;
-  max-height: 140px;
-  line-height: 1.5;
-}
-
-.memo-form textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  background: var(--surface);
-}
-
-.memo-form button {
-  flex: 0 0 auto;
-  align-self: flex-end;
-}
-
+.memo-form {  display: flex;  gap: 8px;  border-top: 1px solid var(--border);  padding-top: 16px;}
+.memo-form textarea {  flex: 1;  font-family: inherit;  font-size: 13.5px;  color: var(--text);  background: var(--surface-sunken);  border: 1px solid var(--border);  border-radius: 8px;  padding: 10px 12px;  resize: none;  min-height: 44px;  max-height: 140px;  line-height: 1.5;}
+.memo-form textarea:focus {  outline: none;  border-color: var(--accent);  background: var(--surface);}
+.memo-form button {  flex: 0 0 auto;  align-self: flex-end;}
 
 /* =========================
    Memo Edit Mode
 ========================= */
 
 /* 수정 버튼 */
-.memo-byline button {
-  margin-left: auto;
-
-  border: 0;
-  background: transparent;
-
-  color: var(--text-muted);
-
-  font-size: 12px;
-  font-weight: 600;
-
-  cursor: pointer;
-  padding: 4px 8px;
-
-  border-radius: 5px;
-}
-
-.memo-byline button:hover {
-  background: var(--surface-sunken);
-  color: var(--accent);
-}
-
+.memo-byline button {  margin-left: auto;  border: 0;  background: transparent;  color: var(--text-muted);  font-size: 12px;  font-weight: 600;  cursor: pointer;  padding: 4px 8px;  border-radius: 5px;}
+.memo-byline button:hover {  background: var(--surface-sunken);  color: #000;}
+.memo-byline button svg{  font-size: 11.5px;  color: var(--text-muted);}
+.memo-byline button:hover svg{  color: #000;}
 
 /* 수정 입력 영역 */
-.memo-bubble form {
-  margin-top: 12px;
-}
-
+.memo-bubble form {  margin-top: 12px;}
 
 /* 수정 textarea */
-.memo-bubble form textarea {
-  width: 100%;
-
-  min-height: 100px;
-
-  padding: 12px 14px;
-
-  border-radius: 8px;
-
-  border: 1px solid var(--border);
-
-  background: var(--surface);
-
-  color: var(--text);
-
-  font-size: 14px;
-
-  line-height: 1.5;
-
-  resize: vertical;
-}
-
-
-.memo-bubble form textarea:focus {
-  outline: none;
-
-  border-color: var(--accent);
-}
-
-
+.memo-bubble form textarea {  width: 100%;  min-height: 100px;  padding: 12px 14px;  border-radius: 8px;  border: 1px solid var(--border);  background: var(--surface);  color: var(--text);  font-size: 14px;  line-height: 1.5;  resize: vertical;}
+.memo-bubble form textarea:focus {  outline: none;  border-color: var(--accent);}
 
 /* 저장 취소 영역 */
-.memo-edit-actions {
-  display: flex;
-
-  justify-content: flex-end;
-
-  gap: 6px;
-
-  margin-top: 10px;
-}
-
+.memo-edit-actions {  display: flex;  justify-content: flex-end;  gap: 6px;  margin-top: 10px;}
 
 /* 수정 버튼 공통 */
-.memo-edit-actions button {
-
-  height: 32px;
-
-  padding: 0 14px;
-
-  border-radius: 6px;
-
-  border: 1px solid var(--border);
-
-  font-size: 12px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
+.memo-edit-actions button {  height: 32px;  padding: 0 14px;  border-radius: 6px;  border: 1px solid var(--border);  font-size: 12px;  font-weight: 700;  cursor: pointer;}
 
 /* 저장 */
-.memo-edit-actions button[type="submit"] {
-
-  background: var(--accent);
-
-  border-color: var(--accent);
-
-  color: #fff;
-
-}
-
+.memo-edit-actions button[type="submit"] {  background: var(--accent);  border-color: var(--accent);  color: #fff;}
 
 /* 취소 */
-.memo-edit-actions button[type="button"] {
-
-  background: var(--surface);
-
-  color: var(--text-muted);
-
-}
-
-
-.memo-edit-actions button[type="button"]:hover {
-
-  background: var(--surface-sunken);
-
-}
-
+.memo-edit-actions button[type="button"] {  background: var(--surface);  color: var(--text-muted);}
+.memo-edit-actions button[type="button"]:hover {  background: var(--surface-sunken);}
 
 /* =========================
    Note Form
 ========================= */
-
-/* 전체 폼 박스 */
-.note_section {
-   /* max-width: 860px;  */
-  /* margin: 0 auto; */
-  /* padding: 28px 24px 90px;  */
-}
-
 /* 제목 영역 */
-.note_section h3 {
-  font-size: 22px;
-  font-weight: 800;
-  margin: 0 0 18px;
-}
+.note_section h3 {  font-size: 22px;  font-weight: 800;  margin: 0 0 18px;}
 
 /* 폼 컨테이너 */
-.note_section .form_con {
-  background: var(--surface);
-  border-radius: 10px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
+.note_section .form_con {  background: var(--surface);  border-radius: 10px;  box-shadow: var(--shadow);  overflow: hidden;}
 
 /* 섹션 */
-.note_section .section_box {
-  padding: 22px 24px;
-  border-bottom: 1px solid var(--border);
-}
-
-.note_section .section_box:last-child {
-  border-bottom: none;
-}
+.note_section .section_box {  padding: 22px 24px;  border-bottom: 1px solid var(--border);}
+.note_section .section_box:last-child {  border-bottom: none;}
 
 /* 섹션 제목 */
-.note_section .sec_title_bar {
-  margin-bottom: 16px;
-}
-
-.note_section .sec_title_bar h4 {
-  font-size: 13.5px;
-  font-weight: 800;
-  margin: 0;
-  color: var(--text);
-}
+.note_section .sec_title_bar {  margin-bottom: 16px;}
+.note_section .sec_title_bar h4 {  font-size: 13.5px;  font-weight: 800;  margin: 0;  color: var(--text);}
 
 /* 그리드 */
-.note_section .grid_row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px 18px;
-  margin-bottom: 16px;
-}
-
-.note_section .grid_row:last-child {
-  margin-bottom:0;
-}
+.note_section .grid_row {  display: grid;  grid-template-columns: 1fr 1fr;  gap: 16px 18px;  margin-bottom: 16px;}
+.note_section .grid_row:last-child {  margin-bottom:0;}
 
 /* 한칸 전체 */
-.note_section .grid_row.full {
-  grid-template-columns:1fr;
-}
+.note_section .grid_row.full {  grid-template-columns:1fr;}
 
 /* 입력 그룹 */
-.note_section .form_group {
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
+.note_section .form_group {  display:flex;  flex-direction:column;  gap:6px;}
 
 /* 라벨 */
-.note_section .form_group label {
-  font-size:12.5px;
-  font-weight:700;
-  color:var(--text-muted);
-}
+.note_section .form_group label {  font-size:12.5px;  font-weight:700;  color:var(--text-muted);}
 
 /* 입력 */
 .note_section input,
 .note_section select,
-.note_section textarea {
-  font-family:inherit;
-  font-size:13.5px;
-  color:var(--text);
-  background:var(--surface-sunken);
-  border:1px solid var(--border);
-  border-radius:7px;
-  padding:10px 12px;
-  width:100%;
-}
-
+.note_section textarea {  font-family:inherit;  font-size:13.5px;  color:var(--text);  background:var(--surface-sunken);  border:1px solid var(--border);  border-radius:7px;  padding:10px 12px;  width:100%;}
 .note_section input:focus,
 .note_section select:focus,
-.note_section textarea:focus {
-  outline:none;
-  border-color:var(--accent);
-  background:var(--surface);
-}
+.note_section textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--surface);}
 
 /* placeholder */
-.note_section input::placeholder {
-  color:var(--text-faint);
-}
+.note_section input::placeholder {  color:var(--text-faint);}
 
 /* 버튼 영역 */
-.note_section .row5 {
-  margin-top:16px;
-  background:var(--surface);
-  border-radius:10px;
-  box-shadow:var(--shadow);
-}
+.note_section .row5 {  margin-top:16px;  background:var(--surface);  border-radius:10px;  box-shadow:var(--shadow);}
 
-.note_section .btn_con {
-  display:flex;
-  justify-content:flex-end;
-  gap:8px;
-  padding:18px 24px;
-}
+.note_section .btn_con {  display:flex;  justify-content:flex-end;  gap:8px;  padding:18px 24px;}
 
 /* 공통 버튼 */
-.note_section .btns {
-  font-family:inherit;
-  font-size:13px;
-  font-weight:700;
-  border-radius:7px;
-  padding:10px 16px;
-  cursor:pointer;
-  border:none;
-
-}
+.note_section .btns {  font-family:inherit;  font-size:13px;  font-weight:700;  border-radius:7px;  padding:10px 16px;  cursor:pointer;  border:none;}
 
 /* 저장 */
-.note_section .btns.apply {
-  background:var(--accent);
-  color:#fff;
-}
+.note_section .btns.apply {  background:var(--accent);  color:#fff;}
 
 /* 취소 */
-.note_section .btns.exit {
-  background:var(--btn-action-bg);
-  color:var(--btn-action-fg);
-}
-
-.note_section .btns.exit a {
-  color:inherit;
-  text-decoration:none;
-}
+.note_section .btns.exit {  background:var(--btn-action-bg);  color:var(--btn-action-fg);}
+.note_section .btns.exit a {  color:inherit;  text-decoration:none;}
 
 /* datetime */
-.note_section input[type="datetime-local"] {
-  color:var(--text);
-}
+.note_section input[type="datetime-local"] {  color:var(--text);}
 
 /* 배정/매물 연결용 */
-.property-pick {
-  display:flex;
-  gap:8px;
-}
-
-.property-pick button {
-  flex:0 0 auto;
-}
+.property-pick {  display:flex;  gap:8px;}
+.property-pick button {  flex:0 0 auto;}
 
 /* 선택된 매물 */
-.picked-property {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:8px;
-  padding:8px 10px;
-  background:var(--accent-soft);
-  border-radius:7px;
-  font-size:12.5px;
-  color:var(--accent);
-  font-weight:700;
+.picked-property {  display:flex;  justify-content:space-between;  align-items:center;  margin-top:8px;  padding:8px 10px;  background:var(--accent-soft);  border-radius:7px;  font-size:12.5px;  color:var(--accent);  font-weight:700;}
+.esenstial {  color: var(--danger) !important;  font-size: 12px;  margin-left: 4px;  font-weight: 700;}
+.opt {  color: var(--text-faint);  font-size: 12px;  font-weight: 400;  margin-left: 5px;}
+.help {  margin-top: 6px;  font-size: 11.5px;  color: var(--text-faint);}
 
-}
+.property_pick {  display: flex;  gap: 8px;}
+.property_pick input {  flex: 1;}
+.search_btn {  flex: 0 0 auto;}
 
-.esenstial {
-  color: var(--danger) !important;
-  font-size: 12px;
-  margin-left: 4px;
-  font-weight: 700;
-}
-
-.opt {
-  color: var(--text-faint);
-  font-size: 12px;
-  font-weight: 400;
-  margin-left: 5px;
-}
-
-.help {
-  margin-top: 6px;
-  font-size: 11.5px;
-  color: var(--text-faint);
-}
-
-.property_pick {
-  display: flex;
-  gap: 8px;
-}
-
-.property_pick input {
-  flex: 1;
-}
-
-.search_btn {
-  flex: 0 0 auto;
-}
-
-.picked_property {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-  padding: 8px 10px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  border-radius: 7px;
-  font-size: 12.5px;
-  font-weight: 700;
-}
-
-.picked_property button {
-  border: none;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
-  opacity: 0.7;
-}
-
-.picked_property button:hover {
-  opacity: 1;
-}
+.picked_property {  display: flex;  align-items: center;  justify-content: space-between;  margin-top: 8px;  padding: 8px 10px;  background: var(--accent-soft);  color: var(--accent);  border-radius: 7px;font-size: 12.5px;  font-weight: 700;}
+.picked_property button {  border: none;  background: transparent;  color: inherit;  cursor: pointer;  font-size: 13px;  font-weight: 700;  opacity: 0.7;}
+.picked_property button:hover {  opacity: 1;}
 
 /* 버튼 공통 */
-.note_section .row5 {
-  margin-top: 16px;
-  background: var(--surface);
-  border-radius: 10px;
-  box-shadow: var(--shadow);
-}
-
-.note_section .btn_con {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 24px;
-}
-
-.note_section .right {
-  display: flex;
-  gap: 8px;
-  margin-left: auto;
-}
-.note_section .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 700;
-
-  border-radius: 7px;
-  padding: 10px 16px;
-
-  text-decoration: none;
-  cursor: pointer;
-  border: none;
-  white-space: nowrap;
-}
+.note_section .row5 {  margin-top: 16px;  background: var(--surface);  border-radius: 10px;  box-shadow: var(--shadow);}
+.note_section .btn_con {  display: flex;  align-items: center;  justify-content: space-between;  padding: 18px 24px;}
+.note_section .right {  display: flex;  gap: 8px;  margin-left: auto;}
+.note_section .btn {  display: inline-flex;  align-items: center;  justify-content: center;  font-family: inherit;  font-size: 13px;  font-weight: 700;border-radius: 7px;  padding: 10px 16px;text-decoration: none;  cursor: pointer;  border: none;  white-space: nowrap;}
 
 /* 노트 취소 버튼 */
-.note_section .btn-muted {
-  background: var(--btn-action-bg);
-  color: var(--btn-action-fg);
-}
-
-.note_section .btn-muted:hover {
-  filter: brightness(.98);
-}
+.note_section .btn-muted {  background: var(--btn-action-bg);  color: var(--btn-action-fg);}
+.note_section .btn-muted:hover {  filter: brightness(.98);}
 
 /* 등록/수정 버튼 */
-.note_section .btn-primary {
-  background: var(--accent);
-  color: #fff;
-}
-
-.note_section .btn-primary:hover {
-  filter: brightness(1.06);
-}
+.note_section .btn-primary {  background: var(--accent);  color: #fff;}
+.note_section .btn-primary:hover {  filter: brightness(1.06);}
 
 /* 삭제버튼 */
-.note_section .btn-danger-outline {
-  background: transparent;
-  border: 1px solid var(--danger);
-  color: var(--danger);
-}
+.note_section .btn-danger-outline {  background: transparent;  border: 1px solid var(--danger);  color: var(--danger);}
+.note_section .btn-danger-outline:hover {  background: rgba(224, 52, 43, .06);}
 
-.note_section .btn-danger-outline:hover {
-  background: rgba(224, 52, 43, .06);
-}
+/* Top Hero Header */
+.card-hero {  display: flex;  justify-content: space-between;  align-items: flex-start;  padding-bottom: 24px;  border-bottom: 1px solid #f2f4f6;  margin-bottom: 24px;}
+.badge-group {  display: flex;  gap: 6px;  margin-bottom: 8px;}
+.user-info-title {  font-size: 22px;  font-weight: 700;  color: #191f28;  display: flex;  align-items: baseline;  gap: 8px;}
+.user-sub-text {  font-size: 14px;  font-weight: 400;  color: #8b95a1;}
+.hero-actions {  display: flex;  gap: 8px;}
+
+/* Content Title */
+.section-title {  font-size: 16px;  font-weight: 700;  color: #191f28;  margin-bottom: 16px;}
+
+/* 3-Column Info Grid */
+.info-grid {  display: grid;  grid-template-columns: repeat(3, 1fr);  gap: 12px;}
+.info-item {  background-color: #f9fafb;  border-radius: 16px;  padding: 16px 20px;  display: flex;  flex-direction: column;  gap: 6px;}
+.info-label {  font-size: 13px;  font-weight: 500;  color: #8b95a1;}
+.info-value {  font-size: 15px;  font-weight: 700;  color: #191f28;  word-break: keep-all;}
+.info-value.highlight-blue {  color: #3182f6;}
+.note_form .panel{padding: 0;}
+
+/* ========================= Button Base & Hover States ========================= */
+
+/* 버튼 공통 Transition & State */
+.btn, .btns, .toss-btn {  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;  user-select: none;}
+.btn:active, .btns:active, .toss-btn:active {  transform: scale(0.98);}
+
+/* 1. Muted Button (보조 / 취소 버튼) */
+.btn-muted, .btns.exit {  background: var(--btn-action-bg);  color: var(--btn-action-fg);}
+.btn-muted:hover, .btns.exit:hover {  background: color-mix(in srgb, var(--btn-action-bg) 85%, var(--text) 15%);  color: var(--text);}
+
+/* 2. Primary Button (주요 / 저장 / 등록 버튼) */
+.btn-primary, .btns.apply {  background: var(--accent);  color: #ffffff;}
+.btn-primary:hover, .btns.apply:hover {  background: color-mix(in srgb, var(--accent) 88%, #ffffff 12%);  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 35%, transparent);}
+.btn-primary:active, .btns.apply:active {  background: color-mix(in srgb, var(--accent) 85%, #000000 15%);}
+
+/* 3. Danger Outline Button (삭제 / 경고 버튼) */
+.btn-danger-outline {  background: transparent;  border: 1px solid var(--danger);  color: var(--danger);}
+.btn-danger-outline:hover {  background: color-mix(in srgb, var(--danger) 10%, transparent);  border-color: var(--danger);}
+.btn-danger-outline:active {  background: color-mix(in srgb, var(--danger) 20%, transparent);}
+
+/* 4. Danger Fill Button (필요 시 사용하는 빨간 채우기 버튼) */
+.btn-danger {  background: var(--danger);  color: #ffffff;  border: none;}
+.btn-danger:hover {  background: color-mix(in srgb, var(--danger) 88%, #000000 12%);}
+
+/* ========================= Sub Action Items Hover ========================= */
+
+/* 검색 / 매물 선택 버튼 */
+.search_btn, .property-pick button {  transition: background-color 0.15s ease, transform 0.1s ease;}
+.search_btn:hover, .property-pick button:hover {  background: color-mix(in srgb, var(--btn-action-bg) 80%, var(--text) 20%);}
+
+/* 모달 / 상세보기 링크 & 닫기 버튼 */
+.memo-modal-head .detail-link {  transition: background-color 0.15s ease, opacity 0.15s ease;}
+.memo-modal-head .detail-link:hover {  background: color-mix(in srgb, #e8f3ff 80%, #3182f6 20%);}
+.memo-modal-close {  transition: background-color 0.15s ease, color 0.15s ease;}
+.memo-modal-close:hover {  background: color-mix(in srgb, var(--surface-sunken) 70%, var(--text-muted) 30%);  color: var(--text);}

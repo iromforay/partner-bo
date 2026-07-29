@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { change_page } from '../../store';
 import { Link } from 'react-router-dom';
 import { MessageSquare } from "lucide-react";
+import { User, ChevronRight, X } from "lucide-react";
 import './note.css';
 
 import axios from "axios";
@@ -229,38 +230,37 @@ const handleMemoSubmit = (e) => {
           </div>
         </div>
         {/* ---- 리스트 테이블 영역 ---- */}
-        <div className="panel">
-          <table>
-            <thead>
-              <tr>
-                <th>글번호</th>
-                <th>방문형태</th>
-                <th>방문자</th>
-                <th>거래방식</th>
-                <th>관심매물</th>
-                <th>희망지역</th>
-                <th>상태</th>
-                <th>메모</th>
-                <th>방문예정일</th>
-                <th>등록일</th>
-                <th>관리</th>
-              </tr>
-            </thead>
+        <table>
+          <thead>
+            <tr>
+              <th>글번호</th>
+              <th>방문형태</th>
+              <th>방문자</th>
+              <th>거래방식</th>
+              <th>관심매물</th>
+              <th>희망지역</th>
+              <th>상태</th>
+              <th>메모</th>
+              <th>방문예정일</th>
+              <th>등록일</th>
+              <th>관리</th>
+            </tr>
+          </thead>
 
-            <tbody>
-              {now_data.map((a,i)=>
-                <Rows
-                    key={i}
-                    cfg={config}
-                    data={now_data}
-                    page_data={page_info}
-                    val={i}
-                    onOpenMemo={() => handleOpenMemoModal(now_data[i])}
-                />
-              )}
-            </tbody>
-          </table>
-        </div>
+          <tbody>
+            {now_data.map((a,i)=>
+              <Rows
+                  key={i}
+                  cfg={config}
+                  data={now_data}
+                  page_data={page_info}
+                  val={i}
+                  onOpenMemo={() => handleOpenMemoModal(now_data[i])}
+              />
+            )}
+          </tbody>
+        </table>
+
         <ul className='pagenation note_pagenation'>
           {page.map(function(a, i){
             return(
@@ -288,7 +288,7 @@ const handleMemoSubmit = (e) => {
                 </div>
                 <div className="head-actions">
                   <Link className="detail-link" to={`/note/view/${memoModalData.note_no}`}>
-                    상세보기 →
+                    상세보기 <ChevronRight size={15} color="#3182f6" />
                   </Link>
                   <button className="memo-modal-close" type="button" onClick={handleCloseMemoModal}>
                     ✕
@@ -303,14 +303,12 @@ const handleMemoSubmit = (e) => {
                       <div className="memo-avatar">
                         {m.name || "-"}
                       </div>
-                      <div>
-                        <div className="memo-bubble">
-                          <div className="memo-byline" >
-                            <span className="memo-writer">{m.name}</span>
-                            {/* <span className="memo-time">{m.write_date}</span> */}
-                          </div>
-                          {m.memo}
+                      <div className="memo-bubble">
+                        <div className="memo-byline" >
+                          <span className="memo-writer">{m.name}</span>
+                          {/* <span className="memo-time">{m.write_date}</span> */}
                         </div>
+                        {m.memo}
                       </div>
                     </div>
                   ))
@@ -364,10 +362,10 @@ function Rows(props){
       <td className="col-visitor">
         <Link to={`/note/view/${data.note_no}`}>
           {data.visitor_name}
+          <span className="phone">
+            {data.visitor_phone}
+          </span>
         </Link>
-        <span className="phone">
-          {data.visitor_phone}
-        </span>
       </td>
 
       <td>{data.transaction_type_txt}</td>
