@@ -35,31 +35,45 @@ function Set_property(props){
   //   }
   // }, [propertySetting])
 
-useEffect(()=>{
+  //이미지 설정
+  useEffect(() => {
+    if (!propertySetting) return;
 
-  // 배경 설정
-  axios.get(
-    process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=property',
-    config
-  )
-  .then((result)=>{
-    console.log("property 배경:", result.data);
-    setPropertySetting(result.data.RECORD);
-  });
+    setContents(propertySetting.row.title);
+
+    if (propertySetting.img && propertySetting.img.length > 0) {
+      setUpload(propertySetting.img[0].full_url);
+    } else {
+      setUpload('');
+    }
+  }, [propertySetting]);
+
+  //api
+  useEffect(()=>{
+
+    // 배경 설정
+    axios.get(
+      process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=property',
+      config
+    )
+    .then((result)=>{
+      console.log("property 배경:", result.data);
+      setPropertySetting(result.data.RECORD);
+    });
 
 
-  // 메뉴 설정
-  axios.get(
-    process.env.REACT_APP_API_KEY+'Admin/FunctionMenu/data',
-    config
-  )
-  .then((result)=>{
-    console.log("function menu:", result.data);
-    setFunctionMenuSetting(result.data.RECORD);
-  });
+    // 메뉴 설정
+    axios.get(
+      process.env.REACT_APP_API_KEY+'Admin/FunctionMenu/data',
+      config
+    )
+    .then((result)=>{
+      console.log("function menu:", result.data);
+      setFunctionMenuSetting(result.data.RECORD);
+    });
 
 
-},[]);
+  },[]);
 
   function preview(input){
     if (input.length !== 0) {
@@ -163,6 +177,17 @@ useEffect(()=>{
           <div className="row row2">
             <div className="title_con">
               <h5>배경 설정 (선택)</h5>
+              <div className="check_con">
+                <label>
+                  <input className="input_check_hidden" name="bgcolor_show" type="hidden" value='N'></input>
+                  <input className="check_menu input_check" name="bgcolor_show" type="checkbox" value="Y" defaultChecked={propertySetting.row.bgcolor_show === "Y" ? true : false}></input>
+                  <div className="check_btn">
+                    <span className="disabled">숨김</span>
+                    <span className="abled">보임</span>
+                    <div className="circle"></div>
+                  </div>
+                </label>
+              </div>
             </div>
             <p className="row_desc">해당페이지 배경 이미지와 색을 설정해주세요 / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
             <div className="inner_con">
