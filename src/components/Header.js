@@ -9,12 +9,13 @@ import Main from './Main';
 import Basic from './Basic';
 import Board from './Board';
 import Property from './Property';
+import Note from './Note';
 import View_brd from './board_page/View_brd';
 import Edit_profile from './Edit_profile';
-
-import  Property_form from './property_page/Property_form';
-// import Edit_property from './property_page/Edit_property';
+import Property_form from './property_page/Property_form';
 import Property_detail from './property_page/Property_detail';
+import Note_form from './note_page/Note_form';
+import Note_detail from './note_page/Note_detail';
 
 import axios from 'axios';
 
@@ -106,6 +107,16 @@ function Header(){
                   <p>매물 관리</p>
                 </Link>
               </li>
+              <li onClick={()=>{
+                dispatch(change_page('note'))
+              }} className={store.current_page === 'note' ? 'on' : null}>
+                <Link to='/note'>
+                  <div className='img_con'>
+                    <img src='img/header/header_note.png' alt='아이콘이미지'></img>
+                  </div>
+                  <p>노트 관리</p>
+                </Link>
+              </li>
               {/* <li onClick={()=>{
                 dispatch(change_page('member'))
               }} className={store.current_page === 'member' ? 'on' : null}>
@@ -136,6 +147,7 @@ function Header(){
             <Route path='/basic' element={ <Basic></Basic> }></Route>
             <Route path='/board' element={ <Board></Board> }></Route>
             <Route path='/property' element={ <Property></Property> }></Route>
+            <Route path='/note' element={ <Note /> }></Route>
             <Route path='/write' element={ <Write_brd></Write_brd> }></Route>
             <Route path='/edit' element={ <Edit_brd></Edit_brd> }></Route>
             <Route path='/view' element={ <View_brd></View_brd> }></Route>
@@ -148,6 +160,15 @@ function Header(){
 
             {/* 매물 상세 조회 */}
             <Route path="/property/view/:property_no" element={<Property_detail />} />
+
+            {/* 노트 등록 */}
+            <Route path="/note/write" element={<Note_form />} />
+
+            {/* 노트 수정 (URL 파라미터 :note_no 받기) */}
+            <Route path="/note/edit/:note_no" element={<Note_form />} />
+
+            {/* 노트 상세 조회 */}
+            <Route path="/note/view/:note_no" element={<Note_detail />} />
           </Routes>
         </div>
       </div>
