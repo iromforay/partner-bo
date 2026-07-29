@@ -301,7 +301,7 @@ const handleMemoSubmit = (e) => {
                   memoModalData.memos.map((m) => (
                     <div className="memo-item" key={m.memo_no}>
                       <div className="memo-avatar">
-                        {getInitials(m.name)}
+                        {m.name || "-"}
                       </div>
                       <div>
                         <div className="memo-bubble">
