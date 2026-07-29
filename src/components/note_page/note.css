@@ -9,6 +9,7 @@
     --accent: #006eff;
     --accent-soft: #e4efff;
     --tab-inactive: #8b93a3;
+    --danger: #e0342b;
     --btn-action-bg: #e7e9ed;
     --btn-action-fg: #4b5563;
     --st-consulting: #006eff;
@@ -87,7 +88,7 @@
     color: var(--text-muted);
     text-decoration: none;
     display: inline-block;
-    margin-bottom: 14px;
+    /* margin-bottom: 14px; */
   }
   .back-link:hover {
     color: var(--accent);
@@ -612,4 +613,313 @@
 
   background: var(--surface-sunken);
 
+}
+
+
+/* =========================
+   Note Form
+========================= */
+
+/* 전체 폼 박스 */
+.note_section {
+   /* max-width: 860px;  */
+  /* margin: 0 auto; */
+  /* padding: 28px 24px 90px;  */
+}
+
+/* 제목 영역 */
+.note_section h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 18px;
+}
+
+/* 폼 컨테이너 */
+.note_section .form_con {
+  background: var(--surface);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* 섹션 */
+.note_section .section_box {
+  padding: 22px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.note_section .section_box:last-child {
+  border-bottom: none;
+}
+
+/* 섹션 제목 */
+.note_section .sec_title_bar {
+  margin-bottom: 16px;
+}
+
+.note_section .sec_title_bar h4 {
+  font-size: 13.5px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text);
+}
+
+/* 그리드 */
+.note_section .grid_row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 18px;
+  margin-bottom: 16px;
+}
+
+.note_section .grid_row:last-child {
+  margin-bottom:0;
+}
+
+/* 한칸 전체 */
+.note_section .grid_row.full {
+  grid-template-columns:1fr;
+}
+
+/* 입력 그룹 */
+.note_section .form_group {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+/* 라벨 */
+.note_section .form_group label {
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--text-muted);
+}
+
+/* 입력 */
+.note_section input,
+.note_section select,
+.note_section textarea {
+  font-family:inherit;
+  font-size:13.5px;
+  color:var(--text);
+  background:var(--surface-sunken);
+  border:1px solid var(--border);
+  border-radius:7px;
+  padding:10px 12px;
+  width:100%;
+}
+
+.note_section input:focus,
+.note_section select:focus,
+.note_section textarea:focus {
+  outline:none;
+  border-color:var(--accent);
+  background:var(--surface);
+}
+
+/* placeholder */
+.note_section input::placeholder {
+  color:var(--text-faint);
+}
+
+/* 버튼 영역 */
+.note_section .row5 {
+  margin-top:16px;
+  background:var(--surface);
+  border-radius:10px;
+  box-shadow:var(--shadow);
+}
+
+.note_section .btn_con {
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  padding:18px 24px;
+}
+
+/* 공통 버튼 */
+.note_section .btns {
+  font-family:inherit;
+  font-size:13px;
+  font-weight:700;
+  border-radius:7px;
+  padding:10px 16px;
+  cursor:pointer;
+  border:none;
+
+}
+
+/* 저장 */
+.note_section .btns.apply {
+  background:var(--accent);
+  color:#fff;
+}
+
+/* 취소 */
+.note_section .btns.exit {
+  background:var(--btn-action-bg);
+  color:var(--btn-action-fg);
+}
+
+.note_section .btns.exit a {
+  color:inherit;
+  text-decoration:none;
+}
+
+/* datetime */
+.note_section input[type="datetime-local"] {
+  color:var(--text);
+}
+
+/* 배정/매물 연결용 */
+.property-pick {
+  display:flex;
+  gap:8px;
+}
+
+.property-pick button {
+  flex:0 0 auto;
+}
+
+/* 선택된 매물 */
+.picked-property {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:8px;
+  padding:8px 10px;
+  background:var(--accent-soft);
+  border-radius:7px;
+  font-size:12.5px;
+  color:var(--accent);
+  font-weight:700;
+
+}
+
+.esenstial {
+  color: var(--danger) !important;
+  font-size: 12px;
+  margin-left: 4px;
+  font-weight: 700;
+}
+
+.opt {
+  color: var(--text-faint);
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 5px;
+}
+
+.help {
+  margin-top: 6px;
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+.property_pick {
+  display: flex;
+  gap: 8px;
+}
+
+.property_pick input {
+  flex: 1;
+}
+
+.search_btn {
+  flex: 0 0 auto;
+}
+
+.picked_property {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.picked_property button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.picked_property button:hover {
+  opacity: 1;
+}
+
+/* 버튼 공통 */
+.note_section .row5 {
+  margin-top: 16px;
+  background: var(--surface);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.note_section .btn_con {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+}
+
+.note_section .right {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.note_section .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  border-radius: 7px;
+  padding: 10px 16px;
+
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+
+/* 노트 취소 버튼 */
+.note_section .btn-muted {
+  background: var(--btn-action-bg);
+  color: var(--btn-action-fg);
+}
+
+.note_section .btn-muted:hover {
+  filter: brightness(.98);
+}
+
+/* 등록/수정 버튼 */
+.note_section .btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.note_section .btn-primary:hover {
+  filter: brightness(1.06);
+}
+
+/* 삭제버튼 */
+.note_section .btn-danger-outline {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.note_section .btn-danger-outline:hover {
+  background: rgba(224, 52, 43, .06);
 }

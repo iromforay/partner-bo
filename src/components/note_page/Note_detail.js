@@ -293,10 +293,10 @@ function Note_detail() {
   return (
     <div className="sections write property_section property_section_detail">
       <div className="width_con">
+        <Link to="/note" className="back-link">
+          ← 목록으로
+        </Link>
         <div className="form_con">
-          <Link to="/note" className="back-link">
-            ← 목록으로
-          </Link>
           {/* 기본 정보 Panel */}
           <div className="panel">
             <div className="detail-head">
