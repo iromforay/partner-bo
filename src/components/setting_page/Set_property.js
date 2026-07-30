@@ -141,10 +141,9 @@ function Set_property(props){
                 $("input[type='checkbox']").prop('checked', true);
                 $("input[name='main_menu_color']").val('#ffffff');
                 $("input[name='sub_menu_color']").val('#E72D2B');
-                // $(".tit_menu").css({'color' : '#ffffff'});
-                // $(".tit_menu").css({'background' : '#EBEFF2'});
-                // $(".tit_menu.point").css({'background' : '#E72D2B'});
-                // $(".tit_menu.point").css({'color' : '#fff'});
+                $("input[name='bgcolor']").val('#f5f5f5');
+                $("input[name='transparent']").val(0);
+                $(".opa span").text(0+"%");
               }
             }}>
               <span>초기화</span>
