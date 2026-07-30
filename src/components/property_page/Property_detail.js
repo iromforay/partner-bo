@@ -8,110 +8,6 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 // import DaumPostcode from "react-daum-postcode";
 
-// 💡 백엔드 연결 실패 시 사용할 퍼블리싱용 더미 데이터
-const MOCK_DATA = {
-  property_no: "19",
-
-  property_type: "apt",
-  property_type_txt: "아파트",
-
-  transaction_type: "sale",
-  transaction_type_txt: "매매",
-
-  status: "1",
-  status_txt: "거래가능",
-
-  display_yn: "1",
-  display_yn_txt: "노출",
-
-  property_name: "더미데이터 ",
-  building_name: null,
-
-
-  addr_sido: "경남",
-  addr_sigungu: "창녕군",
-  addr_dong: "반포리",
-  addr_road: "경남 창녕군 남지읍 골담실길 16",
-  addr_detail: "",
-
-
-  lat: "",
-  lng: "",
-
-
-  supply_area: "0",
-  exclusive_area: "0",
-
-  total_floor: "0",
-  current_floor: "0",
-
-  room_count: "0",
-  bathroom_count: "0",
-
-  parking_available: "Y",
-  parking_count: "0",
-
-
-  completion_date: null,
-  move_in_date: null,
-
-
-  direction: "S",
-  direction_txt: "남",
-
-  heating_fuel: "1",
-  heating_fuel_txt: "도시가스",
-
-  heating_type: "1",
-  heating_type_txt: "개별난방",
-
-
-  sale_price: "0",
-  jeonse_price: "0",
-  deposit_price: "0",
-  monthly_rent: "0",
-
-  loan_amount: "0",
-  maintenance_fee: "0",
-
-
-  summary: null,
-
-  description: "",
-
-
-  main_image: "a1c96fcdd536eb0304df01dbac0174c9.png",
-
-  main_path: "foray/property/19/",
-
-  main_image_url:
-    "http://api.bomul.co.kr/pds/foray/property/19/a1c96fcdd536eb0304df01dbac0174c9.png",
-
-
-  detail_images: [
-    {
-      img_no: "1",
-      img_dir: "foray/property/19/",
-      img_name: "a1c96fcdd536eb0304df01dbac0174c9.png",
-      full_url:
-        "http://api.bomul.co.kr/pds/foray/property/19/a1c96fcdd536eb0304df01dbac0174c9.png"
-    },
-    {
-      img_no: "2",
-      img_dir: "foray/property/19/",
-      img_name: "a1c96fcdd536eb0304df01dbac0174c9.png",
-      full_url:
-        "http://api.bomul.co.kr/pds/foray/property/19/a1c96fcdd536eb0304df01dbac0174c9.png"
-    }
-  ],
-
-
-  created_at: "2026-07-27 13:23:13",
-  updated_at: "2026-07-27 13:23:13",
-  view_count: "0"
-};
-
-
 function Property_detail() {
   const { property_no } = useParams();
   const navigate = useNavigate();
@@ -127,6 +23,7 @@ function Property_detail() {
   };
 
   let url = `${process.env.REACT_APP_API_KEY}Admin/Property/detail?property_no=${property_no}`;
+  const [mapImage, setMapImage] = useState("");
 
   //상세 데이터 바인딩
   useEffect(() => {
@@ -137,14 +34,8 @@ function Property_detail() {
       )
       .then((res) => {
 
-        console.log("상세 API 전체:", res.data);
-        console.log("SUCCESS 값:", res.data.SUCCESS);
-        console.log("RECORD:", res.data.RECORD);
-        console.log("rows:", res.data.RECORD?.rows);
-
         if (res.data.SUCCESS !== "TRUE") {
           console.error("상세 조회 실패:", res.data.MSG);
-          setData(MOCK_DATA);
           return;
         }
 
@@ -154,11 +45,17 @@ function Property_detail() {
 
         if (!data) {
           console.error("데이터 없음");
-          setData(MOCK_DATA);
           return;
         }
 
         setData(data);
+
+        // 지도 이미지 추가시
+        if (data.lat && data.lng) {
+          setMapImage(
+            `${process.env.REACT_APP_API_KEY}Admin/Map/image?lat=${data.lat}&lng=${data.lng}`
+          );
+        }
 
       })
       .catch((err) => {
@@ -167,7 +64,6 @@ function Property_detail() {
           err.response?.data || err
         );
 
-        setData(MOCK_DATA);
       })
       .finally(() => {
         setLoading(false);
@@ -279,18 +175,22 @@ const formatPrice = (price) => {
                 <label>도로명주소</label>
                 <div className="view_text">{data.addr_road || "-"}</div>
               </div>
-              <div className="form_group">
+              {/* <div className="form_group">
                 <label>상세주소</label>
                 <div className="view_text">{data.addr_detail || "-"}</div>
-              </div>
+              </div> */}
             </div>
 
             {/* 지도 박스 */}
-            {/* {data.lat && data.lng && (
-              <div className="map_area" style={{ marginTop: '15px' }}>
-                <div id="map" style={{ width: '100%', height: '280px', borderRadius: '8px', border: '1px solid #e2e8f0', backgroundColor: '#f8fafc' }}></div>
+            {mapImage && (
+              <div className="map_preview">
+                <label>지도 위치</label>
+                <img 
+                  src={mapImage}
+                  alt="지도 위치"
+                />
               </div>
-            )} */}
+            )}
           </div>
 
           {/* 3. 매물 정보 */}

@@ -149,7 +149,7 @@ function Property_form() {
     addr_sigungu: "",
     addr_dong: "",
     addr_road: "",
-    addr_detail: "",
+    // addr_detail: "",
     naver_address:"",
     lat: "",
     lng: "",
@@ -737,7 +737,7 @@ console.log("지도 데이터 확인", {
                   <label>도로명주소</label>
                   <input type="text" name="addr_road" value={formData.addr_road} readOnly placeholder="도로명 주소" />
                 </div>
-                <div className="form_group">
+                {/* <div className="form_group">
                   <label>상세주소</label>
                   <input
                     type="text"
@@ -746,7 +746,7 @@ console.log("지도 데이터 확인", {
                     onChange={handleChange}
                     placeholder="상세 주소 입력 (동/호수 등)"
                   />
-                </div>
+                </div> */}
               </div>
 
               {mapImage && (
