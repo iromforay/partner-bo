@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { now_property_view } from '../../store';
 import axios from "axios";
 import $ from "jquery";
+import './property.css';
+
 
 function Property_list(props){
   

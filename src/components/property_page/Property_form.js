@@ -6,6 +6,7 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
+import './property.css';
 
 /* ==========================================================================
    1. 주소 검색 팝업 모달 컴포넌트
@@ -149,6 +150,7 @@ function Property_form() {
     addr_dong: "",
     addr_road: "",
     addr_detail: "",
+    naver_address:"",
     lat: "",
     lng: "",
     supply_area: "",
@@ -213,10 +215,6 @@ function Property_form() {
         )
         .then((res) => {
 
-  console.log("상세 API 전체:", res.data);
-  console.log("SUCCESS 값:", res.data.SUCCESS);
-  console.log("RECORD:", res.data.RECORD);
-  console.log("rows:", res.data.RECORD?.rows);
         // 성공 여부 확인
         if (res.data.SUCCESS !== "TRUE") {
           console.error("상세 조회 실패:", res.data.MSG);
@@ -247,6 +245,9 @@ function Property_form() {
           addr_sigungu: data.addr_sigungu ?? "",
           addr_dong: data.addr_dong ?? "",
           addr_road: data.addr_road ?? "",
+          naver_address: data.naver_address ?? "",
+          lat: data.lat ?? "",
+          lng: data.lng ?? "",
 
           supply_area: data.supply_area ?? "",
           exclusive_area: data.exclusive_area ?? "",
@@ -279,6 +280,12 @@ function Property_form() {
           summary:data.summary ?? "",
           description:data.description ?? "",
         }));
+
+       if(data.lat && data.lng){
+          setMapImage(
+            `${process.env.REACT_APP_API_KEY}Admin/Map/image?lat=${data.lat}&lng=${data.lng}`
+          );
+        }
 
         // 대표 이미지 바인딩
         if (data.main_image_url) {
@@ -444,39 +451,50 @@ function Property_form() {
   };
 
   /* ------------------------------------------------------------------------
-     2-10. 주소 선택 완료 핸들러 (Kakao Map 지오코딩으로 위경도 좌표 산출)
+     2-10. 주소 선택 완료 핸들러 (naver Map 지오코딩으로 위경도 좌표 산출)
      ------------------------------------------------------------------------ */
-  const handleAddressComplete = (data) => {
-    let latVal = "";
-    let lngVal = "";
+  const [mapImage, setMapImage] = useState("");
+  const handleAddressComplete = async (data) => {
+    try {
+      const fd = new FormData();
+      fd.append("address", data.roadAddress);
 
-    // 주소 상태 업데이트 함수
-    const updateAddressState = (lat, lng) => {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_KEY}Admin/Map/address`,
+        fd,
+        config
+      );
+
+      if (res.data.SUCCESS !== "TRUE") {
+        alert(res.data.MSG);
+        return;
+      }
+
+      const result = res.data.RECORD;
+
       setFormData((prev) => ({
         ...prev,
         addr_sido: data.sido,
         addr_sigungu: data.sigungu,
-        addr_dong: data.bname,
+        addr_dong: data.bname || "",
         addr_road: data.roadAddress,
-        lat: lat,
-        lng: lng,
+        naver_address: JSON.stringify(result.address),
+        lat: result.lat,
+        lng: result.lng,
       }));
-    };
 
-    // 카카오지도 SDK가 로드되어 있는 경우 좌표 검색 수행
-    if (window.kakao && window.kakao.maps && window.kakao.maps.services) {
-      const geocoder = new window.kakao.maps.services.Geocoder();
-      geocoder.addressSearch(data.roadAddress, (result, status) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          latVal = result[0].y; // 위도
-          lngVal = result[0].x; // 경도
-        }
-        updateAddressState(latVal, lngVal);
-      });
-    } else {
-      updateAddressState("", "");
+      setMapImage(result.image_url);
+
+      setIsOpenPostcode(false);
+console.log("지도 데이터 확인", {
+  lat: data.lat,
+  lng: data.lng,
+  main: data
+});
+    } catch (err) {
+      console.error("주소검색 API 오류:", err);
+      alert("주소 검색에 실패했습니다.");
     }
-    setIsOpenPostcode(false);
   };
 
   /* ------------------------------------------------------------------------
@@ -553,16 +571,20 @@ function Property_form() {
         img_no: deleteImgNos,
       })
     );
-console.log(
-  "삭제 데이터",
-  {
-    main: deleteMain,
-    img_no: deleteImgNos
-  }
-);
-    // 저장 API 호출
-    const apiUrl = `${process.env.REACT_APP_API_KEY}Admin/Property/save`;
+    // console.log(
+    //   "삭제 데이터",
+    //   {
+    //     main: deleteMain,
+    //     img_no: deleteImgNos
+    //   };
 
+      console.log("저장 데이터 확인", {
+        lat: formData.lat,
+        lng: formData.lng,
+      });
+
+  // 저장 API 호출
+  const apiUrl = `${process.env.REACT_APP_API_KEY}Admin/Property/save`;
     axios
       .post(apiUrl, submitFormData, config)
       .then((res) => {
@@ -726,6 +748,16 @@ console.log(
                   />
                 </div>
               </div>
+
+              {mapImage && (
+                <div className="map_preview">
+                  <label>지도 위치</label>
+                  <img 
+                    src={mapImage} 
+                    alt="지도 위치"
+                  />
+                </div>
+              )}
             </div>
 
             {/* 3-3. 매물 상세 수치 정보 섹션 */}

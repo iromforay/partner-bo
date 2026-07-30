@@ -1,0 +1,22 @@
+.map_preview {
+  margin-top: 20px;
+}
+
+.map_preview label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.map_preview img {
+  display: block;
+  /* width: 500px; */
+  height: 280px;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f7f7f7;
+}
