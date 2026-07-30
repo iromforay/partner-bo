@@ -4,6 +4,7 @@ import { change_page, change_set, minus_list, plus_list } from "../store";
 import {Set_header, Set_main, Set_notice, Set_around, Set_property, Set_charge, Set_review, Set_vod, Set_map} from './setting_page/setting_page';
 import './setting_page/set.css';
 import axios from "axios";
+import Set_NaverVerification from "./setting_page/Set_NaverVerification";
 
 function Basic(props){
 
@@ -117,6 +118,16 @@ function Basic(props){
                 }
               </div>
             </li>
+            <li onClick={()=>{
+              dispatch(change_set(9))
+            }} className={select === 9 ? "on" : null}>
+              <h5>검색엔진 등록</h5>
+              {/* <div className="status">
+                {
+                  menuSetting.map_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+                }
+              </div> */}
+            </li>
           </ul>
           <div className="form_con">
             {
@@ -129,7 +140,8 @@ function Basic(props){
                 // 5 : <Set_charge></Set_charge>,
                 6 : <Set_review></Set_review>,
                 7 : <Set_vod></Set_vod>,
-                8 : <Set_map></Set_map>
+                8 : <Set_map></Set_map>,
+                9 : <Set_NaverVerification></Set_NaverVerification>,
               }[select]
             }
           </div>
