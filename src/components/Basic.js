@@ -122,11 +122,11 @@ function Basic(props){
               dispatch(change_set(9))
             }} className={select === 9 ? "on" : null}>
               <h5>검색엔진 등록</h5>
-              {/* <div className="status">
+              <div className="status">
                 {
-                  menuSetting.map_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+                  menuSetting.naver_reserve_show=== "Y" ? <span className="on">등록됨</span> : <span className="off">미등록</span>
                 }
-              </div> */}
+              </div>
             </li>
           </ul>
           <div className="form_con">

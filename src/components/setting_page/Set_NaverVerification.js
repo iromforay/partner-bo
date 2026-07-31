@@ -8,8 +8,9 @@ import post_ajax from "../../ajaxs";
 import del_img from './del_fn';
 
 function Set_NaverVerification(){
-  let [dataSetting, setDataSetting] = useState();
+  let [dataSetting, setDataSetting] = useState(null);
   const [code, setCode] = useState("");
+  const isRegistered = dataSetting?.naver_reserve_show === "Y";
   const looksLikeTag =
     code.includes("<meta") ||
     code.includes("content=");
@@ -26,16 +27,20 @@ function Set_NaverVerification(){
     }
   }
 
-  useEffect(()=>{
-    if(dataSetting){
-      setCode(
-        dataSetting.row.naver_site_verification || ""
-      );
-    }
-  },[dataSetting]);
+  useEffect(() => {
+    setCode(dataSetting?.naver_site_verification ?? "");
+  }, [dataSetting]);
 
-  useMemo(()=>{
-    return axios.get(process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=notice', config).then((result)=>{setDataSetting(result.data.RECORD); console.log('아작스 통신', result)}).catch(()=>{alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); window.location.href = '/';});
+  useEffect(() => {
+    axios
+      .get(process.env.REACT_APP_API_KEY + "Admin/Basic/data", config)
+      .then((result) => {
+        setDataSetting(result.data.RECORD);
+      })
+      .catch(() => {
+        alert("서버와의 연결이 끊겼습니다.");
+        window.location.href = "/";
+      });
   }, []);
 
   console.log(dataSetting);
@@ -43,9 +48,7 @@ function Set_NaverVerification(){
   if(dataSetting){
     return(
       <form id="naverVerificationSetting" data-whats="naverVerification">
-        <div className="row row1">
-          
-        </div>
+        <div className="row row1"></div>
 
         <div className="naver-page">
 
@@ -58,13 +61,13 @@ function Set_NaverVerification(){
             </p>
 
             <div className="status-row">
-              <span className={code ? "pill on":"pill off"}>
-                <span className="dot"/>
-                {code ? " 등록됨" : " 미등록"}
+              <span className={isRegistered ? "pill on" : "pill off"}>
+                <span className="dot" />
+                {isRegistered ? " 등록됨" : " 미등록"}
               </span>
 
               <span className="status-meta">
-                {code
+                {isRegistered
                   ? "소유확인 코드가 입력되었습니다"
                   : "아직 소유확인 코드가 입력되지 않았습니다"}
               </span>
@@ -142,6 +145,18 @@ function Set_NaverVerification(){
               <p className="sub">meta 태그의 <code>content="…"</code> 값만 입력하세요.</p>
                 
               <label>네이버 사이트 소유확인 코드</label>
+              <input
+                type="hidden"
+                name="naver_reserve"
+                value={dataSetting?.naver_reserve ?? ""}
+              />
+
+              <input
+                type="hidden"
+                name="naver_reserve_show"
+                value={dataSetting?.naver_reserve_show ?? "Y"}
+              />
+
               <input
                 type="text"
                 name="naver_site_verification"
