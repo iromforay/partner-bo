@@ -6,11 +6,11 @@ import { now_property_view } from '../../store';
 import axios from "axios";
 import $ from "jquery";
 import './property.css';
+import '../note_page/note.css';
 
 
 function Property_list(props){
   
-  //let [data, setData] = useState(props.data);
   let data = props.data;
   let origin = props.origin_data;
   let [now_data, setNow_data] = useState();
@@ -69,6 +69,7 @@ useEffect(()=>{
 
     setNow_data(rows);
     setPage_info(result.data.RECORD.pager);
+    console.log(result.data.RECORD.rows)
 
   });
 
@@ -125,9 +126,9 @@ console.log("검색 실행");
   if(now_data){
     return(
       <div className="brd all_brd">
-        <div className="fn_bar">
-          <div className="search_con show">
-            <select value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
+        <div className="toolbar">
+          <div className="toolbar-search">
+            <select className="text-input" value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
               <option value="all"disabled hidden>매물종류</option>
               <option value="apt">아파트</option>
               <option value="officetel">오피스텔</option>
@@ -144,14 +145,14 @@ console.log("검색 실행");
               <option value="etc">기타</option>
             </select>
 
-            <select value={transaction_type} onChange={(e) => setTransaction_type(e.target.value)}>
+            <select className="text-input"  value={transaction_type} onChange={(e) => setTransaction_type(e.target.value)}>
               <option value="all"disabled hidden>거래방식</option>
               <option value="sale">매매</option>
               <option value="jeonse">전세</option>
               <option value="monthly">월세</option>
             </select>
 
-            <select value={tradeStatus} onChange={(e) => setTradeStatus(e.target.value)}>
+            <select className="text-input"  value={tradeStatus} onChange={(e) => setTradeStatus(e.target.value)}>
               <option value="all" disabled hidden>거래상태</option>
               <option value="1">거래가능</option>
               <option value="2">거래중</option>
@@ -161,7 +162,7 @@ console.log("검색 실행");
             </select>
 
             <input 
-              type="text" 
+              type="text"  className="text-input" 
               placeholder="지역" 
               value={regionTxt} 
               onChange={(e) => setRegionTxt(e.target.value)} 
@@ -169,14 +170,14 @@ console.log("검색 실행");
             />
             
             <input 
-              type="text" 
+              type="text"  className="text-input" 
               placeholder="매물명" 
               value={propertyNameTxt} 
               onChange={(e) => setPropertyNameTxt(e.target.value)} 
               onKeyDown={(e) => { if(e.key === 'Enter') { setNow_page(1); handleSearch(1); } }}
             />
 
-            <div className="btn_search" onClick={() => {
+            <div className="btn btn-muted" onClick={() => {
                 handleSearch(1);
 
                 if (now_page !== 1) {
@@ -186,30 +187,32 @@ console.log("검색 실행");
               <span>검색</span>
             </div>
             
-            <div className="btn_reset" onClick={handleReset} style={{ cursor: 'pointer' }}>
+            <div className="btn btn-muted" onClick={handleReset} style={{ cursor: 'pointer' }}>
               <span>초기화</span>
             </div>
           </div>
-          <div className="btn_new">
-            <span><Link to="/property/write">매물 등록</Link></span>
-          </div>
+          <Link to="/property/write" className="btn btn-primary">매물 등록</Link>
         </div>
-        <div className="borad_rows">
-          <div className="rows row0">
-            <ul>
-              <li className="board_no">글번호</li>
-              <li className="board_transaction_type">방식</li>
-              <li className="board_property_type">종류</li>
-              <li className="board_property_name board_title">매물명</li>
-              <li className="board_sigungu">지역</li>
-              <li className="board_price">가격</li>
-              <li className="board_status">상태</li>
-              <li className="board_display_yn">노출</li>
-              <li className="board_hit">조회</li>
-              <li className="board_date">등록일</li>
-              <li className="board_etc">관리</li>
-            </ul>
-          </div>
+
+        {/* ---- 리스트 테이블 영역 ---- */}
+        <table>
+          <thead>
+            <tr>
+              <th>글번호</th>
+              <th>방식</th>
+              <th>종류</th>
+              <th>매물명</th>
+              <th>지역</th>
+              <th>가격</th>
+              <th>상태</th>
+              <th>노출</th>
+              <th>조회</th>
+              <th>등록일</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+              
+          <tbody>
           {
             // {
             //   1 : page[0].map(function(a, i){
@@ -220,11 +223,20 @@ console.log("검색 실행");
             // }[now_page]
             now_data ? now_data.map(function(a, i){
               return(
-                <Rows cfg={config} data={now_data} page_data={page_info} val={i} key={i}></Rows>
+                <Rows 
+                cfg={config} 
+                data={now_data} 
+                page_data={page_info} 
+                val={i} 
+                key={i}>
+                  
+                </Rows>
               )
             }) : null
           }
-        </div>
+          </tbody>
+        </table>
+
         <ul className='pagenation property_pagenation'>
           {page.map(function(a, i){
             return(
@@ -249,9 +261,11 @@ function Rows(props){
   let page_datas = props.page_data;
   let types = '';
 
-  console.log(page_datas);
+  const data = datas?.[props.val];
 
-  const data = datas[props.val];
+  if(!data){
+    return null;
+  }
 
 // 금액 표시 함수 (만원 → 억/만원)
 const formatPrice = (price) => {
@@ -313,54 +327,116 @@ const getTradePrice = (data) => {
 
 };
 
-  //클래스명 변경
-  const statusClassMap = { '1': 'possible', '2': 'ing', '3': 'complete', '4': 'pending', '5': 'private' };
-  const statusKey = datas[props.val].status ? String(datas[props.val].status) : '1';
-  const targetClass = statusClassMap[statusKey] || 'possible';
-  const displayClassMap = { '1': 'display_y', '2': 'display_n' };
-  const displayKey = datas[props.val].display_yn ? String(datas[props.val].display_yn) : '1';  const targetDisplayClass = displayClassMap[displayKey] || 'display_y';
+  // 상태 태그
+  const statusClass = {
+    '1':'possible',
+    '2':'ing',
+    '3':'complete',
+    '4':'pending',
+    '5':'private'
+  };
+
+  const statusKey = data.status
+    ? String(data.status)
+    : '1';
+
+  // 노출 상태
+  const displayClass = {
+    '1':'display_y',
+    '2':'display_n'
+  };
 
   return(
-    <div className={"rows row"+(props.val+1)}>
-      <ul className={datas[props.val].display_yn === "N" ? "deleted" : null}>
-        <li className="board_no">
-          {Number(page_datas.item_num_start) - props.val}
-        </li>
-        <li className="board_transaction_type">{datas[props.val].transaction_type_txt || ''}</li>
-        <li className="board_property_type">{datas[props.val].property_type_txt || ''}</li>
-        <li className="board_property_name board_title" onClick={()=>{ dispatch(now_property_view(datas[props.val])); }}>
-          <Link to={`/property/view/${datas[props.val].property_no}`}>{datas[props.val].property_name || ''}</Link></li>
-        <li className="board_sigungu">
-          {`${datas[props.val].addr_sigungu || ''} ${datas[props.val].addr_dong || ''}`.trim() || ''}
-        </li>
-        <li className="board_price">{getTradePrice(data)}</li>
-        <li className="board_status"><span className={`badge ${targetClass}`}>{datas[props.val].status_txt || ''}</span></li>
-        <li className="board_display_yn"><span className={`${targetDisplayClass}`}>{datas[props.val].display_yn_txt || ''}</span></li>
-        <li className="board_hit">{datas[props.val].view_count}</li>
-        <li className="board_date">{datas[props.val].updated_at}</li>
-        <li className="board_etc">
-          <div className="btns btn_edit">
-            <span onClick={()=>{dispatch(now_property_view(datas[props.val]))}}><Link to={`/property/edit/${datas[props.val].property_no}`}>글수정</Link></span>
-          </div>
-          <div className="btns btn_del">
-            <span onClick={(()=>{
-              let formData = new FormData();
-              formData.append('property_no', datas[props.val].property_no);
-              if(window.confirm('삭제하시겠습니까?')){
-                axios.post(process.env.REACT_APP_API_KEY+'', formData, props.cfg).catch(()=>{
-                  alert("데이터 전송이 실패하였습니다.");
-                }).then((result)=>{
-                  console.log(result);
-                  alert('삭제되었습니다');
-                  dispatch(change_page('property'));
-                });
+    <tr className={data.display_yn === "N" ? "deleted" : ""}>
+      <td>
+        {Number(page_datas.item_num_start) - props.val}
+      </td>
+
+      <td>
+        {data.transaction_type_txt || '-'}
+      </td>
+
+      <td>
+        {data.property_type_txt || '-'}
+      </td>
+
+      <td className="col-property">
+        <Link 
+          to={`/property/view/${data.property_no}`}
+          onClick={()=>{
+            dispatch(now_property_view(data));
+          }}
+        >
+          {data.property_name || '-'}
+        </Link>
+      </td>
+
+      <td>
+        {
+          `${data.addr_sigungu || ''} ${data.addr_dong || ''}`
+          .trim() || '-'
+        }
+      </td>
+
+      <td>
+        {getTradePrice(data)}
+      </td>
+
+      <td>
+        <span className={`tag ${statusClass[statusKey]}`}>
+          {data.status_txt || '-'}
+        </span>
+      </td>
+
+      <td>
+        <span className={`tag ${displayClass[data.display_yn]}`}>
+          {data.display_yn_txt || '-'}
+        </span>
+      </td>
+
+      <td>
+        {data.view_count || 0}
+      </td>
+
+      <td className="col-date">
+        {data.updated_at || '-'}
+      </td>
+
+      <td>
+        <div className="row-actions">
+          <Link
+            className="btn btn-muted"
+            to={`/property/edit/${datas[props.val].property_no}`}>
+              수정
+          </Link>
+
+          <button
+            type="button"
+            className="btn btn-muted"
+            onClick={() => {
+              const formData = new FormData();
+              formData.append("property_no", data.property_no);
+
+              if (window.confirm("삭제하시겠습니까?")) {
+                axios
+                  .post(process.env.REACT_APP_API_KEY + "Admin/Property/board_del", formData, props.cfg)
+                  .then((result) => {
+                    console.log(result);
+                    alert("삭제되었습니다.");
+                    dispatch(change_page("property"));
+                  })
+                  .catch(() => {
+                    alert("데이터 전송이 실패하였습니다.");
+                  });
               }
-            })}>글삭제</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-  )
+            }}
+          >
+            삭제
+          </button>
+        </div>
+      </td>
+    </tr>
+  );
 }
 
 export default Property_list;

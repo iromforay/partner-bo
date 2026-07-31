@@ -578,16 +578,22 @@ console.log("지도 데이터 확인", {
     //     img_no: deleteImgNos
     //   };
 
-      console.log("저장 데이터 확인", {
-        lat: formData.lat,
-        lng: formData.lng,
-      });
+      // console.log("저장 데이터 확인", {
+      //   lat: formData.lat,
+      //   lng: formData.lng,
+      // });
+      console.log("저장 직전 formData", formData.display_yn);
+
+      for (let pair of submitFormData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
 
   // 저장 API 호출
   const apiUrl = `${process.env.REACT_APP_API_KEY}Admin/Property/save`;
     axios
       .post(apiUrl, submitFormData, config)
       .then((res) => {
+          console.log("저장 결과:", res.data);
         alert(`매물 ${actionText}이 완료되었습니다.`);
         navigate("/property");
       })

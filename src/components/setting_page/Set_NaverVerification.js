@@ -217,43 +217,7 @@ function Set_NaverVerification(){
               </div>
             </div>
           </div>
-
-          {/* API */}
-          <div className="card api-doc">
-
-            <h2>연동 API</h2>
-
-            <p className="sub">저장 버튼이 호출하는 엔드포인트</p>              
-            
-            <div className="api-block">
-              <div className="api-line">
-                <span class="verb">POST</span>
-                <span class="path">api.bomul.co.kr/basic/save</span>
-              </div>
-
-              <div className="api-label">request body</div>
-
-              <table className="api-table">
-                <tbody>
-                  <tr>
-                    <td><code>naver_site_verification</code></td>
-                    <td>네이버 인증코드</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div className="api-label">response</div>
-
-              <div className="tag-callout">
-                {`{
-                  "SUCCESS": "TRUE / FALSE",
-                  "MSG": "메시지",
-                  "RECORD": []
-                }`}
-              </div>
-            </div>
-          </div>
-
+          
         </div>
       </form>
     )
