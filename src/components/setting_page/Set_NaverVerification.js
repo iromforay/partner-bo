@@ -154,7 +154,7 @@ function Set_NaverVerification(){
               <input
                 type="hidden"
                 name="naver_reserve_show"
-                value={dataSetting?.naver_reserve_show ?? "Y"}
+                value={code.trim() ? "Y" : "N"}
               />
 
               <input
