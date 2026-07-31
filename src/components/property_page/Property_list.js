@@ -203,14 +203,14 @@ function Property_list(props){
               <option value="monthly">월세</option>
             </select>
 
-            <select className="text-input"  value={tradeStatus} onChange={(e) => setTradeStatus(e.target.value)}>
+            {/* <select className="text-input"  value={tradeStatus} onChange={(e) => setTradeStatus(e.target.value)}>
               <option value="all" disabled hidden>거래상태</option>
               <option value="1">거래가능</option>
               <option value="2">거래중</option>
               <option value="3">거래완료</option>
               <option value="4">거래보류</option>
               <option value="5">비공개</option>
-            </select>
+            </select> */}
 
             <input 
               type="text"  className="text-input" 
