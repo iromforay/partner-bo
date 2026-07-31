@@ -35,20 +35,10 @@ function Property_list(props){
     }
   }
 
-
-// let page = [];
-
-// if(page_info){
-//   for(let i = 0; i < page_info.total_page; i++){
-//     page.push('');
-//   }
-// }
-
   // API 데이터 조회 함수
   const fetchData = useCallback((page = now_page) => {
 
     const params = new URLSearchParams();
-
     params.append("limit", 8);
     params.append("page", page);
 
@@ -91,21 +81,11 @@ function Property_list(props){
       );
     }
 
+    const url =  process.env.REACT_APP_API_KEY + "Admin/Property/list";
 
-    const url =
-      process.env.REACT_APP_API_KEY +
-      "Admin/Property/list";
-
-
-    axios.get(
-      `${url}?${params.toString()}`,
-      config
-    )
+    axios.get(`${url}?${params.toString()}`,config)
+    
     .then((result)=>{
-
-      console.log("Property Response", result.data);
-
-
       if(
         result.data.SUCCESS === "TRUE" &&
         result.data.RECORD
@@ -140,7 +120,7 @@ function Property_list(props){
   // 페이지 이동 및 상태 탭 변경 시 데이터 로드
   useEffect(()=>{
     setNow_page(1);
-    fetchData(1);
+    // fetchData(1);
   }, [props.whats]);
 
   // 페이지 이동  
@@ -180,7 +160,7 @@ function Property_list(props){
         <div className="toolbar">
           <div className="toolbar-search">
             <select className="text-input" value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
-              <option value="all"disabled hidden>매물종류</option>
+              <option value="all">매물종류</option>
               <option value="apt">아파트</option>
               <option value="officetel">오피스텔</option>
               <option value="villa">빌라/연립</option>
@@ -197,7 +177,7 @@ function Property_list(props){
             </select>
 
             <select className="text-input"  value={transaction_type} onChange={(e) => setTransaction_type(e.target.value)}>
-              <option value="all"disabled hidden>거래방식</option>
+              <option value="all">거래방식</option>
               <option value="sale">매매</option>
               <option value="jeonse">전세</option>
               <option value="monthly">월세</option>
@@ -269,6 +249,8 @@ function Property_list(props){
                   data={item}
                   page_data={page_info}
                   index={i}
+                  refreshData={fetchData}
+                  refreshParent={props.refreshParent}
                 />
               )
             ) : (
@@ -462,11 +444,13 @@ function Rows(props){
 
               if (window.confirm("삭제하시겠습니까?")) {
                 axios
-                  .post(process.env.REACT_APP_API_KEY + "Admin/Property/board_del", formData, props.cfg)
+                  .post(process.env.REACT_APP_API_KEY + "Admin/Property/delete", formData, props.cfg)
                   .then((result) => {
                     console.log(result);
                     alert("삭제되었습니다.");
-                    dispatch(change_page("property"));
+
+                    props.refreshData();// 리스트 다시 조회
+                    props.refreshParent();//글 총갯수 다시 조회
                   })
                   .catch(() => {
                     alert("데이터 전송이 실패하였습니다.");

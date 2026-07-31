@@ -30,12 +30,20 @@ function Property(){
     dispatch(change_page('property'));
   }, [])
 
-  useMemo(()=>{
-    return axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-  }, [])
+  const fetchProperty = () => {
+    axios.get(
+      process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8',
+      config
+    )
+    .then((result)=>{
+      console.log(result.data.RECORD);
+      setData(result.data.RECORD);
+    });
+  };
 
-  console.log(data)
-  console.log('렌더링!property');
+  useEffect(()=>{
+    fetchProperty();
+  }, []);
 
   if(data){
     return(
@@ -45,7 +53,6 @@ function Property(){
           <ul className="tabs">
             <li onClick={()=>{
               setSelect('all');
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
             }} className={select === 'all' ? "on" : null}>
               <h5>전체</h5>
               <div className="status">
@@ -54,56 +61,52 @@ function Property(){
                    <span className="whole">
                     {data.counts?.all?.total_count || 0}
                   </span>
-                  {/* <span className="whole">{data.pager?.total_items}</span> */}
                 </div>
               </div>
             </li>
-            <li onClick={()=>{
-              setSelect('display_y');
-             
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8&code=display_y', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'display_y' ? "on" : null}>
+            <li onClick={()=>{setSelect('display_y');}}
+                className={select === 'display_y' ? "on" : null}>
               <h5>노출중</h5>
               <div className="status">
                 <p>글 총갯수</p>
                 <span className="whole">
-                  {data.counts?.display_y?.total_count || 0}
+                  {data.display_counts?.["1"]?.total_count || 0}
                 </span>
               </div>
             </li>
-            <li onClick={()=>{
-              setSelect('display_n');
-              
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8&code=display_n', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'display_n' ? "on" : null}>
+            <li onClick={()=>{setSelect('display_n');}}
+                className={select === 'display_n' ? "on" : null}>
               <h5>비노출</h5>
               <div className="status">
                 <p>글 총갯수</p>
                 <div className="counting">
                   <span className="whole">
-                    {data.counts?.display_n?.total_count || 0}
+                    {data.display_counts?.["2"]?.total_count || 0}
                   </span>
                 </div>
               </div>
             </li>
-            <li onClick={()=>{
-              setSelect('status_3');
-              
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8&code=status_3', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'status_3' ? "on" : null}>
+            <li onClick={()=>{setSelect('status_3');}}
+                className={select === 'status_3' ? "on" : null}>
               <h5>거래완료</h5>
               <div className="status">
                 <p>글 총갯수</p>
                 <div className="counting">
                   <span className="whole">
-                    {data.counts?.status_3?.total_count || 0}
+                    {data.counts?.["3"]?.total_count || 0}
                   </span>
                 </div>
               </div>
             </li>
           </ul>
           <div className="board_con">
-            <Property_list origin_data={data} data={copy_data} whats={select}></Property_list>
+            <Property_list 
+              origin_data={data} 
+              data={copy_data} 
+              whats={select}
+              refreshParent={fetchProperty}
+            >
+            </Property_list>
           </div>
         </div>
       </div>

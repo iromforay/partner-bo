@@ -13,9 +13,6 @@ function Note_list(props){
   let [now_page, setNow_page] = useState(1);
   let [page_info, setPage_info] = useState();
 
-  // 상단 상태 탭 필터
-  // const [activeStatus, setActiveStatus] = useState('all');
-
   // 검색 필터 State
   const [visitType, setVisitType] = useState('all');
   const [transaction_type, setTransaction_type] = useState('all');
@@ -86,7 +83,7 @@ function Note_list(props){
   // 페이지 이동 및 상태 탭 변경 시 데이터 로드
   useEffect(()=>{
     setNow_page(1);
-    fetchData(1);
+    // fetchData(1);
   }, [props.whats]);
 
   // 페이지 이동  
@@ -241,6 +238,8 @@ function Note_list(props){
                 data={item}
                 page_data={page_info}
                 onOpenMemo={() => handleOpenMemoModal(item)}
+                refreshData={fetchData}
+                refreshParent={props.refreshParent}
               />
             )
           ) : (
@@ -373,7 +372,10 @@ function Rows(props){
                 axios.post(process.env.REACT_APP_API_KEY + "Admin/Note/delete", formData, props.cfg)
                   .then(() => {
                     alert("삭제되었습니다.");
-                    dispatch(change_page("note"));
+                    
+                    props.refreshData();// 리스트 다시 조회
+                    props.refreshParent();//글 총갯수 다시 조회
+
                   })
                   .catch(() => {
                     alert("데이터 전송이 실패하였습니다.");
