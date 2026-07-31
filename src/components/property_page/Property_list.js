@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { change_page } from '../../store';
 import { Link } from 'react-router-dom';
@@ -13,10 +13,11 @@ function Property_list(props){
   
   let data = props.data;
   let origin = props.origin_data;
-  let [now_data, setNow_data] = useState();
+  let [now_data, setNow_data] = useState([]);
   let [now_page, setNow_page] = useState(1);
   let [page_info, setPage_info] = useState();
 
+  //검색 필터 state
   const [propertyType, setPropertyType] = useState('all');
   const [transaction_type, setTransaction_type] = useState('all');//거래방식
   const [tradeStatus, setTradeStatus] = useState('all');
@@ -35,93 +36,143 @@ function Property_list(props){
   }
 
 
-let page = [];
+// let page = [];
 
-if(page_info){
-  for(let i = 0; i < page_info.total_page; i++){
-    page.push('');
-  }
-}
+// if(page_info){
+//   for(let i = 0; i < page_info.total_page; i++){
+//     page.push('');
+//   }
+// }
 
-  // useEffect(()=>{
-  //   setNow_data(data);
-  //   setNow_page(1);
-  // }, [data]);
+  // API 데이터 조회 함수
+  const fetchData = useCallback((page = now_page) => {
 
-useEffect(()=>{
+    const params = new URLSearchParams();
 
-  const url = process.env.REACT_APP_API_KEY
-    + 'Admin/Property/list?limit=8&page='
-    + now_page
-    + '&code='
-    + props.whats;
+    params.append("limit", 8);
+    params.append("page", page);
 
-  axios.get(url, config)
-  .then((result)=>{
-
-    let rows = result.data.RECORD.rows;
-    let page_per_items = Number(result.data.RECORD.pager.page_per_items);
-
-    // 1페이지가 전체리스트가 오는 문제 임시 처리
-    if(rows.length > page_per_items){
-      rows = rows.slice(0, page_per_items);
+    if(props.whats === "display_y"){
+      params.append("display_yn","1");
     }
 
-    setNow_data(rows);
-    setPage_info(result.data.RECORD.pager);
-    console.log(result.data.RECORD.rows)
-
-  });
-
-}, [now_page]);
-  console.log(now_data, page, page_info)
-
-  //검색(미완)
-  const handleSearch = (page = 1) => {
-    let url = `${process.env.REACT_APP_API_KEY}Admin/Property/list?limit=8&page=${page}&code=${props.whats}`;
-console.log("검색 실행");
-    if (propertyType !== 'all') {
-      url += `&property_type=${propertyType}`;
+    if(props.whats === "display_n"){
+      params.append("display_yn","2");
     }
 
-    if (transaction_type !== 'all') {
-      url += `&transaction_type=${transaction_type}`;
+    if(props.whats === "status_3"){
+      params.append("status","3");
     }
 
-    if (tradeStatus !== 'all') {
-      url += `&status=${tradeStatus}`;
+    // 검색 조건
+    if(propertyType !== "all"){
+      params.append("property_type", propertyType);
     }
 
-    if (regionTxt.trim() !== '') {
-      url += `&region=${encodeURIComponent(regionTxt)}`;
+    if(transaction_type !== "all"){
+      params.append("transaction_type", transaction_type);
     }
 
-    if (propertyNameTxt.trim() !== '') {
-      url += `&property_name=${encodeURIComponent(propertyNameTxt)}`;
+    if(tradeStatus !== "all"){
+      params.append("status", tradeStatus);
     }
 
-    axios.get(url, config).then((result) => {
-      setNow_data(result.data.RECORD.rows);
-      setPage_info(result.data.RECORD.pager);
+    if(regionTxt.trim()){
+      params.append(
+        "region",
+        regionTxt.trim()
+      );
+    }
+
+    if(propertyNameTxt.trim()){
+      params.append(
+        "property_name",
+        propertyNameTxt.trim()
+      );
+    }
+
+
+    const url =
+      process.env.REACT_APP_API_KEY +
+      "Admin/Property/list";
+
+
+    axios.get(
+      `${url}?${params.toString()}`,
+      config
+    )
+    .then((result)=>{
+
+      console.log("Property Response", result.data);
+
+
+      if(
+        result.data.SUCCESS === "TRUE" &&
+        result.data.RECORD
+      ){
+
+        let rows = result.data.RECORD.rows || [];
+
+        setNow_data(rows);
+        setPage_info(result.data.RECORD.pager);
+
+      }else{
+        setNow_data([]);
+      }
+
+    })
+    .catch((err)=>{
+      console.log(err);
+      setNow_data([]);
     });
+
+
+  },[
+    now_page,
+    propertyType,
+    transaction_type,
+    tradeStatus,
+    regionTxt,
+    propertyNameTxt,
+    props.whats
+  ]);
+
+  // 페이지 이동 및 상태 탭 변경 시 데이터 로드
+  useEffect(()=>{
+    setNow_page(1);
+    fetchData(1);
+  }, [props.whats]);
+
+  // 페이지 이동  
+  useEffect(()=>{
+    fetchData(now_page);
+  }, [now_page, props.whats]);
+
+  // 검색 실행
+  const handleSearch = () => {
+    if (now_page === 1) {
+      fetchData(1);
+    } else {
+      setNow_page(1); // useEffect에 의해 자동 실행
+    }
   };
   
-  //초기화
+  //검색 초기화
   const handleReset = () => {
-    setPropertyType('all');
-    setTransaction_type('all');
-    setTradeStatus('all');
-    setRegionTxt('');
-    setPropertyNameTxt('');
-    setNow_page(1);
-    handleSearch(1);
+    setPropertyType("all");
+    setTransaction_type("all");
+    setTradeStatus("all");
+    setRegionTxt("");
+    setPropertyNameTxt("");
   };
 
-  //페이지 이동
-  // useEffect(() => {
-  //   handleSearch(now_page);
-  // }, [now_page]);
-
+  // 페이지네이션 관련
+  let page = [];
+  if(page_info){
+    for(let i = 0; i < page_info.total_page; i++){
+      page.push('');
+    }
+  }
 
   if(now_data){
     return(
@@ -178,16 +229,13 @@ console.log("검색 실행");
             />
 
             <div className="btn btn-muted" onClick={() => {
-                handleSearch(1);
-
-                if (now_page !== 1) {
-                  setNow_page(1);
-                } }}
+                handleSearch();
+              }}
             >
               <span>검색</span>
             </div>
             
-            <div className="btn btn-muted" onClick={handleReset} style={{ cursor: 'pointer' }}>
+            <div className="btn btn-muted" onClick={handleReset}>
               <span>초기화</span>
             </div>
           </div>
@@ -213,27 +261,23 @@ console.log("검색 실행");
           </thead>
               
           <tbody>
-          {
-            // {
-            //   1 : page[0].map(function(a, i){
-            //     return(
-            //       <Rows data={page[0]} val={i} key={i}></Rows>
-            //     )
-            //   })
-            // }[now_page]
-            now_data ? now_data.map(function(a, i){
-              return(
-                <Rows 
-                cfg={config} 
-                data={now_data} 
-                page_data={page_info} 
-                val={i} 
-                key={i}>
-                  
-                </Rows>
+            {now_data && now_data.length > 0 ? (
+              now_data.map((item, i) =>
+                <Rows
+                  key={item.note_no || i}
+                  cfg={config}
+                  data={item}
+                  page_data={page_info}
+                  index={i}
+                />
               )
-            }) : null
-          }
+            ) : (
+              <tr>
+                <td colSpan="11">
+                  조회된 데이터가 없습니다.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
 
@@ -257,75 +301,74 @@ console.log("검색 실행");
 function Rows(props){
 
   let dispatch = useDispatch();
-  let datas = props.data;
-  let page_datas = props.page_data;
-  let types = '';
+  const data = props.data;
+  const page_datas = props.page_data; // 추가
 
-  const data = datas?.[props.val];
+  let types = '';
 
   if(!data){
     return null;
   }
 
-// 금액 표시 함수 (만원 → 억/만원)
-const formatPrice = (price) => {
+  // 금액 표시 함수 (만원 → 억/만원)
+  const formatPrice = (price) => {
 
-  if (!price || Number(price) === 0) {
-    return "-";
-  }
-
-  const num = Number(price);
-
-  const eok = Math.floor(num / 10000);
-  const man = num % 10000;
-
-  if (eok > 0 && man > 0) {
-    return `${eok}억 ${man.toLocaleString()}`;
-  }
-
-  if (eok > 0) {
-    return `${eok}억`;
-  }
-
-  return `${num.toLocaleString()}`;
-};
-
-// 월세 표시용 (보증금/월세)
-const formatMonthlyPrice = (deposit, rent) => {
-
-  const depositText = Number(deposit) > 0
-    ? formatPrice(deposit)
-    : "-";
-
-  const rentText = Number(rent) > 0
-    ? Number(rent).toLocaleString()
-    : "-";
-
-  return `${depositText} / ${rentText}`;
-};
-
-//매물 방식별 가격 표시
-const getTradePrice = (data) => {
-
-  switch(data.transaction_type){
-
-    case "sale":
-      return formatPrice(data.sale_price);
-
-    case "jeonse":
-      return formatPrice(data.jeonse_price);
-
-    case "monthly":
-      return formatMonthlyPrice(
-        data.deposit_price,
-        data.monthly_rent
-      );
-
-    default:
+    if (!price || Number(price) === 0) {
       return "-";
-  }
+    }
 
-};
+    const num = Number(price);
+
+    const eok = Math.floor(num / 10000);
+    const man = num % 10000;
+
+    if (eok > 0 && man > 0) {
+      return `${eok}억 ${man.toLocaleString()}`;
+    }
+
+    if (eok > 0) {
+      return `${eok}억`;
+    }
+
+    return `${num.toLocaleString()}`;
+  };
+
+  // 월세 표시용 (보증금/월세)
+  const formatMonthlyPrice = (deposit, rent) => {
+
+    const depositText = Number(deposit) > 0
+      ? formatPrice(deposit)
+      : "-";
+
+    const rentText = Number(rent) > 0
+      ? Number(rent).toLocaleString()
+      : "-";
+
+    return `${depositText} / ${rentText}`;
+  };
+
+  //매물 방식별 가격 표시
+  const getTradePrice = (data) => {
+
+    switch(data.transaction_type){
+
+      case "sale":
+        return formatPrice(data.sale_price);
+
+      case "jeonse":
+        return formatPrice(data.jeonse_price);
+
+      case "monthly":
+        return formatMonthlyPrice(
+          data.deposit_price,
+          data.monthly_rent
+        );
+
+      default:
+        return "-";
+    }
+
+  };
 
   // 상태 태그
   const statusClass = {
@@ -349,7 +392,7 @@ const getTradePrice = (data) => {
   return(
     <tr className={data.display_yn === "N" ? "deleted" : ""}>
       <td>
-        {Number(page_datas.item_num_start) - props.val}
+        {Number(page_datas.item_num_start) - props.index}
       </td>
 
       <td>
@@ -406,7 +449,7 @@ const getTradePrice = (data) => {
         <div className="row-actions">
           <Link
             className="btn btn-muted"
-            to={`/property/edit/${datas[props.val].property_no}`}>
+            to={`/property/edit/${data.property_no}`}>
               수정
           </Link>
 

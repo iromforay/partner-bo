@@ -45,7 +45,6 @@ function Note_list(props){
     }
 
     // 검색 필터 조건부 추가 ('all'이나 빈값 제외)
-    // if (status && status !== 'all') params.append('status', status);
     if (visitType && visitType !== 'all') params.append('visit_type', visitType);
     if (transaction_type && transaction_type !== 'all') params.append('transaction_type', transaction_type);
     if (visitorName.trim()) params.append('visitor_name', visitorName.trim());
@@ -173,13 +172,13 @@ function Note_list(props){
       <div className="toolbar">
         <div className="toolbar-search">
           <select className="text-input" value={visitType} onChange={(e) => setVisitType(e.target.value)}>
-            <option value="all">방문형태 (전체)</option>
+            <option value="all">방문형태</option>
             <option value="tenant">세입자</option>
             <option value="landlord">임대인</option>
           </select>
 
           <select className="text-input" value={transaction_type} onChange={(e) => setTransaction_type(e.target.value)}>
-            <option value="all">거래방식 (전체)</option>
+            <option value="all">거래방식</option>
             <option value="sale">매매</option>
             <option value="jeonse">전세</option>
             <option value="monthly">월세</option>

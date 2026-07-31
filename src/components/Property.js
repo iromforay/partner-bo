@@ -51,53 +51,53 @@ function Property(){
               <div className="status">
                 <p>글 총갯수</p>
                 <div className="counting">
-                  <span className="whole">{data.pager?.total_items}</span>
+                   <span className="whole">
+                    {data.counts?.all?.total_count || 0}
+                  </span>
+                  {/* <span className="whole">{data.pager?.total_items}</span> */}
                 </div>
               </div>
             </li>
             <li onClick={()=>{
-              setSelect('notice');
-              // let copy = [...data.rows];
-              // const filtering = ['notice', 'event'];
-              // copy = copy.filter((a)=> a.board_type === 'notice' || a.board_type === 'event');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8&code=notice', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'notice' ? "on" : null}>
+              setSelect('display_y');
+             
+              axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8&code=display_y', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
+            }} className={select === 'display_y' ? "on" : null}>
               <h5>노출중</h5>
               <div className="status">
                 <p>글 총갯수</p>
-                <div className="counting">
-                  {/* <span className="whole">{data.boards.notice.total_count}</span> */}
-                </div>
+                <span className="whole">
+                  {data.counts?.display_y?.total_count || 0}
+                </span>
               </div>
             </li>
             <li onClick={()=>{
-              setSelect('charge');
-              // let copy = [...data.rows];
-              // copy = copy.filter((a)=> a.board_type === 'charge');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8&code=charge', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'charge' ? "on" : null}>
+              setSelect('display_n');
+              
+              axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8&code=display_n', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
+            }} className={select === 'display_n' ? "on" : null}>
               <h5>비노출</h5>
               <div className="status">
                 <p>글 총갯수</p>
                 <div className="counting">
-                  {/* <span className="whole">{data.boards.charge.total_count}</span> */}
+                  <span className="whole">
+                    {data.counts?.display_n?.total_count || 0}
+                  </span>
                 </div>
               </div>
             </li>
             <li onClick={()=>{
-              setSelect('review');
-              // let copy = [...data.rows];
-              // copy = copy.filter((a)=> a.board_type === 'review');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8&code=review', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'review' ? "on" : null}>
+              setSelect('status_3');
+              
+              axios.get(process.env.REACT_APP_API_KEY+'Admin/Property/list?limit=8&code=status_3', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
+            }} className={select === 'status_3' ? "on" : null}>
               <h5>거래완료</h5>
               <div className="status">
                 <p>글 총갯수</p>
                 <div className="counting">
-                  {/* <span className="whole">{data.boards.review.total_count}</span> */}
+                  <span className="whole">
+                    {data.counts?.status_3?.total_count || 0}
+                  </span>
                 </div>
               </div>
             </li>
