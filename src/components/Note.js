@@ -50,68 +50,97 @@ function Note(){
               <div className="status">
                 <p>글 총갯수</p>
                 <div className="counting">
-                  <span className="whole">{data.pager?.total_items}</span>
+                  <span className="whole">
+                    {data.counts?.all?.total_count || 0}
+                  </span>
                 </div>
               </div>
             </li>
+            
             <li onClick={()=>{
-              setSelect('notice');
-              // let copy = [...data.rows];
-              // const filtering = ['notice', 'event'];
-              // copy = copy.filter((a)=> a.board_type === 'notice' || a.board_type === 'event');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Note/list?limit=8&code=notice', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'notice' ? "on" : null}>
+              setSelect('consulting');
+
+              axios.get(
+                process.env.REACT_APP_API_KEY+'Admin/Note/list?limit=8&status=consulting',
+                config
+              ).then((result)=>{
+                setData(result.data.RECORD)
+              });
+
+            }} className={select === 'consulting' ? "on" : null}>
               <h5>상담중</h5>
               <div className="status">
                 <p>글 총갯수</p>
                 <div className="counting">
-                  {/* <span className="whole">{data.boards.notice.total_count}</span> */}
+                  <span className="whole">
+                    {data.counts?.consulting?.total_count || 0}
+                  </span>
                 </div>
               </div>
             </li>
+
             <li onClick={()=>{
-              setSelect('charge');
-              // let copy = [...data.rows];
-              // copy = copy.filter((a)=> a.board_type === 'charge');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Note/list?limit=8&code=charge', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'charge' ? "on" : null}>
+              setSelect('proposed');
+
+              axios.get(
+                process.env.REACT_APP_API_KEY+'Admin/Note/list?limit=8&status=proposed',
+                config
+              ).then((result)=>{
+                setData(result.data.RECORD)
+              });
+
+            }} className={select === 'proposed' ? "on" : null}>
               <h5>매물제안</h5>
               <div className="status">
                 <p>글 총갯수</p>
                 <div className="counting">
-                  {/* <span className="whole">{data.boards.charge.total_count}</span> */}
+                  <span className="whole">
+                    {data.counts?.proposed?.total_count || 0}
+                  </span>
                 </div>
               </div>
             </li>
+
             <li onClick={()=>{
-              setSelect('review');
-              // let copy = [...data.rows];
-              // copy = copy.filter((a)=> a.board_type === 'review');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Note/list?limit=8&code=review', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'review' ? "on" : null}>
+              setSelect('contracted');
+
+              axios.get(
+                process.env.REACT_APP_API_KEY+'Admin/Note/list?limit=8&status=contracted',
+                config
+              ).then((result)=>{
+                setData(result.data.RECORD)
+              });
+
+            }} className={select === 'contracted' ? "on" : null}>
               <h5>계약완료</h5>
               <div className="status">
                 <p>글 총갯수</p>
                 <div className="counting">
-                  {/* <span className="whole">{data.boards.review.total_count}</span> */}
+                  <span className="whole">
+                    {data.counts?.contracted?.total_count || 0}
+                  </span>
                 </div>
               </div>
             </li>
+
             <li onClick={()=>{
-              setSelect('review');
-              // let copy = [...data.rows];
-              // copy = copy.filter((a)=> a.board_type === 'review');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Note/list?limit=8&code=review', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'review' ? "on" : null}>
+              setSelect('lost');
+
+              axios.get(
+                process.env.REACT_APP_API_KEY+'Admin/Note/list?limit=8&status=lost',
+                config
+              ).then((result)=>{
+                setData(result.data.RECORD)
+              });
+
+            }} className={select === 'lost' ? "on" : null}>
               <h5>이탈</h5>
               <div className="status">
                 <p>글 총갯수</p>
                 <div className="counting">
-                  {/* <span className="whole">{data.boards.review.total_count}</span> */}
+                  <span className="whole">
+                    {data.counts?.lost?.total_count || 0}
+                  </span>
                 </div>
               </div>
             </li>
