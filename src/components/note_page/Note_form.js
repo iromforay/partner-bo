@@ -618,7 +618,7 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
                 {isEditMode && (
                   <button
                     type="button"
-                    className="btn btn-danger-outline"
+                    className="btn btn_del"
                     onClick={() => {
                       if (window.confirm("삭제하시겠습니까?")) {
                         // 삭제 API

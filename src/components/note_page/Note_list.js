@@ -363,7 +363,7 @@ function Rows(props){
           </Link>
           <button
             type="button"
-            className="btn btn-muted"
+            className="btn btn_del"
             onClick={() => {
               const formData = new FormData();
               formData.append("note_no", data.note_no);

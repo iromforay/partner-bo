@@ -437,7 +437,7 @@ function Rows(props){
 
           <button
             type="button"
-            className="btn btn-muted"
+            className="btn btn_del"
             onClick={() => {
               const formData = new FormData();
               formData.append("property_no", data.property_no);

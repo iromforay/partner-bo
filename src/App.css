@@ -22,6 +22,25 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 /* placeholder */
  input::placeholder {  color:var(--text-faint);}
 
+ /* 버튼 */
+.row-actions { display: flex; gap: 6px; justify-content: center; }
+.row-actions .btn { padding: 7px 12px; font-size: 12.5px; }
+.btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 7px;
+  padding: 9px 16px;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+.btn-muted { background: var(--btn-action-bg); color: var(--btn-action-fg); }
+.btn-primary { background: var(--accent); color: #fff; margin-left: auto; padding: 10px 20px; font-size: 13.5px; }
+.btn-primary:hover { filter: brightness(1.06); }
+/* 삭제버튼 공통 */
+.btn_del { background: var(--danger); color: #fff; }
+
 .login_con {position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #f0f0f0; z-index: 9999;}
 .login_con .width_con {position: absolute; top: 50%; left: 50%; transform: translate(-50%, -70%);}
 .login_con .width_con h3 {text-align: center;}

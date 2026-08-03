@@ -328,7 +328,7 @@ function Note_detail() {
               </Link>
 
               <button
-                className="btn btn-muted"
+                className="btn btn_del"
                 type="button"
                 onClick={() => {
                   if(window.confirm("삭제하시겠습니까?")){
