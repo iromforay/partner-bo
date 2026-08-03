@@ -86,3 +86,15 @@
 npm install
 npm start
 ```
+
+## 배포 (release+symlink 무중단 배포)
+서버에서 `git pull`로 최신 소스를 받은 뒤 [`build.sh`](build.sh)를 실행합니다.
+
+```bash
+./build.sh
+```
+
+- `npm run build`로 `build/releases/<timestamp>`에 직접 빌드합니다.
+- 빌드가 끝나면 `build/current` 심볼릭 링크를 새 release로 원자적으로 전환합니다.
+- nginx는 `build/current`를 `root`로 바라보므로, 심볼릭 링크 전환만으로 무중단 배포가 됩니다(별도 reload 불필요).
+- `git pull`은 스크립트가 하지 않으므로 실행 전에 미리 받아둬야 하며, 로컬 HEAD가 upstream과 다르면 스크립트가 에러로 중단됩니다.

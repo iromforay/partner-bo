@@ -20,7 +20,8 @@ function post_ajax(this_form, whats, config, contents){
 
   if(whats === 'header'){
 
-    axios.post(process.env.REACT_APP_API_KEY+'Admin/Basic/save', formData, config).then((result)=>{
+    axios.post(process.env.REACT_APP_API_KEY+'Admin/Basic/save', formData, config)
+    .then((result)=>{
       console.log(result);
       alert('저장되었습니다');
     }).catch(()=>{
@@ -52,6 +53,24 @@ function post_ajax(this_form, whats, config, contents){
     .catch(()=>{
       alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.');
       window.location.href='/';
+    });
+  } else if(whats === 'naverVerification'){
+
+    for (const [key,value] of formData.entries()) {
+        console.log("전송:",key,value);
+      }
+    axios.post(
+      process.env.REACT_APP_API_KEY+'Admin/basic/Save_verification_code',
+      formData,
+      config
+    )
+    .then((result)=>{
+      console.log("저장 후 조회:", result.data.RECORD);
+      alert('저장되었습니다');
+    })
+    .catch(()=>{
+      alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.');
+      // window.location.href='/';
     });
 
   }else{

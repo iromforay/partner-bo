@@ -131,20 +131,6 @@
   select:focus, .text-input:focus { outline: none; border-color: var(--accent); }
   .text-input::placeholder { color: var(--text-faint); }
 
-  .btn {
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    border-radius: 7px;
-    padding: 9px 16px;
-    cursor: pointer;
-    border: none;
-    white-space: nowrap;
-  }
-  .btn-muted { background: var(--btn-action-bg); color: var(--btn-action-fg); }
-  .btn-primary { background: var(--accent); color: #fff; margin-left: auto; padding: 10px 20px; font-size: 13.5px; }
-  .btn-primary:hover { filter: brightness(1.06); }
-
   table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   thead th {
     text-align: center;
@@ -210,9 +196,6 @@
   .memo-count:hover { background: var(--surface-sunken); color: var(--accent); }
   .memo-count svg { width: 12px; height: 12px; color: var(--text-muted);}
   .memo-count:hover svg {color: var(--accent); }
-
-  .row-actions { display: flex; gap: 6px; justify-content: center; }
-  .row-actions .btn { padding: 7px 12px; font-size: 12.5px; }
 
   .pagination { display: flex; justify-content: center; gap: 6px; padding: 20px; }
   .page-btn {
@@ -322,7 +305,6 @@
 .tag-lost {  background: var(--st-lost);}
 
 /* 상세 정보 */
-.card-body{padding: 0;}
 .info-grid {  display: grid;  grid-template-columns: repeat(3, 1fr);  gap: 18px 20px;}
 
 /* 메모 영역 */
@@ -409,6 +391,7 @@
 .note_section input,
 .note_section select,
 .note_section textarea {  font-family:inherit;  font-size:13.5px;  color:var(--text);  background:var(--surface-sunken);  border:1px solid var(--border);  border-radius:7px;  padding:10px 12px;  width:100%;}
+
 .note_section input:focus,
 .note_section select:focus,
 .note_section textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--surface);}
@@ -471,7 +454,7 @@
 .note_section .btn-danger-outline:hover {  background: rgba(224, 52, 43, .06);}
 
 /* Top Hero Header */
-.card-hero {  display: flex;  justify-content: space-between;  align-items: flex-start;  padding-bottom: 24px;  border-bottom: 1px solid #f2f4f6;  margin-bottom: 24px;}
+.panel-hero {  display: flex;  justify-content: space-between;  align-items: flex-start;  padding-bottom: 24px;  border-bottom: 1px solid #f2f4f6;  margin-bottom: 24px;}
 .badge-group {  display: flex;  gap: 6px;  margin-bottom: 8px;}
 .user-info-title {  font-size: 22px;  font-weight: 700;  color: #191f28;  display: flex;  align-items: baseline;  gap: 8px;}
 .user-sub-text {  font-size: 14px;  font-weight: 400;  color: #8b95a1;}

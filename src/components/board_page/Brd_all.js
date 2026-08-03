@@ -159,7 +159,7 @@ function Rows(props){
         <li className="board_hit">{datas[props.val].board_hit}</li>
         <li className="board_etc">
           <div className="btns btn_edit">
-            <span onClick={()=>{dispatch(now_view(datas[props.val]))}}><Link to='/edit'>글수정</Link></span>
+            <span onClick={()=>{dispatch(now_view(datas[props.val]))}}><Link to='/edit'>수정</Link></span>
           </div>
           <div className="btns btn_del">
             <span onClick={(()=>{
@@ -174,7 +174,7 @@ function Rows(props){
                   dispatch(change_page('board'));
                 });
               }
-            })}>글삭제</span>
+            })}>삭제</span>
           </div>
         </li>
       </ul>

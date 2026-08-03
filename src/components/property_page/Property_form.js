@@ -244,7 +244,7 @@ function Property_form() {
           addr_sido: data.addr_sido ?? "",
           addr_sigungu: data.addr_sigungu ?? "",
           addr_dong: data.addr_dong ?? "",
-          addr_road: data.addr_road ?? "",
+          addr_road: data.roadAddress ?? "",
           naver_address: data.naver_address ?? "",
           lat: data.lat ?? "",
           lng: data.lng ?? "",
@@ -472,25 +472,41 @@ function Property_form() {
 
       const result = res.data.RECORD;
 
+      const addressElements = result.address.addressElements;
+
+      const sido = addressElements.find(
+        item => item.types.includes("SIDO")
+      )?.longName || "";
+
+      const sigungu = addressElements.find(
+        item => item.types.includes("SIGUGUN")
+      )?.longName || "";
+
+      const dong = addressElements.find(
+        item => item.types.includes("DONGMYUN")
+      )?.longName || "";
+      
       setFormData((prev) => ({
         ...prev,
-        addr_sido: data.sido,
-        addr_sigungu: data.sigungu,
-        addr_dong: data.bname || "",
-        addr_road: data.roadAddress,
+        addr_sido: sido,
+        addr_sigungu: sigungu,
+        addr_dong: dong,
+        addr_road: result.address.roadAddress,
         naver_address: JSON.stringify(result.address),
         lat: result.lat,
         lng: result.lng,
       }));
-
+console.log("result 전체:", result);
+console.log("result.roadAddress:", result.roadAddress);
+console.log("result.address.roadAddress:", result.address?.roadAddress);
       setMapImage(result.image_url);
 
       setIsOpenPostcode(false);
-console.log("지도 데이터 확인", {
-  lat: data.lat,
-  lng: data.lng,
-  main: data
-});
+        console.log("지도 데이터 확인", {
+          lat: data.lat,
+          lng: data.lng,
+          main: data
+        });
     } catch (err) {
       console.error("주소검색 API 오류:", err);
       alert("주소 검색에 실패했습니다.");
@@ -578,16 +594,22 @@ console.log("지도 데이터 확인", {
     //     img_no: deleteImgNos
     //   };
 
-      console.log("저장 데이터 확인", {
-        lat: formData.lat,
-        lng: formData.lng,
-      });
+      // console.log("저장 데이터 확인", {
+      //   lat: formData.lat,
+      //   lng: formData.lng,
+      // });
+      console.log("저장 직전 formData", formData.display_yn);
+
+      for (let pair of submitFormData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
 
   // 저장 API 호출
   const apiUrl = `${process.env.REACT_APP_API_KEY}Admin/Property/save`;
     axios
       .post(apiUrl, submitFormData, config)
       .then((res) => {
+          console.log("저장 결과:", res.data);
         alert(`매물 ${actionText}이 완료되었습니다.`);
         navigate("/property");
       })

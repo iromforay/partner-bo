@@ -479,7 +479,7 @@ function Set_header(props){
                 defaultValue={basicSetting.broker_agent_phone}
               />
             </div>
-            <textarea name="footer_copy" placeholder="대표이사 : 나병연 | 개인정보관리책임자 : 나병연 | 사업자등록번호 : 000-00-00000 | 주소 경기 부천시 | TEL 02-1234-5678" defaultValue={basicSetting.footer_copy}></textarea>
+            <textarea readOnly name="footer_copy" className="footer_copy" placeholder="대표이사 : 나병연 | 개인정보관리책임자 : 나병연 | 사업자등록번호 : 000-00-00000 | 주소 경기 부천시 | TEL 02-1234-5678" defaultValue={basicSetting.footer_copy}></textarea>
           </div>
           <p className="copy">Copyrightⓒ 2023 all-teaching All rights reserved.</p>
         </div>

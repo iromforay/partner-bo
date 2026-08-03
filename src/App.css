@@ -7,16 +7,51 @@ body {font-family: 'pretendard', sans-serif; word-break: keep-all;}
 
 span {font-size: inherit; font-weight: inherit; color: inherit; line-height: inherit;}
 svg path {color: inherit;}
-input {outline: none;}
+
+/* 입력 */
+input,
+select,
+textarea {  font-family:inherit;  font-size:13.5px;  color:var(--text);  background:var(--surface-sunken);  border:1px solid var(--border);  border-radius:7px;  padding:10px 12px;  
+  /* width:100%; */
+}
+
+input:focus,
+select:focus,
+textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--surface);}
+
+/* placeholder */
+ input::placeholder {  color:var(--text-faint);}
+
+ /* 버튼 */
+.row-actions { display: flex; gap: 6px; justify-content: center; }
+.row-actions .btn { padding: 7px 12px; font-size: 12.5px; }
+.btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 7px;
+  padding: 9px 16px;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+.btn-muted { background: var(--btn-action-bg); color: var(--btn-action-fg); }
+.btn-primary { background: var(--accent); color: #fff; margin-left: auto; padding: 10px 20px; font-size: 13.5px; }
+.btn-primary:hover { filter: brightness(1.06); }
+/* 삭제버튼 공통 */
+.btn_del { background: var(--danger); color: #fff; }
 
 .login_con {position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #f0f0f0; z-index: 9999;}
 .login_con .width_con {position: absolute; top: 50%; left: 50%; transform: translate(-50%, -70%);}
 .login_con .width_con h3 {text-align: center;}
 .login_con .loginput {margin: 30px 0 0 0; padding: 20px; border-radius: 4px; background: #FFF; box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.20);}
-.login_con .loginput #form_login {}
+.login_con .loginput #form_login {display: flex; flex-direction: column; gap: 10px;}
 .login_con .loginput #form_login h5 {margin: 0 0 40px 0;}
 .login_con .loginput #form_login div {display: flex; flex-direction: column;}
-.login_con .loginput #form_login div input {width: 300px; height: 50px; padding: 0 0 0 10px; margin: 0 0 10px 0; font-size: 0.8rem; border-radius: 4px; background: #EBEFF2;}
+
+.login_con .loginput #form_login div input {width: 300px;}
+
+
 .login_con .loginput #form_login .id_con {}
 .login_con .loginput #form_login .id_con input {}
 .login_con .loginput #form_login .pw_con {}
