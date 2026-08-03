@@ -663,7 +663,7 @@ console.log("result.address.roadAddress:", result.address?.roadAddress);
                     <option value="warehouse">창고</option>
                     <option value="knowledge">지식산업센터</option>
                     <option value="building">건물</option>
-                    <option value="motel">숙박</option>
+                    <option value="motel">생활숙박</option>
                     <option value="etc">기타</option>
                   </select>
                 </div>
