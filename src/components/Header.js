@@ -18,6 +18,7 @@ import Note_form from './note_page/Note_form';
 import Note_detail from './note_page/Note_detail';
 
 import axios from 'axios';
+import DashBoard from './dashBoard_page/DashBoard';
 
 function Header(){
 
@@ -77,6 +78,16 @@ function Header(){
           </div>
           <div className='nav_con'>
             <ul>
+              <li onClick={()=>{
+                dispatch(change_page('dash_board'))
+              }} className={store.current_page === 'dash_board' ? 'on' : null}>
+                <Link to='/dash_board'>
+                  <div className='img_con'>
+                    <img src='img/header/header_dash_board.png' alt='아이콘이미지'></img>
+                  </div>
+                  <p>대시보드</p>
+                </Link>
+              </li>
               <li onClick={()=>{
                 dispatch(change_page('basic'))
               }} className={store.current_page === 'basic' ? 'on' : null}>
@@ -148,6 +159,8 @@ function Header(){
             <Route path='/board' element={ <Board></Board> }></Route>
             <Route path='/property' element={ <Property></Property> }></Route>
             <Route path='/note' element={ <Note /> }></Route>
+            <Route path='/dash_board' element={ < DashBoard/> }></Route>
+
             <Route path='/write' element={ <Write_brd></Write_brd> }></Route>
             <Route path='/edit' element={ <Edit_brd></Edit_brd> }></Route>
             <Route path='/view' element={ <View_brd></View_brd> }></Route>
