@@ -322,7 +322,6 @@
 .tag-lost {  background: var(--st-lost);}
 
 /* 상세 정보 */
-.card-body{padding: 0;}
 .info-grid {  display: grid;  grid-template-columns: repeat(3, 1fr);  gap: 18px 20px;}
 
 /* 메모 영역 */
@@ -409,6 +408,7 @@
 .note_section input,
 .note_section select,
 .note_section textarea {  font-family:inherit;  font-size:13.5px;  color:var(--text);  background:var(--surface-sunken);  border:1px solid var(--border);  border-radius:7px;  padding:10px 12px;  width:100%;}
+
 .note_section input:focus,
 .note_section select:focus,
 .note_section textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--surface);}
@@ -471,7 +471,7 @@
 .note_section .btn-danger-outline:hover {  background: rgba(224, 52, 43, .06);}
 
 /* Top Hero Header */
-.card-hero {  display: flex;  justify-content: space-between;  align-items: flex-start;  padding-bottom: 24px;  border-bottom: 1px solid #f2f4f6;  margin-bottom: 24px;}
+.panel-hero {  display: flex;  justify-content: space-between;  align-items: flex-start;  padding-bottom: 24px;  border-bottom: 1px solid #f2f4f6;  margin-bottom: 24px;}
 .badge-group {  display: flex;  gap: 6px;  margin-bottom: 8px;}
 .user-info-title {  font-size: 22px;  font-weight: 700;  color: #191f28;  display: flex;  align-items: baseline;  gap: 8px;}
 .user-sub-text {  font-size: 14px;  font-weight: 400;  color: #8b95a1;}

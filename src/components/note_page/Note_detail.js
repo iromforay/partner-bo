@@ -300,7 +300,7 @@ function Note_detail() {
 
         <div className="panel">
           {/* 기본 정보, 상단 히어로 헤더 (상태 배지, 이름, 삭제/수정 버튼) */}
-          <div className="card-hero">
+          <div className="panel-hero">
             <div className="hero-left">
               <div className="badge-group">
                 <span className={`tag ${status_class[data.status]}`}>
@@ -341,7 +341,7 @@ function Note_detail() {
             </div>
           </div>
 
-          <div className="card-body">
+          <div className="panel-body">
             <div className="info-grid">
               <div className="info-item">
                 <span className="info-label">거래방식</span>
