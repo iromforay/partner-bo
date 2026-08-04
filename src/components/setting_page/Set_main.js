@@ -70,9 +70,6 @@ function Set_main(){
     return(
       <form id="mainSetting" data-whats="main">
         <div className="row row1">
-          <div className="title_con">
-            <h4>메인페이지 설정</h4>
-          </div>
           <div className="btn_con">
             <div className="btns temporary" onClick={()=>{
               if(window.confirm('메인페이지 설정을 초기화 시키시겠습니까?\n초기화 후 저장하여 홈페이지에 적용하시기 바랍니다.')){
@@ -100,39 +97,51 @@ function Set_main(){
         </div>
         <div className="row row2">
           <div className="title_con">
-            <h5>배경 이미지 / 슬라이드 설정</h5>
-            {/* <span className="esenstial">*필수</span> */}
+            <h5>메인페이지 설정</h5>
           </div>
-          <p className="row_desc">사이트 메인페이지 내용을 설정해주세요</p>
-          <div className="set_con slide">
-            <ul>
-              <Slider {...settings}>
-                {main_slide === null || main_slide === '' ? null : main_slide.map(function(a, i){
-                  return(
-                    <Main_slide cfg={config} data={main_slide} key={i} val={i}/>
-                  )
-                })}
-              </Slider>
-            </ul>
-            <div className="plus_slide">
-              <label>
-                <input type="file" name="main_plus_slide" onClick={(e)=>{e.stopPropagation()}} onChange={(e)=>{
-                  let formData = new FormData();
-                  formData.append('code', 'main');
-                  formData.append('file', e.target.files[0]);
-                  axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_up', formData, config).then((result)=>{console.log(result.data); setTicking(true)}).catch(()=>{
-                    alert("이미지를 추가할 수 없습니다\n잠시 후에 다시 시도해주십시오.");
-                  });
-                  for (const [key, value] of formData.entries()) {
-                    console.log(key, value);
-                  }
-                }} accept="image/png, image/jpeg"></input>
-                <FontAwesomeIcon icon={faPlus}/>
-                <p>이미지 추가</p>
-              </label>
+
+            <div className="set_con">
+              <div>
+                <div className="title_con">
+                  <h5>배경 이미지 / 슬라이드 설정</h5>
+                </div>
+                <p className="opt">사이트 메인페이지 내용을 설정해주세요</p>
+              </div>
+              
+              <div className="btn_con">
+                <div className="plus">
+                  <label>
+                    <input type="file" name="main_plus_slide" onClick={(e)=>{e.stopPropagation()}} onChange={(e)=>{
+                      let formData = new FormData();
+                      formData.append('code', 'main');
+                      formData.append('file', e.target.files[0]);
+                      axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_up', formData, config).then((result)=>{console.log(result.data); setTicking(true)}).catch(()=>{
+                        alert("이미지를 추가할 수 없습니다\n잠시 후에 다시 시도해주십시오.");
+                      });
+                      for (const [key, value] of formData.entries()) {
+                        console.log(key, value);
+                      }
+                    }} accept="image/png, image/jpeg"></input>
+                      <FontAwesomeIcon icon={faPlus} />
+                      <span> 이미지 추가</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="slide">
+                  <ul className="add_list">
+                    <Slider {...settings}>
+                      {main_slide === null || main_slide === '' ? null : main_slide.map(function(a, i){
+                        return(
+                          <Main_slide cfg={config} data={main_slide} key={i} val={i}/>
+                        )
+                      })}
+                    </Slider>
+                  </ul>
+                </div>
             </div>
-          </div>
         </div>
+
         <div className="row row3">
           <div className="title_con">
             <h5>배경 앞 투명 배경색 설정</h5>
@@ -148,15 +157,17 @@ function Set_main(){
               </label>
             </div>
           </div>
-          <p className="row_desc">배경이미지 앞에 투명 배경색을 설정합니다.</p>
-          <div className="inpt_con">
+          <p className="opt">배경이미지 앞에 투명 배경색을 설정합니다.</p>
+          <div className="opa_con">
             <input type="color" name="bgcolor" className="clr_input" defaultValue={mainSetting.row.bgcolor}></input>
             <div className="opacity_con">
-            <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={mainSetting.row.transparent} onChange={(e)=>{
-                    let val = e.target.value;
-                    $(".opa span").text(val+"%")
-                  }}></input>
-            <p className="opa"><span>{mainSetting.row.transparent}%</span>배경색 투명도</p>
+              <div className="range_con">
+                <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={mainSetting.row.transparent} onChange={(e)=>{
+                  let val = e.target.value;
+                  $(".opa span").text(val+"%")
+                }}></input>
+                <p className="opa"><span>{mainSetting.row.transparent}%</span>배경색 투명도</p>
+              </div>
             </div>
           </div>
         </div>
@@ -175,7 +186,7 @@ function Set_main(){
               </label>
             </div>
           </div>
-          <p className="row_desc">해당 페이지 내 타이틀 문구를 설정해주세요</p>
+          <p className="opt">해당 페이지 내 타이틀 문구를 설정해주세요</p>
           <div className="editor_con">
             <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
           </div>
@@ -202,8 +213,13 @@ function Main_slide(props){
   
   return(
     <li>
-      <div className={hover === true ? "img_con on" : "img_con"} onMouseOver={mouseover} onMouseOut={mouseleave}>
-        <div className="del_slide" onClick={()=>{
+      <div className={`input_con`} 
+        // ${hover === true ? "img_con on" : "img_con"}
+        onMouseOver={mouseover} onMouseOut={mouseleave}>
+
+        <img src={props.data[props.val].full_url}></img>
+
+        <div className="del_slide minus" onClick={()=>{
           let formData = new FormData();
           formData.append('img_no', props.data[props.val].img_no);
           axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_del', formData, props.cfg).then((result)=>{console.log(result.data);}).catch(()=>{
@@ -214,10 +230,9 @@ function Main_slide(props){
           }
           dispatch(minus_Mslide(props.val));
         }}>
-          <FontAwesomeIcon icon={faTrashCan}/>
-          <p>이미지 삭제</p>
+          <span><FontAwesomeIcon icon={faTrashCan}/></span>
+          {/* <p>이미지 삭제</p> */}
         </div>
-        <img src={props.data[props.val].full_url}></img>
       </div>
     </li>
   )

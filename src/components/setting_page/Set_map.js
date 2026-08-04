@@ -66,9 +66,7 @@ function Set_map(){
     return(
       <form id="mapSetting" data-whats="map">
         <div className="row row1">
-          <div className="title_con">
-            <h4>오시는길 페이지 설정</h4>
-          </div>
+          
           <div className="btn_con">
             <div className="btns temporary" onClick={()=>{
               if(window.confirm('오시는길 페이지 설정을 초기화 시키시겠습니까?\n초기화 후 저장하여 홈페이지에 적용하시기 바랍니다.')){
@@ -94,62 +92,78 @@ function Set_map(){
             </div>
           </div>
         </div>
+
         <div className="row row2">
           <div className="title_con">
-            <h5>배경 설정 (선택)</h5>
+            <h5>오시는길 페이지 설정</h5>
           </div>
-          <p className="row_desc">해당페이지 배경 이미지와 색을 설정해주세요 / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
-          <div className="inner_con">
-            <div className="input_con img_input">
-              <label>
-                <input type="file" name="file" accept="image/png, image/jpeg" onChange={(e)=>{
-                  preview(e.target.files);
-                  if(mapSetting.img !== null){
-                    del_img(mapSetting.img, config);
+
+          <div className="set_con">
+            <div>
+              <div className="title_con">
+                <h5>배경 설정 (선택)</h5>
+              </div>
+              <p className="opt">해당페이지 배경 이미지와 색을 설정해주세요 / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
+            </div>
+
+            <div className="inner_con">
+              <div className="input_con img_input">
+                <label>
+                  <input type="file" name="file" accept="image/png, image/jpeg" onChange={(e)=>{
+                    preview(e.target.files);
+                    if(mapSetting.img !== null){
+                      del_img(mapSetting.img, config);
+                    }
+                  }}></input>
+                  <div className="upload_img">
+                    {upload_img === '' ? <img src="img/basic/notice/notice_base.jpg"></img> : <img src={upload_img} alt="이미지 경로를 확인해주세요"></img>}
+                  </div>
+
+                  {
+                    upload_img === '' ? null : <div className="del_slide" onClick={()=>{
+                      if(mapSetting.img !== null){
+                        del_img(mapSetting.img, config);
+                      }
+                      setUpload('');
+                    }}>
+                      <FontAwesomeIcon icon={faTrashCan}/>
+                    </div>
                   }
-                }}></input>
-                <div className="upload_img">
-                  {upload_img === '' ? <img src="img/basic/notice/notice_base.jpg"></img> : <img src={upload_img} alt="이미지 경로를 확인해주세요"></img>}
+                </label>
+                
+                <div className="ex_con">
+                  <p className="opt">결과예시)</p>
+                  <img src="img/basic/notice/bgEx2.jpg"></img>
                 </div>
-              </label>
-              {
-                upload_img === '' ? null : <div className="del_slide" onClick={()=>{
-                  if(mapSetting.img !== null){
-                    del_img(mapSetting.img, config);
-                  }
-                  setUpload('');
-                }}>
-                  <FontAwesomeIcon icon={faTrashCan}/>
-                </div>
-              }
-              <div className="ex_con">
-                <p className="row_desc">결과예시)</p>
-                <img src="img/basic/notice/bgEx2.jpg"></img>
               </div>
             </div>
-            <div className="opa_con">
-              <div className="opacity_con">
-                <input type="color" name="bgcolor" className="clr_input" defaultValue={mapSetting.row.bgcolor}></input>
-                <div className="range_con">
-                  <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={mapSetting.row.transparent} onChange={(e)=>{
-                    let val = e.target.value;
-                    $(".opa span").text(val+"%")
-                  }}></input>
-                  <p className="opa"><span>{mapSetting.row.transparent}%</span>배경색 투명도</p>
+
+            <div className="inner_con">
+              <div className="opa_con">
+                <div className="opacity_con">
+                  <input type="color" name="bgcolor" className="clr_input" defaultValue={mapSetting.row.bgcolor}></input>
+                  <div className="range_con">
+                    <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={mapSetting.row.transparent} onChange={(e)=>{
+                      let val = e.target.value;
+                      $(".opa span").text(val+"%")
+                    }}></input>
+                    <p className="opa"><span>{mapSetting.row.transparent}%</span>배경색 투명도</p>
+                  </div>
                 </div>
-              </div>
-              <div className="ex_con">
-                <p className="row_desc">결과예시)</p>
-                <img src="img/basic/notice/bgEx1.jpg"></img>
+                <div className="ex_con">
+                  <p className="opt">결과예시)</p>
+                  <img src="img/basic/notice/bgEx1.jpg"></img>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        
         <div className="row row3">
           <div className="title_con">
             <h5>위치정보 설정</h5>
           </div>
-          <p className="row_desc">해당페이지 내 위치정보를 설정해주세요</p>
+          <p className="opt">해당페이지 내 위치정보를 설정해주세요</p>
           <div className="main_con">
             <ul className="lists">
               <li>
@@ -158,8 +172,7 @@ function Set_map(){
                 </div>
                 <div className="desc_con">
                   <div className="title_con">
-                    <h4>주소 및 연락처</h4>
-                    <span className="esenstial">*필수</span>
+                    <h4>주소 및 연락처<span className="esenstial">*</span></h4>
                   </div>
                   <input type="text" name="addr" placeholder="주소를 입력해주세요" defaultValue={mapSetting.row.addr}></input>
                   <input type="text" name="tel" placeholder="대표번호를 입력해주세요" defaultValue={mapSetting.row.tel}></input>
@@ -214,7 +227,7 @@ function Set_map(){
               <div className="title_con">
                 <h5>이미지 캡쳐본 업로드</h5>
               </div>
-              <p className="row_desc">위치 이미지를 업로드해주세요</p>
+              <p className="opt">위치 이미지를 업로드해주세요</p>
               <div className="input_con img_input">
                 <label>
                 <input type="file" name="file2" accept="image/png, image/jpeg" onChange={(e)=>{preview(e.target.files, 2);}}></input>
@@ -223,11 +236,11 @@ function Set_map(){
                   </div>
                 </label>
                 {
-                upload_img2 === '' ? null : <div className="del_slide" onClick={()=>{
+                upload_img2 === '' ? null : <div className="del_slide minus" onClick={()=>{
                   setUpload2('');
                   //$("input[name='file2']").val('');
                 }}>
-                  <FontAwesomeIcon icon={faTrashCan}/>
+                  <span><FontAwesomeIcon icon={faTrashCan}/></span>
                 </div>
               }
               </div>

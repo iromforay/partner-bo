@@ -25,7 +25,51 @@ function Property_detail() {
   let url = `${process.env.REACT_APP_API_KEY}Admin/Property/detail?property_no=${property_no}`;
   const [mapImage, setMapImage] = useState("");
 
-  //상세 데이터 바인딩
+  // 금액 표시 함수 (만원 → 억/만원)
+  const formatPrice = (price) => {
+    if (!price || Number(price) === 0) return "-";
+
+    const num = Number(price);
+
+    const eok = Math.floor(num / 10000);
+    const man = num % 10000;
+
+    if (eok > 0 && man > 0) {
+      return `${eok}억 ${man.toLocaleString()}만원`;
+    }
+
+    if (eok > 0) {
+      return `${eok}억`;
+    }
+
+    return `${num.toLocaleString()}만원`;
+  };
+
+  //매물 삭제
+  const handleDelete = () => {
+    if (!window.confirm("삭제하시겠습니까?")) return;
+
+    const formData = new FormData();
+    formData.append("property_no", data.property_no);
+
+    axios.post(
+      process.env.REACT_APP_API_KEY + "Admin/Property/delete",
+      formData,
+      config
+    )
+    .then((res) => {
+      console.log("삭제 결과:", res.data);
+
+      alert("삭제되었습니다.");
+      navigate('/property');
+    })
+    .catch((err) => {
+      console.error("삭제 실패:", err);
+      alert("데이터 전송이 실패하였습니다.");
+    });
+  };
+
+  //api 호출
   useEffect(() => {
     axios
       .get(
@@ -71,27 +115,7 @@ function Property_detail() {
 
   }, [property_no]);
 
-// 금액 표시 함수 (만원 → 억/만원)
-const formatPrice = (price) => {
-  if (!price || Number(price) === 0) return "-";
-
-  const num = Number(price);
-
-  const eok = Math.floor(num / 10000);
-  const man = num % 10000;
-
-  if (eok > 0 && man > 0) {
-    return `${eok}억 ${man.toLocaleString()}만원`;
-  }
-
-  if (eok > 0) {
-    return `${eok}억`;
-  }
-
-  return `${num.toLocaleString()}만원`;
-};
-
- if(loading){
+  if(loading){
     return (
     <div className="sections view property_view">
       <div className="width_con">
@@ -102,14 +126,18 @@ const formatPrice = (price) => {
     </div>
     );
   }
+  
   return (
     <div className="sections write property_section property_section_detail">
       <div className="width_con">
-        <h3>매물 상세 보기</h3>
-        <div className="form_con">
+        <Link to="/property" className="back-link">
+          ← 목록으로
+        </Link>
+
+        <div className="panel">
 
           {/* 1. 기본정보 */}
-          <div className="section_box">
+          <div className="panel-body">
             <div className="sec_title_bar">
               <h4>기본정보</h4>
             </div>
@@ -357,19 +385,21 @@ const formatPrice = (price) => {
           </div>
 
           {/* 하단 버튼 바 */}
-          <div className="row row5">
-            <div className="btn_con">
-              <button 
-                type="button" 
-                className="btns apply" 
-                onClick={() => navigate(`/property/edit/${data.property_no}`)}
+          <div className="hero-actions">
+            <Link
+              className="btn btn-muted"
+              to={`/property/edit/${data.property_no}`}
+            >
+                수정하기
+            </Link>
+
+            <button
+                type="button"
+                className="btn btn_del"
+                onClick={handleDelete}
               >
-                <span>수정하기</span>
-              </button>
-              <div className="btns exit">
-                <span><Link to='/property'>목록으로</Link></span>
-              </div>
-            </div>
+                삭제
+              </button>            
           </div>
 
         </div>

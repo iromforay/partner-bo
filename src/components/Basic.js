@@ -2,7 +2,8 @@ import { useEffect, useState, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { change_page, change_set, minus_list, plus_list } from "../store";
 import {Set_header, Set_main, Set_notice, Set_around, Set_property, Set_charge, Set_review, Set_vod, Set_map} from './setting_page/setting_page';
-import './setting_page/set.css';
+// import './setting_page/set.css';
+import './setting_page/set2.css';
 import axios from "axios";
 import Set_NaverVerification from "./setting_page/Set_NaverVerification";
 
@@ -34,9 +35,14 @@ function Basic(props){
 
   if(menuSetting){
     return(
-      <div className="sections basic">
-        <div className="width_con">
-          <h3>홈페이지 설정</h3>
+      <div className="page_container">
+        <div className="page_header">
+          <div>
+            <h1>홈페이지 설정</h1>
+            <p>
+              홈페이지 구성과 노출 상태를 관리합니다.
+            </p>
+          </div>
           <ul className="tabs">
             <li onClick={()=>{
               dispatch(change_set(0))
@@ -129,22 +135,23 @@ function Basic(props){
               </div>
             </li>
           </ul>
-          <div className="form_con">
+        </div>
+
+        <div className="content_card">
+          {
             {
-              {
-                0 : <Set_header></Set_header>,
-                1 : <Set_main></Set_main>,
-                2 : <Set_notice></Set_notice>,
-                3 : <Set_around></Set_around>,
-                4 : <Set_property></Set_property>,
-                // 5 : <Set_charge></Set_charge>,
-                6 : <Set_review></Set_review>,
-                7 : <Set_vod></Set_vod>,
-                8 : <Set_map></Set_map>,
-                9 : <Set_NaverVerification></Set_NaverVerification>,
-              }[select]
-            }
-          </div>
+              0 : <Set_header></Set_header>,
+              1 : <Set_main></Set_main>,
+              2 : <Set_notice></Set_notice>,
+              3 : <Set_around></Set_around>,
+              4 : <Set_property></Set_property>,
+              // 5 : <Set_charge></Set_charge>,
+              6 : <Set_review></Set_review>,
+              7 : <Set_vod></Set_vod>,
+              8 : <Set_map></Set_map>,
+              9 : <Set_NaverVerification></Set_NaverVerification>,
+            }[select]
+          }
         </div>
       </div>
     )

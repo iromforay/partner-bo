@@ -112,7 +112,6 @@ const MOCK_DATA = {
   view_count: "0"
 };
 
-
 function Note_detail() {
   const { note_no } = useParams();
   const navigate = useNavigate();
@@ -170,20 +169,8 @@ function Note_detail() {
 
   }, [note_no]);
 
- if(loading){
-    return (
-    <div className="sections view note_view">
-      <div className="width_con">
-        <div className="loading_box" style={{ padding: '100px 0', textAlign: 'center' }}>
-          <p>데이터를 불러오는 중입니다...</p>
-        </div>
-      </div>
-    </div>
-    );
-  }
-
   // 뱃지 및 태그 매핑 객체 
-  const status_class  = { consulting: 'tag-consulting', proposed: 'tag-proposed', contracted: 'tag-contracted', lost: 'tag-lost' };
+  const status_class  = { consult_request: 'tag-consult_request', consulting: 'tag-consulting', proposed: 'tag-proposed', contracted: 'tag-contracted', lost: 'tag-lost' };
   const visit_type_class  = { tenant: 'tag-tenant', landlord: 'tag-landlord' };
 
   //메모 등록
@@ -245,6 +232,30 @@ function Note_detail() {
     setEditMemoText(memo.memo);
   };
 
+  //메모 삭제
+  const handleDelete = () => {
+    if (!window.confirm("삭제하시겠습니까?")) return;
+
+    const formData = new FormData();
+    formData.append("note_no", data.note_no);
+
+    axios.post(
+      process.env.REACT_APP_API_KEY + "Admin/Note/delete",
+      formData,
+      config
+    )
+    .then((res) => {
+      console.log("삭제 결과:", res.data);
+
+      alert("삭제되었습니다.");
+      navigate('/note');
+    })
+    .catch((err) => {
+      console.error("삭제 실패:", err);
+      alert("데이터 전송이 실패하였습니다.");
+    });
+  };
+
   //메모수정 api 호출
   const handleMemoUpdate = (e) => {
 
@@ -291,6 +302,18 @@ function Note_detail() {
 
   };
 
+  if(loading){
+    return (
+    <div className="sections view note_view">
+      <div className="width_con">
+        <div className="loading_box" style={{ padding: '100px 0', textAlign: 'center' }}>
+          <p>데이터를 불러오는 중입니다...</p>
+        </div>
+      </div>
+    </div>
+    );
+  }
+
   return (
     <div className="sections write property_section property_section_detail">
       <div className="width_con">
@@ -317,28 +340,7 @@ function Note_detail() {
                 <span className="user-sub-text">| {data.visitor_phone || "-"}</span>
               </div>
 
-            </div>
-
-            <div className="hero-actions">
-              <Link
-                className="btn btn-muted"
-                to={`/note/edit/${data.note_no}`}
-              >
-                수정하기
-              </Link>
-
-              <button
-                className="btn btn_del"
-                type="button"
-                onClick={() => {
-                  if(window.confirm("삭제하시겠습니까?")){
-                    // 삭제 API 연결
-                  }
-                }}
-              >
-                삭제
-              </button>
-            </div>
+            </div>            
           </div>
 
           <div className="panel-body">
@@ -488,6 +490,32 @@ function Note_detail() {
             </form>
           </div>
         </div>
+
+        {/* 하단 버튼 바 */}
+        <div className="panel">
+          <div className="btn_con">
+            <button
+                type="button"
+                className="btn btn_del"
+                onClick={handleDelete}
+              >
+                노트삭제
+              </button>
+
+              <div className="right">
+                <Link to="/note" className="btn btn-muted">
+                  목록
+                </Link>
+
+                <Link
+                  className="btn btn-primary"
+                  to={`/note/edit/${data.note_no}`}
+                >
+                  수정하기
+                </Link>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
   );

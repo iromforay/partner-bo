@@ -7,12 +7,13 @@ body {font-family: 'pretendard', sans-serif; word-break: keep-all;}
 
 span {font-size: inherit; font-weight: inherit; color: inherit; line-height: inherit;}
 svg path {color: inherit;}
+li, ul {list-style: none;}
 
 /* 입력 */
 input,
 select,
 textarea {  font-family:inherit;  font-size:13.5px;  color:var(--text);  background:var(--surface-sunken);  border:1px solid var(--border);  border-radius:7px;  padding:10px 12px;  
-  /* width:100%; */
+  width:100%;
 }
 
 input:focus,
@@ -59,10 +60,10 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 .login_con .loginput #form_login .btn_con {display: block; text-align: center;}
 .login_con .loginput #form_login .btn_con span {display: inline-block; width: 100%; padding: 15px 0px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; color: #fff; background: #06F;}
 
-.check_con {margin: 0 0 0 10px;}
+/* .check_con {margin: 0 0 0 10px;} */
 .check_con label {display: flex; justify-content: center;}
 .check_con label input.check_menu {display: none;}
-.check_con label .check_btn {position: relative; display: inline-block; width: 50px; height: 20px; border-radius: 999px; background: #999; cursor: pointer;}
+.check_con label .check_btn {position: relative; display: inline-block; width: 50px; height: 20px; border-radius: 999px; background: #cbd5e1; cursor: pointer;}
 .check_con label .check_btn .disabled {position: absolute; top: 50%; right: 7px; font-size: 0.6rem; line-height: 1rem; font-weight: 700; color: #fff; transform: translateY(-50%); transition: all 150ms ease-out;}
 .check_con label .check_btn .abled {position: absolute; top: 50%; left: 7px; font-size: 0.6rem; line-height: 1rem; font-weight: 700; color: #fff; transform: translateY(-50%); opacity: 0; transition: all 150ms ease-out;}
 .check_con label .check_btn .circle {position: absolute; top: 50%; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transform: translateY(-50%); transition: all 150ms ease-out;}
@@ -77,37 +78,24 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 .input_con.img_input label div.upload_img img {width: 100%;}
 
 
-#header {position: fixed; top: 0; left: 0; width: 250px; height: 100vh; padding: 15px 30px; background: #fff; box-shadow: 4px 0px 4px 0px rgba(0, 0, 0, 0.20); transition: left 300ms ease-in-out; z-index: 9999;}
-#header .btn_open {position: absolute; top: 50%; right: -30px; display: none; width: 20px; height: 100px; background: #A5AFB6; border-radius: 0 4px 4px 0; transform: translateY(-50%); transition: right 300ms ease-in-out; cursor: pointer;}
-#header .btn_open:before,
-#header .btn_open:after {position: absolute; top: 50%; width: 1px; height: 60%; content: ''; background: #fff; transform: translateY(-50%);}
-#header .btn_open:before {left: 5px;}
-#header .btn_open:after {right: 5px;}
-#header h5 {font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; color: #A5AFB6;}
-#header .profile {display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 30px 0 0 0; text-align: center;}
-#header .profile .img_con {width: 80px; height: 80px; border-radius: 50%; overflow: hidden; text-align: center;}
-#header .profile .img_con img {width: 100%;}
-#header .profile .desc_con {margin: 10px 0 0 0;}
-#header .profile .desc_con h4 {font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; pointer-events: none;}
-#header .profile .desc_con a {font-size: 0.6rem; line-height: 1rem; text-decoration: underline; color: #777;}
-#header .nav_con {margin: 30px 0 0 0;}
-#header .nav_con ul {}
 #header .nav_con ul li {position: relative; padding: 10px 0; border-bottom: 1px dotted #E0E0E0;}
-#header .nav_con ul li a {display: flex; align-items: center; }
-#header .nav_con ul li a .img_con {position: relative; width: 30px; height: 30px; border-radius: 50%; background: #EBEEF2;}
-#header .nav_con ul li a .img_con img {width: 60%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
+/* #header .nav_con ul li a .img_con img {width: 60%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
 #header .nav_con ul li a p {position: relative; font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; margin: 0 0 0 5px;}
-#header .nav_con ul li.on:before {position: absolute; top: 0; left: -30px; width: calc(100% + 60px); height: 100%; content: ''; background: #A5AFB6;}
 #header .nav_con ul li.on a p {color: #fff;}
 .link_con {display: flex; justify-content: space-evenly; align-items: center; width: 100%; margin: 10px 0 0 0;}
-.link_con a {font-size: 0.7rem; line-height: 1.1rem;}
+.link_con a {font-size: 0.7rem; line-height: 1.1rem;} */ */
 
 
-.container {margin: 0 0 0 250px;}
-.container .sections {width: calc(100vw - 250px); 
+/* .container {margin: 0 0 0 250px;} */
+.container .sections {width: 100%; 
   /* height: 100vh;  */
   background: #EBEFF2;}
-.container .sections .width_con {position: relative; width: 1270px; padding: 40px;}
+.container .sections .width_con {
+  position: relative; 
+  width:100%;
+  max-width:1270px;
+  padding: 40px;
+}
 .container .sections .width_con > h3 {pointer-events: none;}
 .container .sections .width_con:before {position: absolute; bottom: 0; left: 20px; content: ''; width: calc(100% - 20px); height: 15px; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);}
 .container .sections.basic .width_con > h3{}
@@ -191,7 +179,7 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 .card-body {padding: 12px; display: flex; flex-direction: column; gap: 10px; }
 .setting-item {display: flex; justify-content: space-between; align-items: center;}
 .item-label {margin: 0; font-size: 13px; color: #475569;}
-.check_con label {cursor: pointer; display: inline-block;}
+/* .check_con label {cursor: pointer; display: inline-block;} */
 .input_check { display: none;}
 
 
@@ -221,7 +209,7 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 
 
 
-@media screen and (max-width:1520px){
+/* @media screen and (max-width:1520px){
   #header {left: -260px;}
   #header.unfold {left: 0;}
   #header .btn_open {display: block;}
@@ -242,7 +230,418 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 }
 @media screen and (max-width:350px){
   
+} */
+
+
+/* 공통 클래스 묶기 */
+
+  /* ---- 본문 패널 ---- */
+  .back-link {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+  .back-link:hover {
+    color: var(--accent);
+  }
+  .panel {
+    background: var(--surface);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    padding:20px 24px;
+    margin-bottom: 16px;
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 18px 0px;
+    border-bottom: 1px solid var(--border);
+  }
+  .toolbar-search{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      flex:1;
+  }
+  select, .text-input {
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 9px 12px;
+  }
+  select { min-width: 108px; }
+  .text-input { min-width: 140px; }
+  select:focus, .text-input:focus { outline: none; border-color: var(--accent); }
+  .text-input::placeholder { color: var(--text-faint); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead th {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    padding: 13px 10px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody td {
+    text-align: center;
+    padding: 14px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  tbody tr:hover { background: var(--surface-sunken); }
+  tbody tr:last-child td { border-bottom: none; }
+
+  td.col-visitor { text-align: left; font-weight: 700; }
+  td.col-visitor .phone { display: block; font-weight: 400; color: var(--text-faint); font-size: 12px; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  td.col-area { text-align: left; color: var(--text-muted); }
+  td.col-date { color: var(--text-faint); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+
+  .tag {
+    display: inline-block;
+    color: #fff;
+    white-space: nowrap;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .btn_con {  display: flex;  align-items: center;  justify-content: space-between;}
+
+
+  /* ===========================
+   Sidebar Layout
+=========================== */
+
+.admin_layout{
+    position:fixed;
+    top:0;
+    left:0;
+    width:250px;
+    height:100vh;
+    z-index:999;
+    display:flex;
+    background:#fff;
+    box-shadow:0 0 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+.admin_layout.collapsed{
+    width:80px;
 }
 
+.sidebar{
+    width:250px;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    padding:20px 16px;
+    transition:.3s;
+}
 
+/* 접힘 */
+.sidebar.collapsed{
+    width:80px;
+}
 
+/* ===========================
+   Logo
+=========================== */
+
+.logo_area{
+    margin-bottom:24px;
+}
+
+.logo_area a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.company_logo{
+
+    width:44px;
+    height:44px;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    flex-shrink:0;
+
+    background:#f5f5f5;
+}
+
+.company_logo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.company_name{
+
+    font-size:16px;
+    font-weight:700;
+
+    white-space:nowrap;
+}
+
+.sidebar.collapsed .company_name{
+    display:none;
+}
+
+.sidebar.collapsed .logo_area a{
+    justify-content:center;
+}
+
+/* ===========================
+   Menu
+=========================== */
+
+.nav_con{
+    flex:1;
+}
+
+.nav_con ul{
+    display:flex;
+    flex-direction:column;
+}
+
+.nav_con li a{
+    height:48px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 12px;
+    border-radius:12px;
+    color:#6b7280;
+    transition:.2s;
+}
+
+.nav_con li a svg{
+    color:#6b7280;
+    stroke:#6b7280;
+}
+
+.nav_con li a:hover{
+    background:#f4f4f4;
+}
+
+.nav_con li.on a{
+    background:#e8f2ff;
+    color:#2563eb;
+}
+.nav_con li.on a svg{
+    color:#2563eb;
+    stroke:#2563eb;
+}
+
+.img_con{
+    width:22px;
+    height:22px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-shrink:0;
+}
+
+.nav_label{
+
+    font-size:14px;
+    font-weight:600;
+}
+
+/* 접힘 */
+
+.sidebar.collapsed .nav_con li a{
+
+    height:64px;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    gap:4px;
+
+    padding:0;
+}
+
+.sidebar.collapsed .nav_label{
+
+    font-size:11px;
+}
+
+/* ===========================
+   Bottom
+=========================== */
+
+.sidebar_bottom{
+    margin-top:auto;
+    border-top:1px solid #eee;
+    padding-top:16px;
+}
+
+.user_mini_profile{
+    margin-bottom:12px;
+    padding:12px;
+    border-radius:12px;
+    background:#f8f8f8;
+}
+
+.user_name{
+    font-size:14px;
+    font-weight:700;
+}
+
+.bottom_actions{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.btn_icon_action,
+.btn_logout_text{
+  width:100%;
+  height:42px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 12px;
+  border-radius:10px;
+  background:none;
+  cursor:pointer;
+  transition:.2s;
+  color:#6b7280;
+  font-family:inherit;
+  font-size:14px;
+}
+
+.btn_icon_action:hover{
+
+    background:#f5f5f5;
+}
+
+.btn_logout_text{
+
+    color:#ef4444;
+}
+
+.btn_logout_text:hover{
+
+    background:#fff2f2;
+}
+
+/* 접힘 */
+
+.sidebar.collapsed .user_name{
+
+    display:none;
+}
+
+.sidebar.collapsed .btn_icon_action,
+.sidebar.collapsed .btn_logout_text{
+
+    width:48px;
+    height:48px;
+
+    justify-content:center;
+
+    padding:0;
+
+    margin:0 auto;
+}
+
+.sidebar.collapsed .btn_icon_action span,
+.sidebar.collapsed .btn_logout_text span{
+
+    display:none;
+}
+
+/* ===========================
+   Open Button
+=========================== */
+
+.btn_open{
+    position:absolute;
+    top:50%;
+    right:-20px;
+    transform:translateY(-50%);
+    width:26px;
+    height:64px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:16px;
+    background:#fff;
+    box-shadow:0 6px 16px rgba(0,0,0,.15);
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn_open:hover{
+
+    transform:translateY(-50%) scale(1.05);
+}
+
+/* ===========================
+   Container
+=========================== */
+
+.container {
+    min-height: 100vh;
+    margin-left: 250px;
+    padding: 32px;
+    background: #f8fafc;
+    transition: .3s;
+}
+.admin_layout.collapsed + .container{
+
+    margin-left:80px;
+}
+
+.esenstial {  color: var(--danger) !important;  font-size: 0.75rem;  margin-left: 4px;  font-weight: 700;}
+.opt {  
+    margin: 8px 0 12px;
+    color: var(--text-faint);  font-size: 0.7rem;  font-weight: 300; 
+}
+
+/* 입력 그룹 */
+.form_group {  display:flex;  flex-direction:column;  gap:6px;}
+
+/* 라벨 */
+.form_group label {  
+    font-size:0.75rem;  font-weight:700;  color:#4c586c;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 8px;
+}
+/* 그리드 */
+.grid_row {  display: grid;  grid-template-columns: 1fr 1fr;  gap: 16px 18px;  margin-bottom: 16px;}
+.grid_row:last-child {  margin-bottom:0;}
+
+/* 한칸 전체 */
+.grid_row.full {  grid-template-columns:1fr;}
+
+/* 입력 */
+.note_section input,
+.note_section select,
+.note_section textarea {  font-family:inherit;  font-size:0.875rem;  color:var(--text);  background:var(--surface-sunken);  border:1px solid var(--border);  border-radius:7px;  padding:10px 12px;  width:100%;}
+
+.note_section input:focus,
+.note_section select:focus,
+.note_section textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--surface);}
+
+/* placeholder */
+.note_section input::placeholder {  color:var(--text-faint);}

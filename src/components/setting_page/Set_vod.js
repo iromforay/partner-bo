@@ -74,9 +74,6 @@ function Set_vod(){
     return(
       <form id="vodSetting" data-whats="vod">
         <div className="row row1">
-          <div className="title_con">
-            <h4>홍보영상 페이지 설정</h4>
-          </div>
           <div className="btn_con">
             <div className="btns temporary" onClick={()=>{
               if(window.confirm('홍보영상 페이지 설정을 초기화 시키시겠습니까?\n초기화 후 저장하여 홈페이지에 적용하시기 바랍니다.')){
@@ -101,57 +98,73 @@ function Set_vod(){
             </div>
           </div>
         </div>
+
         <div className="row row2">
           <div className="title_con">
-            <h5>배경 설정 (선택)</h5>
+            <h4>홍보영상 페이지 설정</h4>
           </div>
-          <p className="row_desc">해당페이지 배경 이미지와 색을 설정해주세요 / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
-          <div className="inner_con">
-            <div className="input_con img_input">
-              <label>
-                <input type="file" name="file" accept="image/png, image/jpeg" onChange={(e)=>{
-                  preview(e.target.files);
-                  if(vodSetting.img !== null){
-                    del_img(vodSetting.img, config);
-                  }
-                }}></input>
-                <div className="upload_img">
-                  {upload_logo_img === '' ? <img src="img/basic/notice/notice_base.jpg"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
-                </div>
-              </label>
-              {
-                upload_logo_img === '' ? null : <div className="del_slide" onClick={()=>{
-                  if(vodSetting.img !== null){
-                    del_img(vodSetting.img, config);
-                  }
-                  setUpload('');
-                }}>
-                  <FontAwesomeIcon icon={faTrashCan}/>
-                </div>
-              }
-              <div className="ex_con">
-                <p className="row_desc">결과예시)</p>
-                <img src="img/basic/notice/bgEx2.jpg"></img>
+
+          <div className="set_con">
+            <div>
+              <div className="title_con">
+                <h5>배경 설정 (선택)</h5>
               </div>
+              <p className="opt">해당페이지 배경 이미지와 색을 설정해주세요 / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
             </div>
-            <div className="opa_con">
-              <div className="opacity_con">
-                <input type="color" name="bgcolor" className="clr_input" defaultValue={vodSetting.row.bgcolor}></input>
-                <div className="range_con">
-                  <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={vodSetting.row.transparent} onChange={(e)=>{
-                    let val = e.target.value;
-                    $(".opa span").text(val+"%")
+
+            <div className="inner_con">
+              <div className="input_con img_input">
+                <label>
+                  <input type="file" name="file" accept="image/png, image/jpeg" onChange={(e)=>{
+                    preview(e.target.files);
+                    if(vodSetting.img !== null){
+                      del_img(vodSetting.img, config);
+                    }
                   }}></input>
-                  <p className="opa"><span>{vodSetting.row.transparent}%</span>배경색 투명도</p>
+                  <div className="upload_img">
+                    {upload_logo_img === '' ? <img src="img/basic/notice/notice_base.jpg"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
+                  </div>
+                    {
+                    upload_logo_img === '' ? null : <div className="del_slide" onClick={()=>{
+                      if(vodSetting.img !== null){
+                        del_img(vodSetting.img, config);
+                      }
+                      setUpload('');
+                    }}>
+                      <span><FontAwesomeIcon icon={faTrashCan}/></span>
+                    </div>
+                  }
+                </label>
+                
+                <div className="ex_con">
+                  <p className="opt">결과예시)</p>
+                  <img src="img/basic/notice/bgEx2.jpg"></img>
                 </div>
               </div>
-              <div className="ex_con">
-                <p className="row_desc">결과예시)</p>
-                <img src="img/basic/notice/bgEx1.jpg"></img>
+            </div>
+            
+            <div className="inner_con">
+              <div className="opa_con">
+                <div className="opacity_con">
+                  <input type="color" name="bgcolor" className="clr_input" defaultValue={vodSetting.row.bgcolor}></input>
+                  <div className="range_con">
+                    <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={vodSetting.row.transparent} onChange={(e)=>{
+                      let val = e.target.value;
+                      $(".opa span").text(val+"%")
+                    }}></input>
+                    <p className="opa"><span>{vodSetting.row.transparent}%</span>배경색 투명도</p>
+                  </div>
+                </div>
+                <div className="ex_con">
+                  <p className="opt">결과예시)</p>
+                  <img src="img/basic/notice/bgEx1.jpg"></img>
+                </div>
               </div>
             </div>
+
           </div>
         </div>
+
         <div className="row row3">
           <div className="title_con">
             <h5>타이틀문구 설정</h5>
@@ -167,7 +180,7 @@ function Set_vod(){
               </label>
             </div>
           </div>
-          <p className="row_desc">해당페이지 내 타이틀 문구를 설정해주세요</p>
+          <p className="opt">해당페이지 내 타이틀 문구를 설정해주세요</p>
           <div className="editor_con">
             <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
           </div>

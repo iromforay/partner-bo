@@ -498,13 +498,11 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
                       value={formData.status}
                       onChange={handleChange}
                     >
+                      <option value="consult_request">상담접수</option>
                       <option value="consulting">상담중</option>
                       <option value="proposed">매물제안</option>
                       <option value="contracted">계약완료</option>
                       <option value="lost">이탈</option>
-                        
-                      
-
                     </select>
 
                   </div>
@@ -632,7 +630,7 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
                 <div className="right">
 
                   <Link to="/note" className="btn btn-muted">
-                    취소
+                    목록
                   </Link>
 
                   <button

@@ -26,15 +26,6 @@ function Set_property(props){
     }
   }
 
-  // useEffect(()=>{
-  //   if(propertySetting){
-  //     setContents(propertySetting.row.title);
-  //     if(propertySetting.img !== null){
-  //       setUpload(propertySetting.img[0].full_url);
-  //     }
-  //   }
-  // }, [propertySetting])
-
   //이미지 설정
   useEffect(() => {
     if (!propertySetting) return;
@@ -131,9 +122,6 @@ function Set_property(props){
     return(
       <div id="propertySet">
         <div className="row row1">
-          <div className="title_con">
-            <h4>매물관리 페이지 설정</h4>
-          </div>
           <div className="btn_con">
             <div className="btns temporary" onClick={()=>{
               if(window.confirm('기본 설정을 초기화 시키시겠습니까?\n초기화 후 저장하여 홈페이지에 적용하시기 바랍니다.')){
@@ -172,12 +160,22 @@ function Set_property(props){
             </div>
           </div>
         </div>
+
         <form id="propertyBackground" data-whats="menu">
           <div className="row row2">
             <div className="title_con">
-              <h5>배경 설정 (선택)</h5>
-              <div className="check_con">
-                <label>
+              <h5>매물관리 페이지 설정</h5>
+            </div>
+
+            <div className="set_con">
+              <div>
+                <div className="title_con">
+                <h5>배경 설정 (선택)</h5>
+                </div>
+                <p className="opt">해당페이지 배경 이미지와 색을 설정해주세요 / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
+              </div>
+              <div className="check_con form_group">
+                <label>배경
                   <input className="input_check_hidden" name="bgcolor_show" type="hidden" value='N'></input>
                   <input className="check_menu input_check" name="bgcolor_show" type="checkbox" value="Y" defaultChecked={propertySetting.row.bgcolor_show === "Y" ? true : false}></input>
                   <div className="check_btn">
@@ -187,53 +185,61 @@ function Set_property(props){
                   </div>
                 </label>
               </div>
-            </div>
-            <p className="row_desc">해당페이지 배경 이미지와 색을 설정해주세요 / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
-            <div className="inner_con">
-              <div className="input_con img_input">
-                <label>
-                  <input type="file" name="file" onChange={(e)=>{
-                    preview(e.target.files);
-                    if(propertySetting.img !== null){
-                      del_img(propertySetting.img, config);
-                    }
-                  }} accept="image/png, image/jpeg"></input>
-                  <div className="upload_img">
-                    {upload_logo_img === '' ? <img src="img/basic/notice/notice_base.jpg"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
+
+
+              <div className="inner_con">
+                <div className="input_con img_input form_group">
+                  <label>
+                    <input type="file" name="file" onChange={(e)=>{
+                      preview(e.target.files);
+                      if(propertySetting.img !== null){
+                        del_img(propertySetting.img, config);
+                      }
+                    }} accept="image/png, image/jpeg"></input>
+                    <div className="upload_img">
+                      {upload_logo_img === '' ? <img src="img/basic/notice/notice_base.jpg"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
+                    </div>
+
+                    {
+                    upload_logo_img === '' ? null : <div className="del_slide" onClick={()=>{
+                      if(propertySetting.img !== null){
+                        del_img(propertySetting.img, config);
+                      }
+                      setUpload('');
+                    }}>
+                      <FontAwesomeIcon icon={faTrashCan}/>
+                    </div>
+                  }
+                  </label>
+                  
+                  <div className="ex_con">
+                    <p className="opt">결과예시)</p>
+                    <img src="img/basic/notice/bgEx2.jpg"></img>
                   </div>
-                </label>
-                {
-                  upload_logo_img === '' ? null : <div className="del_slide" onClick={()=>{
-                    if(propertySetting.img !== null){
-                      del_img(propertySetting.img, config);
-                    }
-                    setUpload('');
-                  }}>
-                    <FontAwesomeIcon icon={faTrashCan}/>
-                  </div>
-                }
-                <div className="ex_con">
-                  <p className="row_desc">결과예시)</p>
-                  <img src="img/basic/notice/bgEx2.jpg"></img>
+
                 </div>
               </div>
-              <div className="opa_con">
-                <div className="opacity_con">
-                  <input type="color" name="bgcolor" className="clr_input" defaultValue={propertySetting.row?.bgcolor || "#f5f5f5"}></input>
-                  <div className="range_con">
-                    <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={propertySetting.row?.transparent || 0} onChange={(e)=>{
-                      let val = e.target.value;
-                      $(".opa span").text(val+"%")
-                    }}></input>
-                    <p className="opa"><span>{propertySetting.row?.transparent ?? 0}%</span>배경색 투명도</p>
+
+              <div className="inner_con">
+                <div className="opa_con">
+                  <div className="opacity_con">
+                    <input type="color" name="bgcolor" className="clr_input" defaultValue={propertySetting.row?.bgcolor || "#f5f5f5"}></input>
+                    <div className="range_con">
+                      <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={propertySetting.row?.transparent || 0} onChange={(e)=>{
+                        let val = e.target.value;
+                        $(".opa span").text(val+"%")
+                      }}></input>
+                      <p className="opa"><span>{propertySetting.row?.transparent ?? 0}%</span>배경색 투명도</p>
+                    </div>
                   </div>
-                </div>
-                <div className="ex_con">
-                  <p className="row_desc">결과예시)</p>
-                  <img src="img/basic/notice/bgEx1.jpg"></img>
+                  <div className="ex_con">
+                    <p className="opt">결과예시)</p>
+                    <img src="img/basic/notice/bgEx1.jpg"></img>
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
         </form>
 

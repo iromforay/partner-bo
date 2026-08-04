@@ -321,7 +321,7 @@ function Rows(props){
   let dispatch = useDispatch();
   const data = props.data;
 
-  const status_class = { consulting: 'tag-consulting', proposed: 'tag-proposed', contracted: 'tag-contracted', lost: 'tag-lost' };
+  const status_class = { consult_request: 'tag-consult_request', consulting: 'tag-consulting', proposed: 'tag-proposed', contracted: 'tag-contracted', lost: 'tag-lost' };
   const visit_type_class = { tenant: 'tag-tenant', landlord: 'tag-landlord' };
 
   if(!data) return null;

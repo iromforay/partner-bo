@@ -12,6 +12,7 @@
     --danger: #e0342b;
     --btn-action-bg: #e7e9ed;
     --btn-action-fg: #4b5563;
+    --st-consult_request: #06B6D4;
     --st-consulting: #006eff;
     --st-proposed: #e08a1c;
     --st-contracted: #1bab5e;
@@ -82,88 +83,7 @@
   .status-tab-count { font-size: 22px; font-weight: 800; display: block; margin-top: 2px; }
   .status-tab:not(.active) .status-tab-count { font-size: 12px; font-weight: 600; opacity: 0.85; }
 
-  /* ---- 본문 패널 ---- */
-  .back-link {
-    font-size: 13px;
-    color: var(--text-muted);
-    text-decoration: none;
-    display: inline-block;
-    margin-bottom: 14px;
-  }
-  .back-link:hover {
-    color: var(--accent);
-  }
-  .panel {
-    background: var(--surface);
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    padding:20px 24px;
-    margin-bottom: 16px;
-  }
 
-  .toolbar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    padding: 18px 0px;
-    border-bottom: 1px solid var(--border);
-  }
-  .toolbar-search{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      flex:1;
-  }
-  select, .text-input {
-    font-family: inherit;
-    font-size: 13px;
-    color: var(--text);
-    background: var(--surface-sunken);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 9px 12px;
-  }
-  select { min-width: 108px; }
-  .text-input { min-width: 140px; }
-  select:focus, .text-input:focus { outline: none; border-color: var(--accent); }
-  .text-input::placeholder { color: var(--text-faint); }
-
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-  thead th {
-    text-align: center;
-    font-weight: 600;
-    color: var(--text-muted);
-    font-size: 12.5px;
-    padding: 13px 10px;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-  tbody td {
-    text-align: center;
-    padding: 14px 10px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-  }
-  tbody tr:hover { background: var(--surface-sunken); }
-  tbody tr:last-child td { border-bottom: none; }
-
-  td.col-visitor { text-align: left; font-weight: 700; }
-  td.col-visitor .phone { display: block; font-weight: 400; color: var(--text-faint); font-size: 12px; margin-top: 2px; font-variant-numeric: tabular-nums; }
-  td.col-area { text-align: left; color: var(--text-muted); }
-  td.col-date { color: var(--text-faint); font-size: 12.5px; font-variant-numeric: tabular-nums; }
-
-  .tag {
-    display: inline-block;
-    color: #fff;
-    white-space: nowrap;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-  }
   .tag-tenant { background: #4b5563; }
   .tag-landlord { background: #6b5bd6; }
 
@@ -175,6 +95,8 @@
     padding: 4px 10px;
     color: #fff;
   } */
+
+  .tag-consult_request  { background: var(--st-consult_request); }
   .tag-consulting  { background: var(--st-consulting); }
   .tag-proposed    { background: var(--st-proposed); }
   .tag-contracted  { background: var(--st-contracted); }
@@ -367,42 +289,21 @@
 .note_section .form_con {  background: var(--surface);  border-radius: 10px;  box-shadow: var(--shadow);  overflow: hidden;}
 
 /* 섹션 */
-.note_section .section_box {  padding: 22px 24px;  border-bottom: 1px solid var(--border);}
-.note_section .section_box:last-child {  border-bottom: none;}
+.section_box {  padding: 22px 24px;  border-bottom: 1px solid var(--border);}
+.section_box:last-child {  border-bottom: none;}
 
 /* 섹션 제목 */
 .note_section .sec_title_bar {  margin-bottom: 16px;}
 .note_section .sec_title_bar h4 {  font-size: 13.5px;  font-weight: 800;  margin: 0;  color: var(--text);}
 
-/* 그리드 */
-.note_section .grid_row {  display: grid;  grid-template-columns: 1fr 1fr;  gap: 16px 18px;  margin-bottom: 16px;}
-.note_section .grid_row:last-child {  margin-bottom:0;}
 
-/* 한칸 전체 */
-.note_section .grid_row.full {  grid-template-columns:1fr;}
 
-/* 입력 그룹 */
-.note_section .form_group {  display:flex;  flex-direction:column;  gap:6px;}
 
-/* 라벨 */
-.note_section .form_group label {  font-size:12.5px;  font-weight:700;  color:var(--text-muted);}
-
-/* 입력 */
-.note_section input,
-.note_section select,
-.note_section textarea {  font-family:inherit;  font-size:13.5px;  color:var(--text);  background:var(--surface-sunken);  border:1px solid var(--border);  border-radius:7px;  padding:10px 12px;  width:100%;}
-
-.note_section input:focus,
-.note_section select:focus,
-.note_section textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--surface);}
-
-/* placeholder */
-.note_section input::placeholder {  color:var(--text-faint);}
 
 /* 버튼 영역 */
 .note_section .row5 {  margin-top:16px;  background:var(--surface);  border-radius:10px;  box-shadow:var(--shadow);}
 
-.note_section .btn_con {  display:flex;  justify-content:flex-end;  gap:8px;  padding:18px 24px;}
+/* .note_section .btn_con {  display:flex;  justify-content:flex-end;  gap:8px;  padding:18px 24px;} */
 
 /* 공통 버튼 */
 .note_section .btns {  font-family:inherit;  font-size:13px;  font-weight:700;  border-radius:7px;  padding:10px 16px;  cursor:pointer;  border:none;}
@@ -423,8 +324,8 @@
 
 /* 선택된 매물 */
 .picked-property {  display:flex;  justify-content:space-between;  align-items:center;  margin-top:8px;  padding:8px 10px;  background:var(--accent-soft);  border-radius:7px;  font-size:12.5px;  color:var(--accent);  font-weight:700;}
-.esenstial {  color: var(--danger) !important;  font-size: 12px;  margin-left: 4px;  font-weight: 700;}
-.opt {  color: var(--text-faint);  font-size: 12px;  font-weight: 400;  margin-left: 5px;}
+/* .esenstial {  color: var(--danger) !important;  font-size: 12px;  margin-left: 4px;  font-weight: 700;}
+.opt {  color: var(--text-faint);  font-size: 12px;  font-weight: 400;  margin-left: 5px;} */
 .help {  margin-top: 6px;  font-size: 11.5px;  color: var(--text-faint);}
 
 .property_pick {  display: flex;  gap: 8px;}
@@ -437,7 +338,6 @@
 
 /* 버튼 공통 */
 .note_section .row5 {  margin-top: 16px;  background: var(--surface);  border-radius: 10px;  box-shadow: var(--shadow);}
-.note_section .btn_con {  display: flex;  align-items: center;  justify-content: space-between;  padding: 18px 24px;}
 .note_section .right {  display: flex;  gap: 8px;  margin-left: auto;}
 .note_section .btn {  display: inline-flex;  align-items: center;  justify-content: center;  font-family: inherit;  font-size: 13px;  font-weight: 700;border-radius: 7px;  padding: 10px 16px;text-decoration: none;  cursor: pointer;  border: none;  white-space: nowrap;}
 
@@ -469,7 +369,6 @@
 .info-label {  font-size: 13px;  font-weight: 500;  color: #8b95a1;}
 .info-value {  font-size: 15px;  font-weight: 700;  color: #191f28;  word-break: keep-all;}
 .info-value.highlight-blue {  color: #3182f6;}
-.note_form .panel{padding: 0;}
 
 /* ========================= Button Base & Hover States ========================= */
 
