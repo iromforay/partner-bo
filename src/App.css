@@ -2,7 +2,7 @@
 .App > div {position: relative;}
 
 * {margin: 0; padding: 0; border: none; box-sizing: border-box; text-decoration: none; list-style: none; color: #000;}
-html {font-size: 20px; line-height: 28px; font-weight: 400;}
+html {font-size: 18px; line-height: 28px; font-weight: 400;}
 body {font-family: 'pretendard', sans-serif; word-break: keep-all;}
 
 span {font-size: inherit; font-weight: inherit; color: inherit; line-height: inherit;}
@@ -37,7 +37,7 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
   white-space: nowrap;
 }
 .btn-muted { background: var(--btn-action-bg); color: var(--btn-action-fg); }
-.btn-primary { background: var(--accent); color: #fff; margin-left: auto; padding: 10px 20px; font-size: 13.5px; }
+.btn-primary { background: var(--accent); color: #fff;}
 .btn-primary:hover { filter: brightness(1.06); }
 /* 삭제버튼 공통 */
 .btn_del { background: var(--danger); color: #fff; }
@@ -93,15 +93,15 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 .container .sections .width_con {
   position: relative; 
   width:100%;
-  max-width:1270px;
-  padding: 40px;
+  /* max-width:1270px;
+  padding: 40px; */
 }
 .container .sections .width_con > h3 {pointer-events: none;}
 .container .sections .width_con:before {position: absolute; bottom: 0; left: 20px; content: ''; width: calc(100% - 20px); height: 15px; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);}
 .container .sections.basic .width_con > h3{}
-.container .sections .width_con ul.tabs {position: relative; display: flex; justify-content: space-between; margin: 20px 0 0 0;}
+/* .container .sections .width_con ul.tabs {position: relative; display: flex; justify-content: space-between; margin: 20px 0 0 0;} */
 .container .sections .width_con ul.tabs:before {position: absolute; bottom: -15px; left: 0; content: ''; width: 100%; height: 15px; background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);}
-.container .sections .width_con ul.tabs li {width: calc(11% - 3px); background: #A5AFB6; padding: 10px; border-radius: 4px 4px 0px 0px; cursor: pointer;}
+.container .sections .width_con ul.tabs li {background: #A5AFB6; padding: 10px; border-radius: 4px 4px 0px 0px; cursor: pointer;}
 .container .sections .width_con ul.tabs li.on {background: #fff; box-shadow: none;}
 .container .sections .width_con ul.tabs li h5 {font-size: 0.8rem; line-height: 1.2rem; color: #fff;}
 .container .sections .width_con ul.tabs li.on h5 {color: #000;}
@@ -177,7 +177,7 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 .card-header { background-color: #f8fafc; padding: 12px; border-bottom: 1px solid #e2e8f0;}
 .card-header h5 { margin: 0; font-size: 14px; font-weight: 700; color: #334155;}
 .card-body {padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-.setting-item {display: flex; justify-content: space-between; align-items: center;}
+/* .setting-item {display: flex; justify-content: space-between; align-items: center;} */
 .item-label {margin: 0; font-size: 13px; color: #475569;}
 /* .check_con label {cursor: pointer; display: inline-block;} */
 .input_check { display: none;}
@@ -195,8 +195,8 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 
 .container .sections.board .width_con:before {display: none;}
 .container .sections.board .width_con .board_con {max-height: 750px; padding: 15px; background: #fff; border-radius: 0px 0px 4px 4px; box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.20); overflow: auto;}
-.container .sections.board .width_con ul.tabs {justify-content:left; gap:5px;}
-.container .sections.board .width_con ul.tabs li {width: calc(20% - 5px);}
+/* .container .sections.board .width_con ul.tabs {justify-content:left; gap:5px;} */
+/* .container .sections.board .width_con ul.tabs li {width: calc(20% - 5px);} */
 .container .sections.board .width_con ul.tabs:before {display: none;}
 .container .sections.board .width_con ul.tabs li .status {display: flex; flex-direction: column; align-items: flex-end;}
 .container .sections.board .width_con ul.tabs li .status p {font-size: 0.5rem; line-height: 0.9rem; color: #F5F5F5;}
@@ -234,42 +234,6 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 
 
 /* 공통 클래스 묶기 */
-
-  /* ---- 본문 패널 ---- */
-  .back-link {
-    font-size: 13px;
-    color: var(--text-muted);
-    text-decoration: none;
-    display: inline-block;
-    margin-bottom: 14px;
-  }
-  .back-link:hover {
-    color: var(--accent);
-  }
-  .panel {
-    background: var(--surface);
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    padding:20px 24px;
-    margin-bottom: 16px;
-  }
-
-  .toolbar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    padding: 18px 0px;
-    border-bottom: 1px solid var(--border);
-  }
-  .toolbar-search{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      flex:1;
-  }
   select, .text-input {
     font-family: inherit;
     font-size: 13px;
@@ -303,11 +267,6 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
   tbody tr:hover { background: var(--surface-sunken); }
   tbody tr:last-child td { border-bottom: none; }
 
-  td.col-visitor { text-align: left; font-weight: 700; }
-  td.col-visitor .phone { display: block; font-weight: 400; color: var(--text-faint); font-size: 12px; margin-top: 2px; font-variant-numeric: tabular-nums; }
-  td.col-area { text-align: left; color: var(--text-muted); }
-  td.col-date { color: var(--text-faint); font-size: 12.5px; font-variant-numeric: tabular-nums; }
-
   .tag {
     display: inline-block;
     color: #fff;
@@ -318,8 +277,12 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
     font-weight: 600;
   }
 
-  .btn_con {  display: flex;  align-items: center;  justify-content: space-between;}
-
+  .btn_con {  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+}   
 
   /* ===========================
    Sidebar Layout

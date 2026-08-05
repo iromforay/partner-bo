@@ -4,6 +4,7 @@ import { change_page, minus_list, plus_list } from "../store";
 import Note_list from './note_page/Note_list';
 import './board_page/brd.css';
 import axios from "axios";
+import './board.css';
 
 function Note(){
 
@@ -46,7 +47,7 @@ function Note(){
 
   if(data){
     return(
-      <div className="sections board">
+      <div className="sections board board_note">
         <div className="width_con">
           <h3>노트 관리</h3>
           <ul className="tabs">

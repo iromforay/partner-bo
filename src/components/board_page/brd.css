@@ -64,13 +64,6 @@
 .brd .row0 ul {border: none;}
 .brd .row0 ul li {border: none; font-size: 0.7rem; line-height: 1.1rem; font-weight: 700;}
 
-.brd .pagenation {
-  /* position: absolute; bottom: 20px;  */
-  left: 0; display: flex; margin: 20px 0 0 0;}
-.brd .pagenation li {display: flex; justify-content: center; align-items: center; padding: 10px; margin: 0 5px 0 0; border-radius: 4px; background: #EBEFF2; cursor: pointer;}
-.brd .pagenation li span {font-size: 0.7rem; line-height: 0.7rem;}
-.brd .pagenation li.on {background: #A5AFB6;}
-.brd .pagenation li.on span {color: #fff;}
 
 .sections.write {}
 .sections.write .width_con .form_con {margin: 30px 0 0 0; padding: 15px; border-radius: 4px; background: #fff; box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.20);}

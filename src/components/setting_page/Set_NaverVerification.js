@@ -60,6 +60,8 @@ function Set_NaverVerification(){
                 </p>
               </div>
 
+            </div>
+            
               <div className="status-row">
                 <span className={isRegistered ? "pill on" : "pill off"}>
                   <span className="dot" />
@@ -72,8 +74,6 @@ function Set_NaverVerification(){
                     : "아직 소유확인 코드가 입력되지 않았습니다"}
                 </span>
               </div>
-
-            </div>
           </div>
 
           <div className="grid">

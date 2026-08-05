@@ -38,7 +38,7 @@ function Board(){
   console.log('렌더링!');
   if(data){
     return(
-      <div className="sections board">
+      <div className="sections board board_board">
         <div className="width_con">
           <h3>게시판 관리</h3>
           <ul className="tabs">

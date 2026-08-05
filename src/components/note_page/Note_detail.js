@@ -323,183 +323,93 @@ function Note_detail() {
 
         <div className="panel">
           {/* 기본 정보, 상단 히어로 헤더 (상태 배지, 이름, 삭제/수정 버튼) */}
-          <div className="panel-hero">
-            <div className="hero-left">
-              <div className="badge-group">
-                <span className={`tag ${status_class[data.status]}`}>
-                  {data.status_txt || "-"}
-                </span>
-                <span className={`tag ${visit_type_class[data.visit_type]}`}>
-                  {data.visit_type_txt || "-"}
-                </span>
-                
-              </div>
+          <div className="section_box">
+            <div className="panel-hero">
+              <div className="hero-left">
+                <div className="badge-group">
+                  <span className={`tag ${status_class[data.status]}`}>
+                    {data.status_txt || "-"}
+                  </span>
+                  <span className={`tag ${visit_type_class[data.visit_type]}`}>
+                    {data.visit_type_txt || "-"}
+                  </span>
+                  
+                </div>
 
-              <div className="user-info-title">
-                {data.visitor_name || "-"}
-                <span className="user-sub-text">| {data.visitor_phone || "-"}</span>
-              </div>
+                <div className="user-info-title">
+                  {data.visitor_name || "-"}
+                  <span className="user-sub-text">| {data.visitor_phone || "-"}</span>
+                </div>
 
-            </div>            
-          </div>
+              </div>    
 
-          <div className="panel-body">
-            <div className="info-grid">
-              <div className="info-item">
-                <span className="info-label">거래방식</span>
-                <span className="info-value">거래방식</span>
-              </div>
-
-              <div className="info-item">
-                <span className="info-label">예산</span>
-                <span className="info-value">
-                  {data.budget 
-                    ? `${Number(data.budget).toLocaleString()}만원`
-                    : "-"
-                  } 
-                </span>
-              </div>
-
-              <div className="info-item">
-                <span className="info-label">희망지역</span>
-                <span className="info-value">{data.preferred_area || "-"}</span>
-              </div>
-
-              <div className="info-item">
-                <span className="info-label">관심매물</span>
-                <span className="info-value">{data.property_name || "-"}</span>
-              </div>
-
-              <div className="info-item">
-                <span className="info-label">유입경로</span>
-                <span className="info-value">{data.inflow_type_txt || "-"}</span>
-              </div>
-
-              <div className="info-item">
-                <span className="info-label">접수자</span>
-                <span className="info-value">{data.agent_name || "미배정"}</span>
-              </div>
-
-              <div className="info-item">
-                <span className="info-label">방문예정일</span>
-                <span className="info-value">{data.visit_date || "-"}</span>
-              </div>
-
-              <div className="info-item">
-                <span className="info-label">다음연락예정일</span>
-                <span className="info-value">{data.next_contact_date || "-"}</span>
-              </div>
-
-              <div className="info-item">
-                <span className="info-label">등록일</span>
-                <span className="info-value">{data.created_at || "-"}</span>
-              </div>
-              
+              <div className="hero-right">
+                <span className="opt">{data.created_at || "-"}</span>
+              </div>            
             </div>
           </div>
-        </div>
-          
-        <div className="panel">
-          {/*  상담 메모 */}
-          <div className="memo-wrap">
-            <h2>상담 메모 ({data.memos?.length || 0})</h2>
-            <div className="memo-thread">
 
-              { data.memos && data.memos.length > 0 ? (
-                  data.memos.map((m)=>(
-                    <div className="memo-item" key={m.memo_no}>
-                      <div className="memo-avatar">{m.name || "-"}</div>
-                      <div className="memo-body">
-                        <div className="memo-bubble">
-                          <div className="memo-byline">
-                            <span className="memo-writer"> 
-                              {m.name || "-"}</span>
+          <div className="section_box">
+            <div className="panel-body">
+              <div className="info-grid">
+                <div className="info-item">
+                  <span className="info-label">거래방식</span>
+                  <span className="info-value">{data.transaction_type_txt || "-"}</span>
+                </div>
 
-                              {/* 메모등록 날짜 필요시 주석 해제   */}
-                              {/* <span className="memo-time">{m.write_date}</span> */}
+                <div className="info-item">
+                  <span className="info-label">예산</span>
+                  <span className="info-value">
+                    {data.budget 
+                      ? `${Number(data.budget).toLocaleString()}만원`
+                      : "-"
+                    } 
+                  </span>
+                </div>
 
-                              {editMemoNo !== m.memo_no && (
-                                  <button
-                                    type="button"
-                                    onClick={() => handleMemoEdit(m)}
-                                  >
-                                    <Pencil size={11.5}/> 수정
-                                  </button>
-                                )
-                              }
-                          </div>
+                <div className="info-item">
+                  <span className="info-label">희망지역</span>
+                  <span className="info-value">{data.preferred_area || "-"}</span>
+                </div>
 
-                          {/* 메모 수정 모드일 때 */}
-                          {
-                            editMemoNo === m.memo_no ? (
+                <div className="info-item">
+                  <span className="info-label">관심매물</span>
+                  <span className="info-value">{data.property_name || "-"}</span>
+                </div>
 
-                              <form onSubmit={handleMemoUpdate}>
+                <div className="info-item">
+                  <span className="info-label">유입경로</span>
+                  <span className="info-value">{data.inflow_type_txt || "-"}</span>
+                </div>
 
-                                <textarea
-                                  value={editMemoText}
-                                  onChange={(e)=>setEditMemoText(e.target.value)}
-                                />
+                <div className="info-item">
+                  <span className="info-label">접수자</span>
+                  <span className="info-value">{data.agent_name || "미배정"}</span>
+                </div>
 
-                                <div className="memo-edit-actions">
-                                  <button type="submit">저장</button>  
-                                  <button type="button"
-                                    onClick={()=>{
-                                      setEditMemoNo(null);
-                                      setEditMemoText("");
-                                    }}
-                                  >
-                                    취소
-                                  </button>
-                                </div>
-                              </form>
+                <div className="info-item">
+                  <span className="info-label">방문예정일</span>
+                  <span className="info-value">{data.visit_date || "-"}</span>
+                </div>
 
-                            ) : (
+                <div className="info-item">
+                  <span className="info-label">다음연락예정일</span>
+                  <span className="info-value">{data.next_contact_date || "-"}</span>
+                </div>
 
-                              m.memo
-
-                            )
-                          }
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="memo-empty">
-                    아직 등록된 메모가 없습니다.
-                  </p>
-                )
-              }
+              </div>
             </div>
-
-            <form 
-              className="memo-form"
-              onSubmit={handleMemoSubmit}
-            >
-
-              <textarea 
-                placeholder="메모를 입력하세요"
-                value={memoText}
-                onChange={(e)=>setMemoText(e.target.value)}
-              />
-              <button 
-                className="btn btn-primary"
-                type="submit"
-              >
-                등록
-              </button>
-            </form>
           </div>
-        </div>
 
-        {/* 하단 버튼 바 */}
-        <div className="panel">
-          <div className="btn_con">
-            <button
-                type="button"
-                className="btn btn_del"
-                onClick={handleDelete}
-              >
-                노트삭제
+            {/* 하단 버튼 바 */}
+          <div className="section_box">
+            <div className="btn_con">
+              <button
+                  type="button"
+                  className="btn btn_del"
+                  onClick={handleDelete}
+                >
+                  노트삭제
               </button>
 
               <div className="right">
@@ -516,8 +426,107 @@ function Note_detail() {
               </div>
             </div>
           </div>
+          
+        </div>
+          
+        {/* 메모 */}
+        <div className="panel">
+          <div className="section_box">
+            {/*  상담 메모 */}
+            <div className="memo-wrap">
+              <h2>상담 메모 ({data.memos?.length || 0})</h2>
+              <div className="memo-thread">
+
+                { data.memos && data.memos.length > 0 ? (
+                    data.memos.map((m)=>(
+                      <div className="memo-item" key={m.memo_no}>
+                        <div className="memo-avatar">{m.name.slice(0,2) || "-"}</div>
+                        <div className="memo-body">
+                          <div className="memo-bubble">
+                            <div className="memo-byline">
+                              <span className="memo-writer"> 
+                                {m.name || "-"}</span>
+
+                                {/* 메모등록 날짜 필요시 주석 해제   */}
+                                {/* <span className="memo-time">{m.write_date}</span> */}
+
+                                {editMemoNo !== m.memo_no && (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleMemoEdit(m)}
+                                    >
+                                      <Pencil size={11.5}/> 수정
+                                    </button>
+                                  )
+                                }
+                            </div>
+
+                            {/* 메모 수정 모드일 때 */}
+                            {
+                              editMemoNo === m.memo_no ? (
+
+                                <form onSubmit={handleMemoUpdate}>
+
+                                  <textarea
+                                    value={editMemoText}
+                                    onChange={(e)=>setEditMemoText(e.target.value)}
+                                  />
+
+                                  <div className="memo-edit-actions">
+                                    <button type="submit">저장</button>  
+                                    <button type="button"
+                                      onClick={()=>{
+                                        setEditMemoNo(null);
+                                        setEditMemoText("");
+                                      }}
+                                    >
+                                      취소
+                                    </button>
+                                  </div>
+                                </form>
+
+                              ) : (
+
+                                m.memo
+
+                              )
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="memo-empty">
+                      아직 등록된 메모가 없습니다.
+                    </p>
+                  )
+                }
+              </div>
+
+              <form 
+                className="memo-form"
+                onSubmit={handleMemoSubmit}
+              >
+
+                <textarea 
+                  placeholder="메모를 입력하세요"
+                  value={memoText}
+                  onChange={(e)=>setMemoText(e.target.value)}
+                />
+                <button 
+                  className="btn btn-primary"
+                  type="submit"
+                >
+                  등록
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
+
   );
 }
 

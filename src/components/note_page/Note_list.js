@@ -4,6 +4,7 @@ import { change_page } from '../../store';
 import { Link } from 'react-router-dom';
 import { MessageSquare, ChevronRight } from "lucide-react";
 import './note.css';
+import '../board.css';
 
 import axios from "axios";
 
@@ -198,36 +199,40 @@ function Note_list(props){
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           />
 
-          <button className="btn btn-muted" onClick={handleSearch}>
-            검색
-          </button>
-          
-          <button className="btn btn-muted" onClick={handleReset}>
-            초기화
-          </button>
-        </div>
-        <div>
-          <span><Link to="/note/write" className="btn btn-primary">노트 등록</Link></span>
+          <div className="toolbar-actions">
+            <button className="btn btn-muted" onClick={handleSearch}>
+              검색
+            </button>
+            
+            <button className="btn btn-muted" onClick={handleReset}>
+              초기화
+            </button>
+          </div>
+
+          <div className="toolbar-register">
+            <span><Link to="/note/write" className="btn btn-primary">노트 등록</Link></span>
+          </div>
         </div>
       </div>
 
       {/* ---- 리스트 테이블 영역 ---- */}
-      <table>
-        <thead>
-          <tr>
-            <th>글번호</th>
-            <th>방문형태</th>
-            <th>방문자</th>
-            <th>거래방식</th>
-            <th>관심매물</th>
-            <th>희망지역</th>
-            <th>상태</th>
-            <th>메모</th>
-            <th>방문예정일</th>
-            <th>등록일</th>
-            <th>관리</th>
-          </tr>
-        </thead>
+      <div className="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>글번호</th>
+              <th>방문형태</th>
+              <th>방문자</th>
+              <th>거래방식</th>
+              <th>관심매물</th>
+              <th>희망지역</th>
+              <th>상태</th>
+              <th>메모</th>
+              <th>방문예정일</th>
+              <th>등록일</th>
+              <th>관리</th>
+            </tr>
+          </thead>
 
         <tbody>
           {now_data && now_data.length > 0 ? (
@@ -250,7 +255,8 @@ function Note_list(props){
             </tr>
           )}
         </tbody>
-      </table>
+        </table>
+      </div>
 
       {/* ---- 페이지네이션 ---- */}
       <ul className='pagenation note_pagenation'>
