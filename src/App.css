@@ -436,8 +436,6 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 
 .sidebar.collapsed .nav_con li a{
 
-    height:64px;
-
     flex-direction:column;
 
     justify-content:center;
