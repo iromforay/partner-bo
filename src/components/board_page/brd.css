@@ -1,4 +1,6 @@
-.brd {position: relative; height: 700px;}
+.brd {position: relative; 
+  /* height: 700px; */
+}
 .brd .fn_bar {display: flex; justify-content: space-between;}
 .brd .fn_bar .search_con {display: flex; margin: 20px 0 0 0; opacity: 0; pointer-events: none;}
 .brd .fn_bar .search_con.show {opacity: 1; pointer-events: all; gap:5px;}
