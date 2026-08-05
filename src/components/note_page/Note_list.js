@@ -234,27 +234,27 @@ function Note_list(props){
             </tr>
           </thead>
 
-        <tbody>
-          {now_data && now_data.length > 0 ? (
-            now_data.map((item, i) =>
-              <Rows
-                key={item.note_no || i}
-                cfg={config}
-                data={item}
-                page_data={page_info}
-                onOpenMemo={() => handleOpenMemoModal(item)}
-                refreshData={fetchData}
-                refreshParent={props.refreshParent}
-              />
-            )
-          ) : (
-            <tr>
-              <td colSpan="11">
-                조회된 데이터가 없습니다.
-              </td>
-            </tr>
-          )}
-        </tbody>
+          <tbody>
+            {now_data && now_data.length > 0 ? (
+              now_data.map((item, i) =>
+                <Rows
+                  key={item.note_no || i}
+                  cfg={config}
+                  data={item}
+                  page_data={page_info}
+                  onOpenMemo={() => handleOpenMemoModal(item)}
+                  refreshData={fetchData}
+                  refreshParent={props.refreshParent}
+                />
+              )
+            ) : (
+              <tr>
+                <td colSpan="11">
+                  조회된 데이터가 없습니다.
+                </td>
+              </tr>
+            )}
+          </tbody>
         </table>
       </div>
 
@@ -367,6 +367,7 @@ function Rows(props){
           <Link className="btn btn-muted" to={`/note/edit/${data.note_no}`}>
             수정
           </Link>
+          
           <button
             type="button"
             className="btn btn_del"

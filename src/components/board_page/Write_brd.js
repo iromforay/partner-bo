@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faXmark} from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import './brd.css';
 
 function Write_brd(){
 
@@ -34,71 +35,85 @@ function Write_brd(){
   }
 
   return(
-    <div className="sections write">
+    <div className="sections write board_write">
       <div className="width_con">
-        <h3>새 글쓰기</h3>
-        <div className="form_con">
-          <form id="writeBoard">
-            <div className="row row1">
-              <select name="code" className="select_type" onChange={(e)=>{
-                setTypes(e.target.value);
-              }}>
-                <option value='notice'>공지</option>
-                <option value='event'>이벤트</option>
-                <option value='charge'>이용요금</option>
-                <option value='review'>이용후기</option>
-                <option value='vod'>홍보영상</option>
-              </select>
-            </div>
-            <div className="row row2">
-              <div className="input_title_con">
-                <input type="text" name="board_title" className="write_title" placeholder="글제목"></input>
+        <Link to="/board" className="back-link">
+          ← 목록으로
+        </Link>
+
+        <h3>게시글 등록</h3>
+
+        <form id="writeBoard">
+          <div className="panel">
+            <div className="section_box">
+              <div className="">
+                <select name="code" className="select_type" onChange={(e)=>{
+                  setTypes(e.target.value);
+                }}>
+                  <option value='notice'>공지</option>
+                  <option value='event'>이벤트</option>
+                  <option value='charge'>이용요금</option>
+                  <option value='review'>이용후기</option>
+                  <option value='vod'>홍보영상</option>
+                </select>
               </div>
+
+              <div className="">
+                <div className="input_title_con">
+                  <input type="text" name="board_title" className="write_title" placeholder="글제목"></input>
+                </div>
+                {
+                  types === 'review' ? <Score_con></Score_con> : null
+                }
+              </div>
+              <div className="">
+                <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
+              </div>
+
               {
-                types === 'review' ? <Score_con></Score_con> : null
+                types === 'vod' ? <Row4></Row4> : null
               }
             </div>
-            <div className="row row3">
-              <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
-            </div>
-            {
-              types === 'vod' ? <Row4></Row4> : null
-            }
-            <div className="row row5">
+
+            <div className="section_box">
               <div className="btn_con">
-                <div className="btns apply" onClick={()=>{
-                const this_form = document.getElementById("writeBoard");
-                let formData = new FormData(this_form);
-                if(contents){
-                  formData.append('board_content', contents);
-                }
-                formData.append('board_writer', id);
-                if(window.confirm('저장하시겠습니까?')){
-                  if($(".write_title").val() === ''){
-                    alert('제목을 입력해주세요.')
-                  }else{
-                    axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/save', formData, config).catch(()=>{
-                      alert("데이터 전송이 실패하였습니다.");
-                    }).then((result)=>{
-                      console.log(result);
-                      alert('저장되었습니다');
-                      navigate(-1);
-                    });
+                <div></div>
+                <div className="right">
+                  <div className="btn btn-primary" onClick={()=>{
+                  const this_form = document.getElementById("writeBoard");
+                  let formData = new FormData(this_form);
+                  if(contents){
+                    formData.append('board_content', contents);
                   }
-                }
-                for (const [key, value] of formData.entries()) {
-                  console.log(key, value);
-                 }
-              }}>
-                  <span>글 올리기</span>
-                </div>
-                <div className="btns exit">
-                  <span><Link to='/board'>나가기</Link></span>
+                  formData.append('board_writer', id);
+                  if(window.confirm('저장하시겠습니까?')){
+                    if($(".write_title").val() === ''){
+                      alert('제목을 입력해주세요.')
+                    }else{
+                      axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/save', formData, config).catch(()=>{
+                        alert("데이터 전송이 실패하였습니다.");
+                      }).then((result)=>{
+                        console.log(result);
+                        alert('저장되었습니다');
+                        navigate(-1);
+                      });
+                    }
+                  }
+                  for (const [key, value] of formData.entries()) {
+                    console.log(key, value);
+                  }
+                }}>
+                    <span>저장하기</span>
+                  </div>
+
+                  <div className="btn btn-muted">
+                    <span><Link to='/board'>취소</Link></span>
+                  </div>
                 </div>
               </div>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   )
@@ -157,12 +172,14 @@ function Score_con(){
 
 function Row4(){
   return(
-    <div className="row row4">
-      <p>영상 첨부 방식 두가지 중 한가지를 선택해주세요</p>
+    <div className="row">
+      <p className="opt">영상 첨부 방식 두가지 중 한가지를 선택해주세요</p>
       <div className="upload_vod">
         <h5>영상첨부</h5>
-        <input type="file" name="file" className="input_vod" accept="video/*"></input>
-        <span onClick={()=>{$(".input_vod").val('')}}><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></span>
+        <div style={{display:"flex", alignItems:"center", gap: "10px",}}>
+          <input type="file" name="file" className="input_vod" accept="video/*"></input>
+          <span onClick={()=>{$(".input_vod").val('')}}><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></span>
+        </div>
       </div>
       <div className="upload_vod">
         <h5>영상URL</h5>

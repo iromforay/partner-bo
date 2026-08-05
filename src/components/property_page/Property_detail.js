@@ -421,10 +421,6 @@ function Property_detail() {
                   </button>  
 
                   <div className="right">
-                    <Link to="/property" className="btn btn-muted">
-                      목록
-                    </Link>
-
                     <Link
                       className="btn btn-primary"
                       to={`/property/edit/${data.property_no}`}
@@ -432,7 +428,9 @@ function Property_detail() {
                         수정하기
                     </Link>
 
-                         
+                    <Link to="/property" className="btn btn-muted">
+                      목록
+                    </Link>
                   </div>
 
                 </div>

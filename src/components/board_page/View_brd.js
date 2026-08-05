@@ -47,73 +47,88 @@ function View_brd(){
   return(
     <div className="sections view">
       <div className="width_con">
-        <div className="view_con">
-          <div className="row row1">
-            <div className={"board_type "+types}>
-              <span>{separator}</span>
-            </div>
-          </div>
-          <div className="row row2">
-            <div className="title_con">
-              <h3>{store.board_title}</h3>
-            </div>
-            {
-              types === 'review' ? <Score_con score={store.score}></Score_con> : null
-            }
-          </div>
-          <div className="row row3">
-            <div className="view_info">
-              <div className="col col1">
-                <span className="writer">{store.board_writer}</span>
-                <span className="date">{store.board_date}</span>
-              </div>
-              <div className="col col2">
-                <span className="hits">조회수 {store.board_hit}</span>
-              </div>
-            </div>
-          </div>
-          <div className="row row4">
-            {
-              store.board_type === 'vod' ?
-              (
-                store.file !== '' && store.movie_url === '' ?
-                (
-                  files === 'png' || files === 'jpg' || files === 'jpge' ? <p className="caution">동영상 파일이 아닙니다.</p> : <video src={store.file} controls></video>
-                )
-                :
-                <div className="iframe_con">
-                  <iframe src={"https://www.youtube.com/embed/"+vod_url+""} title="YouTube video player"></iframe>
+        <Link to="/board" className="back-link">
+          ← 목록으로
+        </Link>
+
+        <div className="panel">
+            <div className="section_box">
+              <div className="">
+                <div className={"board_type "+types}>
+                  <span>{separator}</span>
                 </div>
-              )
-              : null
-            }
-            <div dangerouslySetInnerHTML={{ __html : store.board_content  }} />
-          </div>
-          <div className="row row5">
-            <div className="btn_con">
-              <div className="btns exit">
-                <span><Link to='/board'>목록으로</Link></span>
               </div>
-              <div className="btns apply">
-                <span><Link to='/edit'>글 수정</Link></span>
+
+              <div className="row2">
+                <div className="title_con">
+                  <h3>{store.board_title}</h3>
+                </div>
+                {
+                  types === 'review' ? <Score_con score={store.score}></Score_con> : null
+                }
               </div>
-              <div className="btns del">
-                <span onClick={(()=>{
-                  let formData = new FormData();
-                  formData.append('board_no', store.board_no);
-                  if(window.confirm('삭제하시겠습니까?')){
-                    axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/board_del', formData, config).catch(()=>{
-                      alert("데이터 전송이 실패하였습니다.");
-                    }).then((result)=>{
-                      console.log(result);
-                      alert('삭제되었습니다');
-                      navigate(-1);
-                    });
-                  }
-                })}>글 삭제</span>
+              
+              <div className="row3">
+                <div className="view_info">
+                  <div className="col col1">
+                    <span className="writer">{store.board_writer}</span>
+                    <span className="date">{store.board_date}</span>
+                  </div>
+                  <div className="col col2">
+                    <span className="hits">조회수 {store.board_hit}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="row4">
+                {
+                  store.board_type === 'vod' ?
+                  (
+                    store.file !== '' && store.movie_url === '' ?
+                    (
+                      files === 'png' || files === 'jpg' || files === 'jpge' ? <p className="caution">동영상 파일이 아닙니다.</p> : <video src={store.file} controls></video>
+                    )
+                    :
+                    <div className="iframe_con">
+                      <iframe src={"https://www.youtube.com/embed/"+vod_url+""} title="YouTube video player"></iframe>
+                    </div>
+                  )
+                  : null
+                }
+                <div dangerouslySetInnerHTML={{ __html : store.board_content  }} />
+              </div>
+
+              <div className="">
+                <div className="btn_con">
+                  <div className="btn btn_del">
+                    <span onClick={(()=>{
+                      let formData = new FormData();
+                      formData.append('board_no', store.board_no);
+                      if(window.confirm('삭제하시겠습니까?')){
+                        axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/board_del', formData, config).catch(()=>{
+                          alert("데이터 전송이 실패하였습니다.");
+                        }).then((result)=>{
+                          console.log(result);
+                          alert('삭제되었습니다');
+                          navigate(-1);
+                        });
+                      }
+                    })}>글 삭제</span>
+                  </div>
+
+                  <div className="right">
+                    <div className="btn btn-primary">
+                      <span><Link to='/edit'>수정하기</Link></span>
+                    </div>
+                    
+                    <div className="btn btn-muted">
+                      <span><Link to='/board'>목록</Link></span>
+                    </div>
+                  </div>
+                  
+                </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </div>

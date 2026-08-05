@@ -24,7 +24,7 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
  input::placeholder {  color:var(--text-faint);}
 
  /* 버튼 */
-.row-actions { display: flex; gap: 6px; justify-content: center; }
+/* .row-actions { display: flex; gap: 6px; justify-content: start; } */
 .row-actions .btn { padding: 7px 12px; font-size: 12.5px; }
 .btn {
   font-family: inherit;
@@ -38,6 +38,7 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 }
 .btn-muted { background: var(--btn-action-bg); color: var(--btn-action-fg); }
 .btn-primary { background: var(--accent); color: #fff;}
+.btn-primary a{ color: #fff;}
 .btn-primary:hover { filter: brightness(1.06); }
 /* 삭제버튼 공통 */
 .btn_del { background: var(--danger); color: #fff; }

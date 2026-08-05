@@ -413,16 +413,17 @@ function Note_detail() {
               </button>
 
               <div className="right">
-                <Link to="/note" className="btn btn-muted">
-                  목록
-                </Link>
-
                 <Link
                   className="btn btn-primary"
                   to={`/note/edit/${data.note_no}`}
                 >
                   수정하기
                 </Link>
+
+                <Link to="/note" className="btn btn-muted">
+                  목록
+                </Link>
+                
               </div>
             </div>
           </div>

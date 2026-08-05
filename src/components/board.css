@@ -32,13 +32,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 }
 
 .brd .table-responsive {
-  /* width: 100%;
-  overflow-x: auto; */
+   width: 100%;
+ /* overflow-x: auto; */
 }
 
 .brd .table-responsive table {
@@ -63,7 +63,7 @@
   background: var(--surface);
 }
 
-td.col-visitor, td.col-property { text-align: left; font-weight: 700; }
+td.col-visitor, td.col-property, td.col-title { text-align: left; font-weight: 700; }
 td.col-visitor .phone { display: block; font-weight: 400; color: var(--text-faint); font-size: 12px; margin-top: 2px; font-variant-numeric: tabular-nums; }
 td.col-area { text-align: left; color: var(--text-muted); }
 td.col-date { color: var(--text-faint); font-size: 12.5px; font-variant-numeric: tabular-nums; }
@@ -119,6 +119,25 @@ td.col-date { color: var(--text-faint); font-size: 12.5px; font-variant-numeric:
   grid-template-columns:repeat(5,1fr);
 
 }
+.board_write input[type="file"] {
+  display: block;
+}
+
+.tag {
+  display: inline-block;
+  color: #fff;
+  white-space: nowrap;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.tag.notice {background: #212121;}
+.tag.event {background: #FF51A4;}
+.tag.charge {background: #7B9DB5;}
+.tag.review {background: #2DB400;}
+.tag.vod {background: #AF41CB;}
+
 /* 등록/수정/상세 */
 .back-link {
   font-size: 13px;
@@ -203,6 +222,9 @@ h3 {  font-size: 22px;  font-weight: 800;  margin: 0 0 18px;}
     grid-template-columns: repeat(2, 1fr)!important;
     
   }
+  .sections.board.board_board .brd .toolbar-register {
+    justify-self: unset;
+  }
   /* 등록/수정/상세 */
   .grid_row {
     grid-template-columns: 1fr;
@@ -247,6 +269,15 @@ h3 {  font-size: 22px;  font-weight: 800;  margin: 0 0 18px;}
   }
   .memo-form {
     flex-direction: column;
+  }
+
+  /* 게시판관리  */
+  .sections.view .row2 .score_con,
+  .sections.view .row3 .view_info, 
+  .sections.view .row3 .view_info .col {  
+    display: flex;  
+    flex-direction: column;
+    align-items: start!important;
   }
 
   @media (max-width: 400px) {

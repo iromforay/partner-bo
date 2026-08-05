@@ -51,63 +51,78 @@ function Edit_brd(){
   }
 
   return(
-    <div className="sections write">
+    <div className="sections write board_write">
       <div className="width_con">
-        <h3>글 수정하기</h3>
-        <div className="form_con">
-          <form id="editBoard">
-            <div className="row row1">
-              <div className={"board_type "+types}>
-                <span>{separator}</span>
+        <Link to="/board" className="back-link">
+          ← 목록으로
+        </Link>
+
+        <h3>게시글 수정</h3>
+
+        <form id="editBoard">
+          <div className="panel">
+            <div className="section_box">
+              <div className="">
+                <div className={"board_type "+types}>
+                  <span>{separator}</span>
+                </div>
               </div>
-            </div>
-            <div className="row row2">
-              <div className="input_title_con">
-                <input type="text" name="board_title" className="write_title" placeholder="글제목" defaultValue={store.board_title}></input>
+            
+              <div className="">
+                <div className="input_title_con">
+                  <input type="text" name="board_title" className="write_title" placeholder="글제목" defaultValue={store.board_title}></input>
+                </div>
+                {
+                  types === 'review' ? <Score_con score={store.score}></Score_con> : null
+                }
+              </div>
+
+              <div className="">
+                <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
               </div>
               {
-                types === 'review' ? <Score_con score={store.score}></Score_con> : null
+                types === 'vod' ? <Row4 data={store}></Row4> : null
               }
-            </div>
-            <div className="row row3">
-              <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
-            </div>
-            {
-              types === 'vod' ? <Row4 data={store}></Row4> : null
-            }
-            <div className="row row5">
-              <div className="btn_con">
-                <div className="btns apply">
-                  <span onClick={()=>{
-                    const this_form = document.getElementById("editBoard");
-                    let formData = new FormData(this_form);
-                    if(contents){
-                      formData.append('board_content', contents);
-                    }
-                    formData.append('board_writer', '테스트 운영자');
-                    formData.append('board_no', store.board_no);
-                    formData.append('code', store.board_type);
-                    if(window.confirm('수정하시겠습니까?')){
-                      axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/modify', formData, config).then((result)=>{
-                        console.log(result);
-                        alert('수정되었습니다');
-                        navigate('/board');
-                      }).catch(()=>{
-                        alert("데이터 전송이 실패하였습니다.");
-                      });
-                    }
-                    for (const [key, value] of formData.entries()) {
-                      console.log(key, value);
-                    }
-                  }}>수정하기</span>
-                </div>
-                <div className="btns exit">
-                  <span><Link to='/board'>나가기</Link></span>
+              
+              <div className="section_box">
+                <div className="btn_con">
+                  <div></div>
+                  <div className="right">
+                    <div className="btn btn-primary">
+                      <span onClick={()=>{
+                        const this_form = document.getElementById("editBoard");
+                        let formData = new FormData(this_form);
+                        if(contents){
+                          formData.append('board_content', contents);
+                        }
+                        formData.append('board_writer', '테스트 운영자');
+                        formData.append('board_no', store.board_no);
+                        formData.append('code', store.board_type);
+                        if(window.confirm('수정하시겠습니까?')){
+                          axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/modify', formData, config).then((result)=>{
+                            console.log(result);
+                            alert('수정되었습니다');
+                            navigate('/board');
+                          }).catch(()=>{
+                            alert("데이터 전송이 실패하였습니다.");
+                          });
+                        }
+                        for (const [key, value] of formData.entries()) {
+                          console.log(key, value);
+                        }
+                      }}>저장하기</span>
+                    </div>
+                    <div className="btn btn-muted">
+                      <span><Link to='/board'>취소</Link></span>
+                    </div>
+                  </div>
                 </div>
               </div>
+
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
+        
       </div>
     </div>
   )
@@ -170,8 +185,8 @@ function Row4(props){
   let [del, setDel] = useState(false);
 
   return(
-    <div className="row row4">
-      <p>영상 첨부 방식 두가지 중 한가지를 선택해주세요</p>
+    <div className="row">
+      <p className="opt">영상 첨부 방식 두가지 중 한가지를 선택해주세요</p>
       <div className="upload_vod">
         <h5>영상첨부</h5>
         {

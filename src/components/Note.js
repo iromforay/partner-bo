@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { change_page, minus_list, plus_list } from "../store";
 import Note_list from './note_page/Note_list';
-import './board_page/brd.css';
 import axios from "axios";
+import './board_page/brd.css';
 import './board.css';
 
 function Note(){
