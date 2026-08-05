@@ -132,23 +132,27 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 .container .sections.main .width_con .row1 .cont1 .count .yesterday .txt {}
 .container .sections.main .width_con .row1 .cont1 .count .yesterday .nums {color: #999999;}
 
-.container .sections.main .width_con .profile_con {display: flex; margin: 30px 0 0 0;}
-.container .sections.main .width_con .profile_con .col {padding: 15px 20px; border-radius: 4px; background: #fff; box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.20);}
-.container .sections.main .width_con .profile_con .col1 {margin: 0 20px 0 0;}
+.container .sections.main .width_con .profile_con {
+    display: flex; 
+    gap: 10px;
+    /* margin: 30px 0 0 0; */
+}
+.container .sections.main .width_con .profile_con .col {width:100%; padding: 15px 20px; border-radius: 4px; background: #fff; box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.20);}
+/* .container .sections.main .width_con .profile_con .col1 {margin: 0 20px 0 0;} */
 .container .sections.main .width_con .profile_con .col1 #profileSetting {}
 .container .sections.main .width_con .profile_con .col1 #profileSetting h5 {font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; pointer-events: none;}
 .container .sections.main .width_con .profile_con .col1 #profileSetting p.col_desc {margin: 10px 0 0 0; font-size: 0.6rem; line-height: 1rem; color: #777; pointer-events: none;}
 .container .sections.main .width_con .profile_con .col1 #profileSetting .input_con {margin: 10px 0 0 0;}
 .container .sections.main .width_con .profile_con .col1 #profileSetting .input_con input[type='file'] {display: none;}
-.container .sections.main .width_con .profile_con .col1 #profileSetting .input_con .upload_img {width: 200px; height: 200px; overflow: hidden; cursor: pointer;}
+.container .sections.main .width_con .profile_con .col1 #profileSetting .input_con .upload_img {max-width: 200px; max-height: 200px; aspect-ratio: 1; overflow: hidden; cursor: pointer;}
 .container .sections.main .width_con .profile_con .col1 #profileSetting .input_con .upload_img img {width: 100%;}
 .container .sections.main .width_con .profile_con .col1 #profileSetting .input_con .del_slide {text-align: center; margin: 10px 0 0 0;}
 .container .sections.main .width_con .profile_con .col1 #profileSetting .input_con .del_slide span {cursor: pointer;}
-.container .sections.main .width_con .profile_con .col1 #profileSetting .input_con input[type='text'] {width: 200px; height: 40px; margin: 10px 0 0 0; padding: 0 0 0 10px; background: #EBEFF2; border-radius: 4px; font-size: 0.8rem; line-height: 1.2rem; color: #000;}
+.container .sections.main .width_con .profile_con .col1 #profileSetting .input_con input[type='text'] { height: 40px; margin: 10px 0 0 0; padding: 0 0 0 10px; background: #EBEFF2; border-radius: 4px; font-size: 0.8rem; line-height: 1.2rem; color: #000;}
 .container .sections.main .width_con .profile_con .col1 #profileSetting .input_con input[type='text']::placeholder {color: #8A8A8A;}
 .container .sections.main .width_con .profile_con .col1 .btns.save {margin: 10px 0 0 0; text-align: center;}
 .container .sections.main .width_con .profile_con .col1 .btns.save span {display: inline-block; padding: 12px 15px; font-size: 0.8rem; line-height: 1.2rem; font-weight: 700; color: #fff; border-radius: 4px; background: #06F; cursor: pointer;}
-.container .sections.main .width_con .profile_con .col2 {width: 990px;}
+/* .container .sections.main .width_con .profile_con .col2 {width: 990px;} */
 .container .sections.main .width_con .profile_con .col2 .row {flex-direction: column; align-items: flex-start;}
 .container .sections.main .width_con .profile_con .col2 .row > * {pointer-events: none;}
 .container .sections.main .width_con .profile_con .col2 .row2 {margin: 30px 0 0 0;}
@@ -609,3 +613,11 @@ textarea:focus {  outline:none;  border-color:var(--accent);  background:var(--s
 
 /* placeholder */
 .note_section input::placeholder {  color:var(--text-faint);}
+
+@media (max-width: 840px) {
+    /* 프로필관리 */
+    .container .sections.main .width_con .profile_con, 
+    .container .sections.main .width_con .profile_con .col2 .row ul {
+      flex-direction: column;
+    }
+  }

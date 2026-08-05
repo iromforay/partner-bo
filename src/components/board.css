@@ -280,7 +280,5 @@ h3 {  font-size: 22px;  font-weight: 800;  margin: 0 0 18px;}
     align-items: start!important;
   }
 
-  @media (max-width: 400px) {
-    
-  }
+  
 }
