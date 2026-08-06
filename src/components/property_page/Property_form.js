@@ -638,17 +638,20 @@ console.log("result.address.roadAddress:", result.address?.roadAddress);
   return (
     <div className="sections write property_section">
       <div className="width_con">
+        <Link to="/property" className="back-link">
+          ← 목록으로
+        </Link>
         {/* 모드별 헤더 타이틀 분기 */}
         <h3>{isEditMode ? "매물 수정" : "매물 등록"}</h3>
-        <div className="form_con">
-          <form id="propertyForm" onSubmit={(e) => e.preventDefault()}>
-            
+        <form id="propertyForm" onSubmit={(e) => e.preventDefault()}>
+          <div className="panel">
             {/* 3-1. 기본정보 섹션 */}
             <div className="section_box">
               <div className="sec_title_bar">
                 <h4>기본정보</h4>
               </div>
-              <div className="grid_row col4">
+
+              <div className="grid_row col2">
                 <div className="form_group">
                   <label>매물종류</label>
                   <select name="property_type" value={formData.property_type} onChange={handleChange}>
@@ -733,7 +736,7 @@ console.log("result.address.roadAddress:", result.address?.roadAddress);
                 </div>
               </div>
 
-              <div className="grid_row col4">
+              <div className="grid_row col2">
                 <div className="form_group">
                   <label>주소(시도)<span className="esenstial">*필수</span></label>
                   <input type="text" name="addr_sido" value={formData.addr_sido} readOnly placeholder="시/도" />
@@ -752,28 +755,15 @@ console.log("result.address.roadAddress:", result.address?.roadAddress);
                     {formData.lat && formData.lng ? `위도: ${formData.lat} / 경도: ${formData.lng}` : "위도/경도 (자동산출)"}
                   </div>
                 </div>
-              </div>
-
-              <div className="grid_row col2">
                 <div className="form_group">
                   <label>도로명주소</label>
                   <input type="text" name="addr_road" value={formData.addr_road} readOnly placeholder="도로명 주소" />
                 </div>
-                {/* <div className="form_group">
-                  <label>상세주소</label>
-                  <input
-                    type="text"
-                    name="addr_detail"
-                    value={formData.addr_detail}
-                    onChange={handleChange}
-                    placeholder="상세 주소 입력 (동/호수 등)"
-                  />
-                </div> */}
               </div>
 
               {mapImage && (
                 <div className="map_preview">
-                  <label>지도 위치</label>
+                  <label className="desc">지도 위치</label>
                   <img 
                     src={mapImage} 
                     alt="지도 위치"
@@ -787,7 +777,7 @@ console.log("result.address.roadAddress:", result.address?.roadAddress);
               <div className="sec_title_bar">
                 <h4>매물 정보</h4>
               </div>
-              <div className="grid_row col4">
+              <div className="grid_row col2">
                 <div className="form_group">
                   <label>공급면적 (㎡)</label>
                   <input type="number" name="supply_area" value={formData.supply_area} onChange={handleChange} placeholder="0" />
@@ -870,7 +860,7 @@ console.log("result.address.roadAddress:", result.address?.roadAddress);
               <div className="sec_title_bar">
                 <h4>가격 및 소개</h4>
               </div>
-              <div className="grid_row col4">
+              <div className="grid_row col2">
                 <div className="form_group">
                   <label>매매가 (만원)</label>
                   <input type="text" name="sale_price" placeholder="0" value={formData.sale_price} onChange={handlePriceChange} />
@@ -933,7 +923,7 @@ console.log("result.address.roadAddress:", result.address?.roadAddress);
                 
                 {/* (1) 대표 이미지 업로드 영역 */}
                 <div className="thumb_upload_area">
-                  <p className="row_desc">대표 이미지 (파일을 드래그하여 업로드하세요)</p>
+                  <p className="desc">대표 이미지 (파일을 드래그하여 업로드하세요)</p>
                   <div className="detail_grid">
                     {upload_thumb_img === "" ? (
                       /* 대표 이미지 미등록 상태 - 파일 입력/드래그앤드롭 박스 */
@@ -978,7 +968,7 @@ console.log("result.address.roadAddress:", result.address?.roadAddress);
 
                 {/* (2) 상세 이미지 추가 및 목록 영역 */}
                 <div className="detail_upload_area">
-                  <p className="row_desc">추가 이미지 (최대 10장 / 파일을 드래그하여 업로드하세요)</p>
+                  <p className="desc">추가 이미지 (최대 10장 / 파일을 드래그하여 업로드하세요)</p>
                   <div className="detail_grid">
                     {/* 추가 버튼 / 드래그 앤 드롭 존 */}
                     <label
@@ -1034,21 +1024,28 @@ console.log("result.address.roadAddress:", result.address?.roadAddress);
             </div>
 
             {/* 3-6. 하단 저장 / 취소 버튼 */}
-            <div className="row row5">
+            <div className="section_box">
               <div className="btn_con">
-                <button type="button" className="btns apply" onClick={handleSubmit}>
-                  <span>{isEditMode ? "매물 수정" : "매물 등록"}</span>
-                </button>
-                <div className="btns exit">
-                  <span>
-                    <Link to="/property">취소</Link>
-                  </span>
+                <div></div>
+                <div className="right">
+                  
+                  <button type="button" className="btn btn-primary" onClick={handleSubmit}>
+                    <span>{isEditMode ? "저장하기" : "등록하기"}</span>
+                  </button>
+
+                  <div className="btn btn-muted">
+                    <span>
+                      <Link to="/property">취소</Link>
+                    </span>
+                  </div>
+
                 </div>
+                    
               </div>
             </div>
 
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
 
       {/* 3-7. 주소 검색 모달 조건부 렌더링 */}

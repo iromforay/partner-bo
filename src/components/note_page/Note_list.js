@@ -4,6 +4,7 @@ import { change_page } from '../../store';
 import { Link } from 'react-router-dom';
 import { MessageSquare, ChevronRight } from "lucide-react";
 import './note.css';
+import '../board.css';
 
 import axios from "axios";
 
@@ -198,59 +199,64 @@ function Note_list(props){
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           />
 
-          <button className="btn btn-muted" onClick={handleSearch}>
-            검색
-          </button>
-          
-          <button className="btn btn-muted" onClick={handleReset}>
-            초기화
-          </button>
-        </div>
-        <div>
-          <span><Link to="/note/write" className="btn btn-primary">노트 등록</Link></span>
+          <div className="toolbar-actions">
+            <button className="btn btn-muted" onClick={handleSearch}>
+              검색
+            </button>
+            
+            <button className="btn btn-muted" onClick={handleReset}>
+              초기화
+            </button>
+          </div>
+
+          <div className="toolbar-register">
+            <span><Link to="/note/write" className="btn btn-primary">노트 등록</Link></span>
+          </div>
         </div>
       </div>
 
       {/* ---- 리스트 테이블 영역 ---- */}
-      <table>
-        <thead>
-          <tr>
-            <th>글번호</th>
-            <th>방문형태</th>
-            <th>방문자</th>
-            <th>거래방식</th>
-            <th>관심매물</th>
-            <th>희망지역</th>
-            <th>상태</th>
-            <th>메모</th>
-            <th>방문예정일</th>
-            <th>등록일</th>
-            <th>관리</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {now_data && now_data.length > 0 ? (
-            now_data.map((item, i) =>
-              <Rows
-                key={item.note_no || i}
-                cfg={config}
-                data={item}
-                page_data={page_info}
-                onOpenMemo={() => handleOpenMemoModal(item)}
-                refreshData={fetchData}
-                refreshParent={props.refreshParent}
-              />
-            )
-          ) : (
+      <div className="table-responsive">
+        <table>
+          <thead>
             <tr>
-              <td colSpan="11">
-                조회된 데이터가 없습니다.
-              </td>
+              <th>글번호</th>
+              <th>방문형태</th>
+              <th>방문자</th>
+              <th>거래방식</th>
+              <th>관심매물</th>
+              <th>희망지역</th>
+              <th>상태</th>
+              <th>메모</th>
+              <th>방문예정일</th>
+              <th>등록일</th>
+              <th>관리</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {now_data && now_data.length > 0 ? (
+              now_data.map((item, i) =>
+                <Rows
+                  key={item.note_no || i}
+                  cfg={config}
+                  data={item}
+                  page_data={page_info}
+                  onOpenMemo={() => handleOpenMemoModal(item)}
+                  refreshData={fetchData}
+                  refreshParent={props.refreshParent}
+                />
+              )
+            ) : (
+              <tr>
+                <td colSpan="11">
+                  조회된 데이터가 없습니다.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* ---- 페이지네이션 ---- */}
       <ul className='pagenation note_pagenation'>
@@ -321,7 +327,7 @@ function Rows(props){
   let dispatch = useDispatch();
   const data = props.data;
 
-  const status_class = { consulting: 'tag-consulting', proposed: 'tag-proposed', contracted: 'tag-contracted', lost: 'tag-lost' };
+  const status_class = { consult_request: 'tag-consult_request', consulting: 'tag-consulting', proposed: 'tag-proposed', contracted: 'tag-contracted', lost: 'tag-lost' };
   const visit_type_class = { tenant: 'tag-tenant', landlord: 'tag-landlord' };
 
   if(!data) return null;
@@ -361,6 +367,7 @@ function Rows(props){
           <Link className="btn btn-muted" to={`/note/edit/${data.note_no}`}>
             수정
           </Link>
+          
           <button
             type="button"
             className="btn btn_del"

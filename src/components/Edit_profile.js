@@ -103,7 +103,7 @@ function Edit_profile(){
                     window.location.href = '/';
                   });
                 }
-              }}><span>변경 사항 저장</span></div>
+              }}><span>저장하기</span></div>
             </div>
             <div className="col col2">
               <div className="row row1">

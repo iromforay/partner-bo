@@ -56,52 +56,56 @@ function Brd_all(props){
 
   if(now_data){
     return(
-      <div className="brd all_brd">
-        <div className="fn_bar">
-          <div className="search_con">
-            <select>
-              <option value='title'>글제목</option>
-              <option value='content'>글내용</option>
-              <option value='writer'>작성자</option>
-            </select>
-            <input type="text" name="search_txt" placeholder="검색어입력"></input>
-            <div className="btn_search">
-              <span>검색</span>
-            </div>
-          </div>
-          <div className="btn_new">
-            <span><Link to="/write">새 글쓰기</Link></span>
+    <div className="brd all_brd">
+      {/* ---- 검색 툴바 영역 ---- */}
+      <div className="toolbar">
+        <div className="toolbar-search">
+          <div className="toolbar-register">
+            <span><Link to="/write" className="btn btn-primary">게시글 등록</Link></span>
           </div>
         </div>
-        <div className="borad_rows">
-          <div className="rows row0">
-            <ul>
-              <li className="board_no">글번호</li>
-              <li className="board_type">분류</li>
-              <li className="score">별점</li>
-              <li className="board_title">글제목</li>
-              <li className="board_writer">작성자</li>
-              <li className="board_date">작성일</li>
-              <li className="board_hit">조회수</li>
-              <li className="board_etc">비고</li>
-            </ul>
-          </div>
-          {
-            // {
-            //   1 : page[0].map(function(a, i){
-            //     return(
-            //       <Rows data={page[0]} val={i} key={i}></Rows>
-            //     )
-            //   })
-            // }[now_page]
-            now_data ? now_data.map(function(a, i){
-              return(
-                <Rows cfg={config} data={now_data} page_data={page_info} val={i} key={i}></Rows>
+
+        {/* ---- 리스트 테이블 영역 ---- */}
+      <div className="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>글번호</th>
+              <th>분류</th>
+              <th>별점</th>
+              <th>글제목</th>
+              <th>작성자</th>
+              <th>작성일</th>
+              <th>조회수</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {now_data && now_data.length > 0 ? (
+              now_data.map((item, i) =>
+                <Rows
+                  key={item.board_no || i}
+                  cfg={config}
+                  data={item}
+                  page_data={page_info}
+                  // refreshData={fetchData}
+                  refreshParent={props.refreshParent}
+                />
               )
-            }) : null
-          }
-        </div>
-        <ul className='pagenation'>
+            ) : (
+              <tr>
+                <td colSpan="11">
+                  조회된 데이터가 없습니다.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* 페이지네이션 */}
+      <ul className='pagenation board_pagenation'>
           {page.map(function(a, i){
             return(
               <li className={now_page === i+1 ? 'on' : null} key={i} onClick={()=>{
@@ -114,6 +118,8 @@ function Brd_all(props){
           })}
         </ul>
       </div>
+
+    </div>
     )
   }
 }
@@ -121,10 +127,10 @@ function Brd_all(props){
 function Rows(props){
 
   let dispatch = useDispatch();
-  let datas = props.data;
+  let data = props.data;
   let page_datas = props.page_data;
   let types = '';
-  switch(datas[props.val].board_type){
+  switch(data.board_type){
     case 'notice' : types = '공지' 
     break;
     case 'event' : types = '이벤트' 
@@ -148,37 +154,41 @@ function Rows(props){
   console.log(page_datas);
 
   return(
-    <div className={"rows row"+(props.val+1)}>
-      <ul className={datas[props.val].board_status === "N" ? "deleted" : null}>
-        <li className="board_no">{datas[props.val].board_no}</li>
-        <li className="board_type"><span className={datas[props.val].board_type}>{types}</span></li>
-        <li className="score" dangerouslySetInnerHTML={{ __html : star_score(datas[props.val].score)  }}>{}</li>
-        <li className="board_title" onClick={()=>{dispatch(now_view(datas[props.val]))}}><Link to='/view'>{datas[props.val].board_title}</Link></li>
-        <li className="board_writer">{datas[props.val].board_writer}</li>
-        <li className="board_date">{datas[props.val].board_date}</li>
-        <li className="board_hit">{datas[props.val].board_hit}</li>
-        <li className="board_etc">
-          <div className="btns btn_edit">
-            <span onClick={()=>{dispatch(now_view(datas[props.val]))}}><Link to='/edit'>수정</Link></span>
-          </div>
-          <div className="btns btn_del">
+    <tr className={data.board_status === "N" ? "deleted" : null}>
+      <td>{data.board_no}</td>
+      <td className=""><span className={`tag ${data.board_type}`}>{types}</span></td>
+      <td className="" dangerouslySetInnerHTML={{ __html : star_score(data.score)  }}>{}</td>
+      <td className="col-title" onClick={()=>{dispatch(now_view(data))}}>
+        <Link to='/view'>{data.board_title}</Link></td>
+      <td className="">{data.board_writer}</td>
+      <td className="col-date">{data.board_date}</td>
+      <td className="">{data.board_hit}</td>
+      <td>
+        <div className="row-actions">
+          <span className="btn btn-muted" onClick={()=>{dispatch(now_view(data))}}>
+            <Link to='/edit'>수정</Link>
+          </span>
+
+          <div className="btn btn_del">
             <span onClick={(()=>{
               let formData = new FormData();
-              formData.append('board_no', datas[props.val].board_no);
+              formData.append('board_no', data.board_no);
               if(window.confirm('삭제하시겠습니까?')){
                 axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/board_del', formData, props.cfg).catch(()=>{
                   alert("데이터 전송이 실패하였습니다.");
                 }).then((result)=>{
                   console.log(result);
                   alert('삭제되었습니다');
+                  props.refreshParent();//글 총갯수 다시 조회
                   dispatch(change_page('board'));
                 });
               }
             })}>삭제</span>
           </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+        
+      </td>
+    </tr>
   )
 }
 

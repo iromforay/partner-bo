@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { change_page, minus_list, plus_list } from "../store";
 import Brd_all from './board_page/Brd_all';
-import './board_page/brd.css';
 import axios from "axios";
-
+// import './board_page/brd.css';
+import './board.css';
 
 function Board(){
 
@@ -30,15 +30,25 @@ function Board(){
     dispatch(change_page('board'));
   }, [])
 
-  useMemo(()=>{
-    return axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-  }, [])
+  const fetchBoard = () => {
+    axios.get(
+      process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8',
+       config
+      )
+       .then((result)=>{
+        console.log(result.data.RECORD); 
+        setData(result.data.RECORD)
+      });
+  };
+  useEffect(()=>{
+    fetchBoard();
+  }, []);
 
   console.log(data)
   console.log('렌더링!');
   if(data){
     return(
-      <div className="sections board">
+      <div className="sections board board_board">
         <div className="width_con">
           <h3>게시판 관리</h3>
           <ul className="tabs">
@@ -117,7 +127,12 @@ function Board(){
             </li>
           </ul>
           <div className="board_con">
-            <Brd_all origin_data={data} data={copy_data} whats={select}></Brd_all>
+            <Brd_all 
+            origin_data={data} 
+            data={copy_data} 
+            whats={select}
+            refreshParent={fetchBoard}
+            ></Brd_all>
           </div>
         </div>
       </div>

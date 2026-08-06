@@ -48,30 +48,32 @@ function Set_NaverVerification(){
   if(dataSetting){
     return(
       <form id="naverVerificationSetting" data-whats="naverVerification">
-        <div className="row row1"></div>
 
-        <div className="naver-page">
+          <div className="row row2">
+            
+            <div className="title_con">
+              <div>
+                <h4>네이버 검색 노출</h4>
+                <p className="opt">
+                  네이버 서치어드바이저에 사이트를 등록하면, 
+                  우리 홈페이지가 네이버 검색결과에 노출됩니다. 아래 절차대로 소유확인 코드를 발급받아 입력해주세요.
+                </p>
+              </div>
 
-          <div className="page-head">
-            <h1>네이버 검색 노출</h1>
-
-            <p>
-              네이버 서치어드바이저에 사이트를 등록하면, 
-              우리 홈페이지가 네이버 검색결과에 노출됩니다. 아래 절차대로 소유확인 코드를 발급받아 입력해주세요.
-            </p>
-
-            <div className="status-row">
-              <span className={isRegistered ? "pill on" : "pill off"}>
-                <span className="dot" />
-                {isRegistered ? " 등록됨" : " 미등록"}
-              </span>
-
-              <span className="status-meta">
-                {isRegistered
-                  ? "소유확인 코드가 입력되었습니다"
-                  : "아직 소유확인 코드가 입력되지 않았습니다"}
-              </span>
             </div>
+            
+              <div className="status-row">
+                <span className={isRegistered ? "pill on" : "pill off"}>
+                  <span className="dot" />
+                  {isRegistered ? " 등록됨" : " 미등록"}
+                </span>
+
+                <span className="status-meta">
+                  {isRegistered
+                    ? "소유확인 코드가 입력되었습니다"
+                    : "아직 소유확인 코드가 입력되지 않았습니다"}
+                </span>
+              </div>
           </div>
 
           <div className="grid">
@@ -218,7 +220,6 @@ function Set_NaverVerification(){
             </div>
           </div>
           
-        </div>
       </form>
     )
   }

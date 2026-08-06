@@ -187,8 +187,8 @@ useEffect(() => {
       {/* Page Head */}
       <header className="page-head">
         <div>
-          {/* <h1>대시보드</h1>
-          <p className="sub">25시 부동산 · foray.bomul.co.kr</p> */}
+          <h1>대시보드</h1>
+           {/*<p className="sub">25시 부동산 · foray.bomul.co.kr</p> */}
         </div>
 
         {/* Period Selector */}

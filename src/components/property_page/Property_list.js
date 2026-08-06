@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import { now_property_view } from '../../store';
 import axios from "axios";
 import $ from "jquery";
+import '../board.css';
 import './property.css';
-import '../note_page/note.css';
 
 
 function Property_list(props){
@@ -207,38 +207,44 @@ function Property_list(props){
               onChange={(e) => setPropertyNameTxt(e.target.value)} 
               onKeyDown={(e) => { if(e.key === 'Enter') { setNow_page(1); handleSearch(1); } }}
             />
-
-            <div className="btn btn-muted" onClick={() => {
-                handleSearch();
-              }}
-            >
-              <span>검색</span>
+            <div className="toolbar-actions">
+              <div className="btn btn-muted" onClick={() => {
+                  handleSearch();
+                }}
+              >
+                <span>검색</span>
+              </div>
+              
+              <div className="btn btn-muted" onClick={handleReset}>
+                <span>초기화</span>
+              </div>
             </div>
-            
-            <div className="btn btn-muted" onClick={handleReset}>
-              <span>초기화</span>
+
+            <div className="toolbar-register">
+              <Link to="/property/write" className="btn btn-primary">매물 등록</Link> 
             </div>
           </div>
-          <Link to="/property/write" className="btn btn-primary">매물 등록</Link>
+
         </div>
 
         {/* ---- 리스트 테이블 영역 ---- */}
-        <table>
-          <thead>
-            <tr>
-              <th>글번호</th>
-              <th>방식</th>
-              <th>종류</th>
-              <th>매물명</th>
-              <th>지역</th>
-              <th>가격</th>
-              <th>상태</th>
-              <th>노출</th>
-              <th>조회</th>
-              <th>등록일</th>
-              <th>관리</th>
-            </tr>
-          </thead>
+        <div className="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>글번호</th>
+                <th>방식</th>
+                <th>종류</th>
+                <th>매물명</th>
+                <th>지역</th>
+                <th>가격</th>
+                <th>상태</th>
+                <th>노출</th>
+                <th>조회</th>
+                <th>등록일</th>
+                <th>관리</th>
+              </tr>
+            </thead>
               
           <tbody>
             {now_data && now_data.length > 0 ? (
@@ -261,7 +267,8 @@ function Property_list(props){
               </tr>
             )}
           </tbody>
-        </table>
+          </table>
+        </div>
 
         <ul className='pagenation property_pagenation'>
           {page.map(function(a, i){

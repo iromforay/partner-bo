@@ -6,7 +6,6 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
-
 /* ==========================================================================
    1. 주소 검색 팝업 모달 컴포넌트
    - 다음(Kakao) 우편번호 서비스 모달을 출력하고 선택된 주소 데이터를 반환합니다.
@@ -358,6 +357,7 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
             ref={formRef}
             id="noteForm" 
             onSubmit={(e) => e.preventDefault()}>
+
             <div className="panel">
               {/* 1. 방문자 정보 섹션 */}
               <div className="section_box">
@@ -498,13 +498,11 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
                       value={formData.status}
                       onChange={handleChange}
                     >
+                      <option value="consult_request">상담접수</option>
                       <option value="consulting">상담중</option>
                       <option value="proposed">매물제안</option>
                       <option value="contracted">계약완료</option>
                       <option value="lost">이탈</option>
-                        
-                      
-
                     </select>
 
                   </div>
@@ -611,38 +609,28 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
                 </div>
               </div>
             </div>      
-            {/* 3-6. 하단 삭제 / 저장 / 취소 버튼 */}
-            <div className="panel">
-              <div className="btn_con">
 
-                {isEditMode && (
-                  <button
-                    type="button"
-                    className="btn btn_del"
-                    onClick={() => {
-                      if (window.confirm("삭제하시겠습니까?")) {
-                        // 삭제 API
-                      }
-                    }}
-                  >
-                    노트 삭제
-                  </button>
-                )}
+            {/* 3-6. 하단 저장 / 취소 버튼 */}
+            <div className="section_box">
+              <div className="btn_con">
+                <div></div>
 
                 <div className="right">
-
-                  <Link to="/note" className="btn btn-muted">
-                    취소
-                  </Link>
-
                   <button
                     type="button"
                     className="btn btn-primary"
                     onClick={handleSubmit}
                   >
-                    {isEditMode ? "수정하기" : "등록하기"}
+                    {isEditMode ? "저장하기" : "등록하기"}
                   </button>
 
+                  <div className="btn btn-muted">
+                    <span>
+                      <Link to="/note">
+                        취소
+                      </Link>
+                    </span>
+                  </div>
                 </div>
 
               </div>

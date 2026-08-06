@@ -16,13 +16,25 @@ import Property_form from './property_page/Property_form';
 import Property_detail from './property_page/Property_detail';
 import Note_form from './note_page/Note_form';
 import Note_detail from './note_page/Note_detail';
-
+import {
+  Globe,
+  Settings2,
+  LogOut,
+  ChevronLeft,
+  ChevronRight, 
+  LayoutDashboard,
+  Settings,
+  ClipboardList,
+  Building2,
+  MessageSquare
+} from "lucide-react";
 import axios from 'axios';
 import DashBoard from './dashBoard_page/DashBoard';
 
 function Header(){
 
   let [data, setData] = useState();
+  const [isCollapsed, setIsCollapsed] = useState(false);// 💡 사이드바 접힘/펼침 상태 (기본값: 펼침 false)
   let store = useSelector((state)=>{return state});
   let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
@@ -53,104 +65,137 @@ function Header(){
     });;
   }, []);
 
+  const navList = [
+    {
+      key: "dash_board",
+      path: "/dash_board",
+      label: "대시보드",
+      short: "대시보드",
+      icon: LayoutDashboard,
+    },
+    {
+      key: "basic",
+      path: "/basic",
+      label: "홈페이지 설정",
+      short: "홈페이지",
+      icon: Settings2,
+    },
+    {
+      key: "board",
+      path: "/board",
+      label: "게시판 관리",
+      short: "게시판",
+      icon: ClipboardList,
+    },
+    {
+      key: "property",
+      path: "/property",
+      label: "매물 관리",
+      short: "매물",
+      icon: Building2,
+    },
+    {
+      key: "note",
+      path: "/note",
+      label: "노트 관리",
+      short: "노트",
+      icon: MessageSquare,
+    },
+  ];
+
   if(data){
     return(
       <div>
-        <div id='header'>
-          <div className='btn_open' onClick={()=>{$('#header').toggleClass('unfold')}}></div>
-          <Link to='/' onClick={()=>{dispatch(change_page(''));}}><h5>MY ADMIN</h5></Link>
-          <div className='profile'>
-            <div className='img_con'>
-              <img src={data.img_url !== "" ? data.img_url : 'img/header/logo.jpg'} alt='로고이미지'></img>
+        <div id='header' className={`admin_layout ${isCollapsed ? "collapsed" : ""}`}>
+          {/* 1. 좌측 사이드바 (LNB) */}
+          <aside id="sidebar" className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+            {/* Top: 최상단 로고 영역 */}
+            <div className="logo_area">
+              <Link to='/' onClick={()=>{dispatch(change_page(''));}}>
+
+              <div className='company_logo'>
+                <img src={data.img_url !== "" ? data.img_url : 'img/header/logo.jpg'} alt='로고이미지'></img>
+              </div>
+
+              <span className="company_name">{data.nick_name}</span>
+              </Link>
+
             </div>
-            <div className='desc_con'>
-              <h4>{data.user_info.name !== '' ? data.user_info.name : id}</h4>
-              <Link to="/edit_profile">프로필 수정</Link>
+
+            {/* Middle: 메뉴 리스트 */}
+            <nav className="nav_con">
+              <ul>
+                {navList.map((item) => (
+                  <li
+                    key={item.key}
+                    onClick={() => dispatch(change_page(item.key))}
+                    className={store.current_page === item.key ? 'on' : ''}
+                  >
+                    <Link to={item.path}>
+                      <div className="img_con">
+                        <item.icon />
+                      </div>
+                      <span className="nav_label">
+                        {isCollapsed ? item.short : item.label}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* 사이드바 최하단: 프로필 & 설정 영역*/}
+            <div className="sidebar_bottom">
+              {!isCollapsed && (
+                <div className="user_mini_profile">
+                    <span className="user_name">
+                        {data.user_info.name || id}
+                    </span>
+                </div>
+              )}
+
+              <div className="bottom_actions">
+                {/* 내 쇼핑몰 바로가기 */}
+                <a 
+                  href={`http://${id}.bomul.co.kr`} 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="btn_icon_action" 
+                  title="내 홈페이지 바로가기"
+                >
+                  <Globe size={18}/>
+                  {!isCollapsed && <span>홈페이지</span>}
+                </a>
+
+                {/* 프로필/계정 설정 (톱니바퀴) */}
+                <Link to="/edit_profile" className="btn_icon_action" title="프로필 설정">
+                  <Settings size={18}/>
+                  {!isCollapsed && <span>프로필 설정</span>}
+                </Link>
+
+                {/* 로그아웃 */}
+                <button 
+                  type="button" 
+                  className="btn_logout_text" 
+                  onClick={() => { if (window.confirm('로그아웃 하시겠습니까?')) log_out(); }}
+                >
+                  <LogOut size={18}/>
+                  {!isCollapsed && <span>로그아웃</span>}
+                </button>
+              </div>
             </div>
-            <div className='link_con'>
-              <a href={'http://'+id+'.bomul.co.kr'} target='_blank'>홈페이지</a>
-              <a href='' onClick={()=>{
-                if(window.confirm('로그아웃 하시겠습니까?')){
-                  log_out();
-                }
-              }}>로그아웃</a>
-            </div>
+
+          </aside>
+
+          <div
+            className="btn_open"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          >
+              {isCollapsed ? <ChevronRight size={18}/> : <ChevronLeft size={18}/>}
           </div>
-          <div className='nav_con'>
-            <ul>
-              <li onClick={()=>{
-                dispatch(change_page('dash_board'))
-              }} className={store.current_page === 'dash_board' ? 'on' : null}>
-                <Link to='/dash_board'>
-                  <div className='img_con'>
-                    <img src='img/header/header_dash_board.png' alt='아이콘이미지'></img>
-                  </div>
-                  <p>대시보드</p>
-                </Link>
-              </li>
-              <li onClick={()=>{
-                dispatch(change_page('basic'))
-              }} className={store.current_page === 'basic' ? 'on' : null}>
-                <Link to='/basic'>
-                  <div className='img_con'>
-                    <img src='img/header/header_basic.png' alt='아이콘이미지'></img>
-                  </div>
-                  <p>홈페이지 설정</p>
-                </Link>
-              </li>
-              <li onClick={()=>{
-                dispatch(change_page('board'))
-              }} className={store.current_page === 'board' ? 'on' : null}>
-                <Link to='/board'>
-                  <div className='img_con'>
-                    <img src='img/header/header_board.png' alt='아이콘이미지'></img>
-                  </div>
-                  <p>게시판 관리</p>
-                </Link>
-              </li>
-              <li onClick={()=>{
-                dispatch(change_page('property'))
-              }} className={store.current_page === 'property' ? 'on' : null}>
-                <Link to='/property'>
-                  <div className='img_con'>
-                    <img src='img/header/header_property.png' alt='아이콘이미지'></img>
-                  </div>
-                  <p>매물 관리</p>
-                </Link>
-              </li>
-              <li onClick={()=>{
-                dispatch(change_page('note'))
-              }} className={store.current_page === 'note' ? 'on' : null}>
-                <Link to='/note'>
-                  <div className='img_con'>
-                    <img src='img/header/header_note.png' alt='아이콘이미지'></img>
-                  </div>
-                  <p>노트 관리</p>
-                </Link>
-              </li>
-              {/* <li onClick={()=>{
-                dispatch(change_page('member'))
-              }} className={store.current_page === 'member' ? 'on' : null}>
-                <Link to='/member'>
-                  <div className='img_con'>
-                    <img src='img/header/header_member.png' alt='아이콘이미지'></img>
-                  </div>
-                  <p>회원 관리</p>
-                </Link>
-              </li>
-              <li onClick={()=>{
-                dispatch(change_page('extra'))
-              }} className={store.current_page === 'extra' ? 'on' : null}>
-                <Link to='/extra'>
-                  <div className='img_con'>
-                    <img src='img/header/header_extra.png' alt='아이콘이미지'></img>
-                  </div>
-                  <p>부가 서비스</p>
-                </Link>
-              </li> */}
-            </ul>
-          </div>
+
         </div>
+
         <div className='container'>
           <Routes>
             <Route path='/' element={ <Main></Main> }></Route>
