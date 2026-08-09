@@ -35,108 +35,111 @@ function Basic(props){
 
   if(menuSetting){
     return(
-      <div className="page_container">
-        <div className="page_header">
+      <div className="page-container">
+        <div className="page-head">
           <div>
-            <h1>홈페이지 설정</h1>
-            <p>
+            <h2>홈페이지 설정</h2>
+            <p className="sub">
               홈페이지 구성과 노출 상태를 관리합니다.
             </p>
           </div>
-          <ul className="tabs">
-            <li onClick={()=>{
-              dispatch(change_set(0))
-            }} className={select === 0 ? "on" : null}>
-              <h5>기본</h5>
-            </li>
-            <li onClick={()=>{
-              dispatch(change_set(1))
-            }} className={select === 1 ? "on" : null}>
-              <h5>메인페이지</h5>
-            </li>
-            <li onClick={()=>{
-              dispatch(change_set(2))
-            }} className={select === 2 ? "on" : null}>
-              <h5>공지&이벤트</h5>
-              <div className="status">
-                {
-                  menuSetting.notice_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
-                }
-              </div>
-            </li>
-            <li onClick={()=>{
-              dispatch(change_set(3))
-            }} className={select === 3 ? "on" : null}>
-              <h5>둘러보기</h5>
-              <div className="status">
-                {
-                  menuSetting.around_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
-                }
-              </div>
-            </li>
-            <li onClick={()=>{
-              dispatch(change_set(4))
-            }} className={select === 4 ? "on" : null}>
-              <h5>매물관리</h5>
-              <div className="status">
-                {
-                  menuSetting.property_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
-                }
-              </div>
-            </li>
-            {/* <li onClick={()=>{
-              dispatch(change_set(5))
-            }} className={select === 5 ? "on" : null}>
-              <h5>이용요금</h5>
-              <div className="status">
-                {
-                  menuSetting.charge_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
-                }
-              </div>
-            </li> */}
-            <li onClick={()=>{
-              dispatch(change_set(6))
-            }} className={select === 6 ? "on" : null}>
-              <h5>이용후기</h5>
-              <div className="status">
-                {
-                  menuSetting.review_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
-                }
-              </div>
-            </li>
-            <li onClick={()=>{
-              dispatch(change_set(7))
-            }} className={select === 7 ? "on" : null}>
-              <h5>홍보영상</h5>
-              <div className="status">
-                {
-                  menuSetting.vod_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
-                }
-              </div>
-            </li>
-            <li onClick={()=>{
-              dispatch(change_set(8))
-            }} className={select === 8 ? "on" : null}>
-              <h5>오시는길</h5>
-              <div className="status">
-                {
-                  menuSetting.map_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
-                }
-              </div>
-            </li>
-            <li onClick={()=>{
-              dispatch(change_set(9))
-            }} className={select === 9 ? "on" : null}>
-              <h5>검색엔진 등록</h5>
-              <div className="status">
-                {
-                  menuSetting.naver_reserve_show=== "Y" ? <span className="on">등록됨</span> : <span className="off">미등록</span>
-                }
-              </div>
-            </li>
-          </ul>
+          
         </div>
 
+        {/* 홈페이지 설정 탭 */}
+        <ul className="grid hompage-set-tabs">
+          <li onClick={()=>{
+            dispatch(change_set(0))
+          }} className={select === 0 ? "on" : null}>
+            <h5>기본</h5>
+          </li>
+          <li onClick={()=>{
+            dispatch(change_set(1))
+          }} className={select === 1 ? "on" : null}>
+            <h5>메인페이지</h5>
+          </li>
+          <li onClick={()=>{
+            dispatch(change_set(2))
+          }} className={select === 2 ? "on" : null}>
+            <h5>공지&이벤트</h5>
+            <div className="status">
+              {
+                menuSetting.notice_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+              }
+            </div>
+          </li>
+          <li onClick={()=>{
+            dispatch(change_set(3))
+          }} className={select === 3 ? "on" : null}>
+            <h5>둘러보기</h5>
+            <div className="status">
+              {
+                menuSetting.around_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+              }
+            </div>
+          </li>
+          <li onClick={()=>{
+            dispatch(change_set(4))
+          }} className={select === 4 ? "on" : null}>
+            <h5>매물관리</h5>
+            <div className="status">
+              {
+                menuSetting.property_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+              }
+            </div>
+          </li>
+          {/* <li onClick={()=>{
+            dispatch(change_set(5))
+          }} className={select === 5 ? "on" : null}>
+            <h5>이용요금</h5>
+            <div className="status">
+              {
+                menuSetting.charge_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+              }
+            </div>
+          </li> */}
+          <li onClick={()=>{
+            dispatch(change_set(6))
+          }} className={select === 6 ? "on" : null}>
+            <h5>이용후기</h5>
+            <div className="status">
+              {
+                menuSetting.review_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+              }
+            </div>
+          </li>
+          <li onClick={()=>{
+            dispatch(change_set(7))
+          }} className={select === 7 ? "on" : null}>
+            <h5>홍보영상</h5>
+            <div className="status">
+              {
+                menuSetting.vod_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+              }
+            </div>
+          </li>
+          <li onClick={()=>{
+            dispatch(change_set(8))
+          }} className={select === 8 ? "on" : null}>
+            <h5>오시는길</h5>
+            <div className="status">
+              {
+                menuSetting.map_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+              }
+            </div>
+          </li>
+          <li onClick={()=>{
+            dispatch(change_set(9))
+          }} className={select === 9 ? "on" : null}>
+            <h5>검색엔진 등록</h5>
+            <div className="status">
+              {
+                menuSetting.naver_reserve_show=== "Y" ? <span className="on">등록됨</span> : <span className="off">미등록</span>
+              }
+            </div>
+          </li>
+        </ul>
+        
         <div className="content_card">
           {
             {

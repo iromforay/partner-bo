@@ -1,4 +1,5 @@
-import './App.css';
+import './New.css';
+import './new_slide.css';
 import { Routes, Route, Link } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

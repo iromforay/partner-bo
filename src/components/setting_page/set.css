@@ -32,16 +32,16 @@
 .container .sections.basic .width_con .row .ex_con p.row_desc {margin: 0 0 10px 0;}
 .ex_con img {width: 320px;}
 
-.set_con.slide .slick-prev {left: -30px !important; z-index: 9999;}
-.set_con.slide .slick-next {right: -30px !important; z-index: 9999;}
-.set_con.slide .slick-prev:before, .set_con.slide .slick-next:before {position: absolute;top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; transition: all 150ms ease-in-out;}
-.set_con.slide .slick-prev:before {content: '' !important; background: url(../../../public/img/basic/left.png) center no-repeat; background-size: contain;}
-.set_con.slide .slick-next:before {content: '' !important; background: url(../../../public/img/basic/right.png) center no-repeat; background-size: contain;}
-.set_con.slide {display: flex; align-items: center; margin: 20px 0 0 0;}
-.set_con.slide ul {width: 70%; padding: 0 30px;}
-.set_con.slide ul li {}
-.set_con.slide ul li .img_con {position: relative; width: calc(390px - 10px); height: 0; padding-bottom: 52%; border: 1px solid #E0E0E0; overflow: hidden;}
-.set_con.slide ul li .img_con img {width: 100%;}
+.set_con.slide .slick-prev, .set_con.slide .slick-next {display: none !important;}
+.set_con.slide {display: block; margin: 20px 0 0 0;}
+.set_con.slide .slide_track {width: 100%; overflow: hidden;}
+.set_con.slide ul {width: 100%; margin: 0; padding: 0; list-style: none;}
+.set_con.slide .slick-list {overflow: hidden; margin: 0 -8px;}
+.set_con.slide .slick-track {display: flex !important; align-items: stretch;}
+.set_con.slide .slick-slide {height: auto; padding: 0 8px; box-sizing: border-box;}
+.set_con.slide .slick-slide > div {height: 100%;}
+.set_con.slide ul li .img_con {position: relative; width: 100%; min-height: 220px; height: 220px; border: 1px solid #E0E0E0; overflow: hidden; border-radius: 8px; background: #f5f7fa; box-sizing: border-box;}
+.set_con.slide ul li .img_con img {display: block; width: 100%; height: 100%; object-fit: cover;}
 .set_con.slide ul li .img_con .del_slide {position: absolute; top: 50%; left: 50%; width: 140px; height: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; background: rgba(0, 0, 0, 0.80); border-radius: 4px; transform: translate(-50%, -50%); opacity: 0; transition: opacity 250ms ease-out; cursor: pointer;}
 .set_con.slide ul li .img_con.on .del_slide {height: 100px; opacity: 1;}
 .set_con.slide ul li .img_con .del_slide svg {font-size: 1.2rem; line-height: 1.6rem; color: #A5AFB6;}
@@ -138,18 +138,18 @@
 
 
 #mainSetting {}
-#mainSetting .slick-prev {left: -30px !important; z-index: 9999;}
-#mainSetting .slick-next {right: -30px !important; z-index: 9999;}
-#mainSetting .slick-prev:before, #mainSetting .slick-next:before {position: absolute;top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; transition: all 150ms ease-in-out;}
-#mainSetting .slick-prev:before {content: '' !important; background: url(../../../public/img/basic/left.png) center no-repeat; background-size: contain;}
-#mainSetting .slick-next:before {content: '' !important; background: url(../../../public/img/basic/right.png) center no-repeat; background-size: contain;}
+#mainSetting .slick-prev, #mainSetting .slick-next {display: none !important;}
 
 #mainSetting .row2 {margin: 30px 0 0 0;}
-#mainSetting .row2 .set_con.slide {display: flex; align-items: center; margin: 20px 0 0 0;}
-#mainSetting .row2 .set_con.slide ul {width: 70%; padding: 0 30px;}
-#mainSetting .row2 .set_con.slide ul li {}
-#mainSetting .row2 .set_con.slide ul li .img_con {position: relative; width: calc(390px - 10px); height: 0; padding-bottom: 52%; border: 1px solid #E0E0E0; overflow: hidden;}
-#mainSetting .row2 .set_con.slide ul li .img_con img {width: 100%;}
+#mainSetting .row2 .set_con.slide {display: block; align-items: unset; margin: 20px 0 0 0;}
+#mainSetting .row2 .set_con.slide .slide_track {width: 100%; overflow: hidden;}
+#mainSetting .row2 .set_con.slide ul {width: 100%; margin: 0; padding: 0; list-style: none;}
+#mainSetting .row2 .set_con.slide .slick-list {overflow: hidden; margin: 0 -8px;}
+#mainSetting .row2 .set_con.slide .slick-track {display: flex !important; align-items: stretch;}
+#mainSetting .row2 .set_con.slide .slick-slide {height: auto; padding: 0 8px; box-sizing: border-box;}
+#mainSetting .row2 .set_con.slide .slick-slide > div {height: 100%;}
+#mainSetting .row2 .set_con.slide ul li .img_con {position: relative; width: 100%; min-height: 220px; height: 220px; border: 1px solid #E0E0E0; overflow: hidden; border-radius: 8px; background: #f5f7fa; box-sizing: border-box;}
+#mainSetting .row2 .set_con.slide ul li .img_con img {display: block; width: 100%; height: 100%; object-fit: cover;}
 #mainSetting .row2 .set_con.slide ul li .img_con .del_slide {position: absolute; top: 50%; left: 50%; width: 140px; height: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; background: rgba(0, 0, 0, 0.80); border-radius: 4px; transform: translate(-50%, -50%); opacity: 0; transition: opacity 250ms ease-out; cursor: pointer;}
 #mainSetting .row2 .set_con.slide ul li .img_con.on .del_slide {height: 100px; opacity: 1;}
 #mainSetting .row2 .set_con.slide ul li .img_con .del_slide svg {font-size: 1.2rem; line-height: 1.6rem; color: #A5AFB6;}

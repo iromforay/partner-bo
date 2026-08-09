@@ -20,8 +20,7 @@ import {
   Globe,
   Settings2,
   LogOut,
-  ChevronLeft,
-  ChevronRight, 
+  PanelLeft,
   LayoutDashboard,
   Settings,
   ClipboardList,
@@ -105,7 +104,7 @@ function Header(){
 
   if(data){
     return(
-      <div>
+      <div className='wrap'>
         <div id='header' className={`admin_layout ${isCollapsed ? "collapsed" : ""}`}>
           {/* 1. 좌측 사이드바 (LNB) */}
           <aside id="sidebar" className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
@@ -132,7 +131,7 @@ function Header(){
                     className={store.current_page === item.key ? 'on' : ''}
                   >
                     <Link to={item.path}>
-                      <div className="img_con">
+                      <div className="nav-img-con">
                         <item.icon />
                       </div>
                       <span className="nav_label">
@@ -191,44 +190,42 @@ function Header(){
             className="btn_open"
             onClick={() => setIsCollapsed(!isCollapsed)}
           >
-              {isCollapsed ? <ChevronRight size={18}/> : <ChevronLeft size={18}/>}
+              <PanelLeft size={18} />
           </div>
 
         </div>
 
-        <div className='container'>
-          <Routes>
-            <Route path='/' element={ <Main></Main> }></Route>
-            <Route path='/edit_profile' element={ <Edit_profile></Edit_profile> }></Route>
-            <Route path='/basic' element={ <Basic></Basic> }></Route>
-            <Route path='/board' element={ <Board></Board> }></Route>
-            <Route path='/property' element={ <Property></Property> }></Route>
-            <Route path='/note' element={ <Note /> }></Route>
-            <Route path='/dash_board' element={ < DashBoard/> }></Route>
+        <Routes>
+          <Route path='/' element={ <Main></Main> }></Route>
+          <Route path='/edit_profile' element={ <Edit_profile></Edit_profile> }></Route>
+          <Route path='/basic' element={ <Basic></Basic> }></Route>
+          <Route path='/board' element={ <Board></Board> }></Route>
+          <Route path='/property' element={ <Property></Property> }></Route>
+          <Route path='/note' element={ <Note /> }></Route>
+          <Route path='/dash_board' element={ < DashBoard/> }></Route>
 
-            <Route path='/write' element={ <Write_brd></Write_brd> }></Route>
-            <Route path='/edit' element={ <Edit_brd></Edit_brd> }></Route>
-            <Route path='/view' element={ <View_brd></View_brd> }></Route>
+          <Route path='/write' element={ <Write_brd></Write_brd> }></Route>
+          <Route path='/edit' element={ <Edit_brd></Edit_brd> }></Route>
+          <Route path='/view' element={ <View_brd></View_brd> }></Route>
 
-            {/* 매물 등록 */}
-            <Route path="/property/write" element={<Property_form />} />
+          {/* 매물 등록 */}
+          <Route path="/property/write" element={<Property_form />} />
 
-            {/* 매물 수정 (URL 파라미터 :property_no 받기) */}
-            <Route path="/property/edit/:property_no" element={<Property_form />} />
+          {/* 매물 수정 (URL 파라미터 :property_no 받기) */}
+          <Route path="/property/edit/:property_no" element={<Property_form />} />
 
-            {/* 매물 상세 조회 */}
-            <Route path="/property/view/:property_no" element={<Property_detail />} />
+          {/* 매물 상세 조회 */}
+          <Route path="/property/view/:property_no" element={<Property_detail />} />
 
-            {/* 노트 등록 */}
-            <Route path="/note/write" element={<Note_form />} />
+          {/* 노트 등록 */}
+          <Route path="/note/write" element={<Note_form />} />
 
-            {/* 노트 수정 (URL 파라미터 :note_no 받기) */}
-            <Route path="/note/edit/:note_no" element={<Note_form />} />
+          {/* 노트 수정 (URL 파라미터 :note_no 받기) */}
+          <Route path="/note/edit/:note_no" element={<Note_form />} />
 
-            {/* 노트 상세 조회 */}
-            <Route path="/note/view/:note_no" element={<Note_detail />} />
-          </Routes>
-        </div>
+          {/* 노트 상세 조회 */}
+          <Route path="/note/view/:note_no" element={<Note_detail />} />
+        </Routes>
       </div>
     )
   }
