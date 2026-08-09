@@ -60,7 +60,7 @@ function Set_header(props){
   if(basicSetting){
     return(
       <form id="headerSetting" data-whats="header">
-        {/* 타이틀 버튼 */}
+        {/* 타이틀/버튼 */}
         <section className="grid">
           <div className="card homepage-set-title-btn">
             <h3>기본 설정</h3>
@@ -125,7 +125,7 @@ function Set_header(props){
               </div>
             </div>
             <p className="sub">가로160px, 세로 50px</p>
-            <div className="input_con form_group">
+            <div className="input_con">
               <label>
                 <input type="file" name="logo" accept="image/png, image/jpeg" onChange={(e)=>{preview(e.target.files)}}></input>
                 <div className="upload_img upload_img_logo">

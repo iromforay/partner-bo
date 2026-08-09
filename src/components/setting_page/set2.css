@@ -587,52 +587,7 @@ ul.add_list .input_con .sns_img {
   padding: 14px;
 }
 
-/* 이미지 업로드 & 예시 영역 Layout */
-#mapSetting .img_input, #vodSetting .img_input, #reviewSetting .img_input, #mainSetting .img_input, #noticeSetting .img_input, #aroundSetting .img_input, #propertySetting .img_input, #propertyBackground .img_input {
-  display: grid;
-  grid-template-columns: minmax(180px, 240px) 1fr;
-  gap: 20px;
-  align-items: start;
-}
 
-#mapSetting .img_input label, #vodSetting .img_input label, #reviewSetting .img_input label, #mainSetting .img_input label, #noticeSetting .img_input label, #aroundSetting .img_input label, #propertySetting .img_input label, #propertyBackground .img_input label {
-  position: relative;
-  display: block;
-  cursor: pointer;
-  margin: 0;
-}
-
-#mapSetting .upload_img, #vodSetting .upload_img, #reviewSetting .upload_img, #mainSetting .upload_img, #noticeSetting .upload_img, #aroundSetting .upload_img, #propertySetting .upload_img, #propertyBackground .upload_img {
-  width: 100%;
-  height: 140px;
-  border-radius: 12px;
-  border: 1px dashed var(--setting-border-strong);
-  background: #ffffff;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-#mapSetting .upload_img:hover, #vodSetting .upload_img:hover, #reviewSetting .upload_img:hover, #mainSetting .upload_img:hover, #noticeSetting .upload_img:hover, #aroundSetting .upload_img:hover, #propertySetting .upload_img:hover, #propertyBackground .upload_img:hover {
-  border-color: var(--setting-accent);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
-}
-
-#mapSetting .upload_img img, #vodSetting .upload_img img, #reviewSetting .upload_img img, #mainSetting .upload_img img, #noticeSetting .upload_img img, #aroundSetting .upload_img img, #propertySetting .upload_img img, #propertyBackground .upload_img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* 이미지 삭제 버튼 */
-#mapSetting .del_slide.minus, #vodSetting .del_slide.minus, #reviewSetting .del_slide.minus, #mainSetting .del_slide.minus, #noticeSetting .del_slide.minus, #aroundSetting .del_slide.minus, #propertySetting .del_slide.minus, #propertyBackground .del_slide.minus {
-  /* position: absolute;
-  top: 8px;
-  right: 8px; */
-  z-index: 5;
-}
 
 #noticeSetting .del_slide.minus span {
   display: inline-flex;
@@ -669,22 +624,7 @@ ul.add_list .input_con .sns_img {
   width: 100%;
 }
 
-#noticeSetting .clr_input {
-  width: 100%;
-  height: 40px;
-  padding: 0;
-  border: 1px solid var(--setting-border);
-  border-radius: 10px;
-  background: #ffffff;
-  cursor: pointer;
-}
 
-#noticeSetting .range_con {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
-}
 
 
 .range_con p.opa {

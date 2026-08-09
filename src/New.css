@@ -605,6 +605,8 @@ h5 {
 .check_con label input.check_menu:checked + .check_btn .abled {opacity: 1;}
 .check_con label input.check_menu:checked + .check_btn .circle {left: 31px; transition: all 150ms ease-out;}
 
+
+.upload_img{cursor: pointer;}
 /* 기본설정 */
 #headerSetting .upload_img{
     border-radius: 8px;
@@ -629,7 +631,7 @@ h5 {
   font-weight: 800;
   color: var(--setting-accent);
 }
-.opa_con {
+.opa_con, .bg_img_con {
     display: flex;
     gap: 20px;
     align-items: flex-start;
@@ -661,7 +663,7 @@ h5 {
 }
 .ex_rows .card-content-tit {
     background: none;
-    padding: 0 6px;
+    padding: 0px;
     text-align: left;
 }
 .ex_rows .sub{
@@ -697,24 +699,31 @@ h5 {
 
 /* 푸터설정 */
 
-/* 그리드 */
-.grid_row {  display: grid;  grid-template-columns: 1fr 1fr;  gap: 16px 18px;  margin-bottom: 16px;}
-.grid_row:last-child {  margin-bottom:0;}
+        /* 그리드 */
+        .grid_row {  display: grid;  grid-template-columns: 1fr 1fr;  gap: 16px 18px;  margin-bottom: 16px;}
+        .grid_row:last-child {  margin-bottom:0;}
 
-/* 한칸 전체 */
-.grid_row.full {  grid-template-columns:1fr;}
+        /* 한칸 전체 */
+        .grid_row.full {  grid-template-columns:1fr;}
 
-/* 입력 그룹 */
-.form_group {  display:flex;  flex-direction:column;  gap:6px;}
+        /* 입력 그룹 */
+        .form_group {  display:flex;  flex-direction:column;  gap:6px;}
 
-/* 라벨 */
-.form_group label {  
-    font-size:0.75rem;  font-weight:700;  color:#4c586c;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    gap: 8px;
-}
+        /* 라벨 */
+        .form_group label {  
+            font-size:0.75rem;  font-weight:700;  color:#4c586c;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            gap: 8px;
+        }
+/* 공지&이벤트 설정 */
+#noticeSetting .bg_img_con .ex_rows,
+#noticeSetting .opa_con .ex_rows
+{padding: 0px;}
+
+#noticeSetting .bg_img_con .ex_rows img,
+#noticeSetting .opa_con .ex_rows img{width: 320px; min-width: 120px;}
 
 @media (max-width: 1040px) { 
 }
@@ -729,7 +738,7 @@ h5 {
         grid-template-columns: repeat(3, 1fr);
     }
           
-    .opa_con{
+    .opa_con, .bg_img_con{
         grid-template-columns: 1fr;
         display: grid;
     }

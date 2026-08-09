@@ -64,95 +64,118 @@ function Set_notice(){
   if(noticeSetting){
     return(
       <form id="noticeSetting" data-whats="notice">
-        <div className="row row1">
-          <div className="btn_con">
-            <div className="btns temporary" onClick={()=>{
-              if(window.confirm('공지&이벤트 페이지 설정을 초기화 시키시겠습니까?\n초기화 후 저장하여 홈페이지에 적용하시기 바랍니다.')){
-                $("input[name='bgcolor']").val('#f5f5f5');
-                $("input[name='transparent']").val(0);
-                $(".opa span").text(0+"%");
-              }
-            }}>
-              <span>초기화</span>
-            </div>
-            <div className="btns apply" onClick={()=>{
-                const this_form = $("form").attr("id");
-                let whats = $("form").attr("data-whats");
-                if(window.confirm('저장하시겠습니까?')){
-                  post_ajax(this_form, whats, config, contents);
-                  dispatch(change_set(0));
+        {/* 타이틀/버튼 */}
+        <section className="grid">
+          <div className="card homepage-set-title-btn">
+            <h3>공지&이벤트 페이지 설정</h3>
+            <div className="btn-row">
+              <div className="btn btn-muted" onClick={()=>{
+                if(window.confirm('공지&이벤트 페이지 설정을 초기화 시키시겠습니까?\n초기화 후 저장하여 홈페이지에 적용하시기 바랍니다.')){
+                  $("input[name='bgcolor']").val('#f5f5f5');
+                  $("input[name='transparent']").val(0);
+                  $("#menu_back_transparen").text(0+"%");
                 }
               }}>
-              <span>저장하기</span>
-            </div>
-          </div>
-        </div>
-        <div className="row row2">
-          <div className="title_con">
-            <h5>공지&이벤트 페이지 설정</h5>
-          </div>
-          
-          <div className="set_con">
-            <div>
-              <div className="title_con">
-                <h5>배경 설정 (선택)</h5>
+                <span>초기화</span>
               </div>
-              <p className="opt">해당페이지 배경 이미지와 색을 설정해주세요 / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
+              <div className="btn btn-primary" onClick={()=>{
+                  const this_form = $("form").attr("id");
+                  let whats = $("form").attr("data-whats");
+                  if(window.confirm('저장하시겠습니까?')){
+                    post_ajax(this_form, whats, config, contents);
+                    dispatch(change_set(0));
+                  }
+                }}>
+                <span>저장하기</span>
+              </div>
             </div>
+          </div>
+        </section>
 
-            <div className="inner_con">
-              <div className="input_con img_input form_group">
-                <label>
-                  <input type="file" name="file" onChange={(e)=>{
-                    preview(e.target.files);
+        {/* 배경이미지 설정 (선택) */}
+        <section className="grid">
+          <div className="card">
+            <div className="title-checkCon">
+                <h3>배경이미지 설정 (선택)</h3>
+            </div>
+            <p className="sub">해당페이지 배경 이미지를 설정해주세요. / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
+          
+            <div className="bg_img_con">
+              <label>
+                <input type="file" name="file" onChange={(e)=>{
+                  preview(e.target.files);
+                  if(noticeSetting.img !== null){
+                    del_img(noticeSetting.img, config);
+                  }
+                }} accept="image/png, image/jpeg"></input>
+                <div className="upload_img">
+                  {upload_logo_img === '' ? <img src="img/basic/notice/notice_base.jpg"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
+                </div>
+
+                {
+                  upload_logo_img === '' ? null : <div className="del_slide minus" onClick={()=>{
                     if(noticeSetting.img !== null){
                       del_img(noticeSetting.img, config);
                     }
-                  }} accept="image/png, image/jpeg"></input>
-                  <div className="upload_img">
-                    {upload_logo_img === '' ? <img src="img/basic/notice/notice_base.jpg"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
+                    setUpload('');
+                  }}>
+                    <span><FontAwesomeIcon icon={faTrashCan}/></span>
                   </div>
-
-                  {
-                    upload_logo_img === '' ? null : <div className="del_slide minus" onClick={()=>{
-                      if(noticeSetting.img !== null){
-                        del_img(noticeSetting.img, config);
-                      }
-                      setUpload('');
-                    }}>
-                      <span><FontAwesomeIcon icon={faTrashCan}/></span>
-                    </div>
-                  }
-                </label>
-                
-                <div className="ex_con">
-                  <p className="opt">결과예시)</p>
+                }
+              </label>
+            
+              <div className="ex_con">
+                <div className="ex_rows">
+                  <p className="card-content-tit">결과예시</p>
                   <img src="img/basic/notice/bgEx2.jpg"></img>
                 </div>
               </div>
             </div>
-
-            <div className="inner_con">
+            
+          </div>
+        </section>  
+  
+        {/* 배경색 설정 (선택) */}
+        <section className="grid">
+          <div className="card">
+            <div className="title-checkCon">
+                <h3>배경색 설정 (선택)</h3>
+            </div>
+            <p className="sub">해당페이지 배경색을 설정해주세요. / 미입력시 기본값으로 적용</p>
+          
+            <div className="background_con">
               <div className="opa_con">
                 <div className="opacity_con">
-                  <input type="color" name="bgcolor" className="clr_input" defaultValue={noticeSetting.row.bgcolor}></input>
-                  <div className="range_con">
-                    <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={noticeSetting.row.transparent} onChange={(e)=>{
-                      let val = e.target.value;
-                      $(".opa span").text(val+"%")
-                    }}></input>
-                    <p className="opa"><span>{noticeSetting.row.transparent}%</span>배경색 투명도</p>
+                  {/* 배경색 */}
+                  <div className="card-content">
+                    <p className="card-content-tit">배경색</p>
+                    <input type="color" name="bgcolor" className="clr_input" defaultValue={noticeSetting.row.bgcolor}></input>
+                  </div>
+
+                  {/* 투명도 */}
+                  <div className="card-content">
+                    <p className="card-content-tit">투명도 <span id="menu_back_transparent"></span>{noticeSetting.row.transparent}%</p>
+                    <div className="range_con">
+                      <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={noticeSetting.row.transparent} onChange={(e)=>{
+                        let val = e.target.value;
+                        $(".opa span").text(val+"%")
+                      }}></input>
+                    </div>
                   </div>
                 </div>
+
                 <div className="ex_con">
-                  <p className="opt">결과예시)</p>
+                  <div className="ex_rows">
+                  <p className="card-content-tit">결과예시</p>
                   <img src="img/basic/notice/bgEx1.jpg"></img>
                 </div>
+                </div>
+
               </div>
             </div>
-
+            
           </div>
-        </div>
+        </section>  
         
       </form>
     )
