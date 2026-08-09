@@ -1189,132 +1189,8 @@ h5 {
 .info-value {  font-size: 15px;  font-weight: 700;  color: #191f28;  word-break: keep-all;}
 .info-value.highlight-blue {  color: #3182f6;}
 
-/* ==========================================================================
-   반응형 미디어 쿼리
-   ========================================================================== */
 
-@media (max-width: 1280px) {
-     /*매물관리 설정  */
-    .setting-container {
-        flex-wrap: wrap;
-    }
-    .setting-card {
-        flex: 1 1 calc(50% - 14px);
-        min-width: 280px;
-    }
-}
-@media (max-width: 1040px) {
-      #mapSetting .main_con {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
 
-    #mapSetting .conts .upload_img {
-        height: 160px;
-    }
-   
-}
-
-@media (max-width: 960px) { 
-    .cols-2 {grid-template-columns: 1fr;}
-    .hompage-set-tabs{
-        grid-template-columns: repeat(3, 1fr);
-    }
-    /* 홈페이지설정 숨김/보임 인풋*/
-    .checkCon-row{
-        grid-template-columns: repeat(3, 1fr);
-    }
-          
-    .opa_con, .bg_img_con{
-        grid-template-columns: 1fr;
-        display: grid;
-    }
-
-    /* 매물관리 설정 */
-    .setting-card {
-        flex: 1 1 100%;
-        min-width: 100%;
-    }
-
-    .card-header {
-        padding: 10px 14px;
-    }
-
-    .card-body {
-        padding: 12px 14px;
-        gap: 10px;
-    }
-
-    /* 위치정보 설정 */
-    #mapSetting ul.lists > li {
-        padding: 12px;
-        gap: 10px;
-    }
-
-    #mapSetting ul.lists li .img_con {
-        width: 36px;
-        height: 36px;
-    }
-
-    #mapSetting .conts {
-        padding: 12px;
-    }
-}
-
-@media (max-width: 640px) {
-    /* 홈페이지설정 타이틀+버튼 랩 */
-    .homepage-set-title-btn{
-        align-items: start;
-        flex-direction: column;
-    }
-
-    /* 홈페이지설정 숨김/보임 인풋*/
-    .checkCon-row{
-        grid-template-columns: repeat(1, 1fr);
-    }
-
-    /* 매물관리 설정 */
-    .setting-container {
-        padding: 0; /* 기존 모바일 패딩 스타일에 맞춤 */
-    }
-
-    .setting-card {
-        border-radius: 10px;
-    }
-
-    .item-label {
-        font-size: 0.75rem;
-    }
-
-    /* 위치정보 설정 */
-      #mapSetting ul.lists > li {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    #mapSetting ul.lists li .img_con {
-        width: 32px;
-        height: 32px;
-    }
-
-    #mapSetting .conts .upload_img {
-        height: 130px;
-    }
-
-    #mapSetting .map_link_con {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    #mapSetting .map_link_con img {
-        width: 20px;
-        height: 20px;
-    }
-    #mapSetting .actions {
-        flex-direction: column;
-    }
-
-}
 
 /* ========================================
    슬라이드 설정 임시 대체(기본, 둘러보기 페이지 설정)
@@ -1436,3 +1312,136 @@ h5 {
     line-height: 1;
     color: #ffffff;
 }
+
+/* ==========================================================================
+   반응형 미디어 쿼리
+   ========================================================================== */
+
+@media (max-width: 1280px) {
+     /*매물관리 설정  */
+    .setting-container {
+        flex-wrap: wrap;
+    }
+    .setting-card {
+        flex: 1 1 calc(50% - 14px);
+        min-width: 280px;
+    }
+}
+@media (max-width: 1040px) {
+      #mapSetting .main_con {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    #mapSetting .conts .upload_img {
+        height: 160px;
+    }
+   
+}
+
+@media (max-width: 960px) { 
+    .cols-2 {grid-template-columns: 1fr;}
+    .hompage-set-tabs{
+        grid-template-columns: repeat(3, 1fr);
+    }
+    /* 홈페이지설정 숨김/보임 인풋*/
+    .checkCon-row{
+        grid-template-columns: repeat(3, 1fr);
+    }
+          
+    .opa_con, .bg_img_con{
+        grid-template-columns: 1fr;
+        display: grid;
+    }
+
+    /* 매물관리 설정 */
+    .setting-card {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+
+    .card-header {
+        padding: 10px 14px;
+    }
+
+    .card-body {
+        padding: 12px 14px;
+        gap: 10px;
+    }
+
+    /* 위치정보 설정 */
+    #mapSetting ul.lists > li {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    #mapSetting ul.lists li .img_con {
+        width: 36px;
+        height: 36px;
+    }
+
+    #mapSetting .conts {
+        padding: 12px;
+    }
+
+    /* 이미지 슬라이드 */
+    #mainSetting .set_con.slide .slide_track, #aroundSetting .set_con.slide .slide_track {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    /* 홈페이지설정 타이틀+버튼 랩 */
+    .homepage-set-title-btn{
+        align-items: start;
+        flex-direction: column;
+    }
+
+    /* 홈페이지설정 숨김/보임 인풋*/
+    .checkCon-row{
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    /* 매물관리 설정 */
+    .setting-container {
+        padding: 0; /* 기존 모바일 패딩 스타일에 맞춤 */
+    }
+
+    .setting-card {
+        border-radius: 10px;
+    }
+
+    .item-label {
+        font-size: 0.75rem;
+    }
+
+    /* 위치정보 설정 */
+      #mapSetting ul.lists > li {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #mapSetting ul.lists li .img_con {
+        width: 32px;
+        height: 32px;
+    }
+
+    #mapSetting .conts .upload_img {
+        height: 130px;
+    }
+
+    #mapSetting .map_link_con {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #mapSetting .map_link_con img {
+        width: 20px;
+        height: 20px;
+    }
+    #mapSetting .actions {
+        flex-direction: column;
+    }
+
+}
+
