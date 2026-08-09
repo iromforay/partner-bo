@@ -171,7 +171,7 @@ function Set_around(){
         <section className="grid">
           <div className="card">
             <div className="title-checkCon">
-                <h3>배경색 설정 (선택)</h3>
+              <h3>배경색 설정 (선택)</h3>
             </div>
             <p className="sub">해당페이지 배경색을 설정해주세요. / 미입력시 기본값으로 적용</p>
           
@@ -261,7 +261,7 @@ function Around_slide(props){
 
         <img src={props.data[props.val].full_url}></img>
 
-        <div className="del_slide minus" onClick={()=>{
+        <div className="btn-minus" onClick={()=>{
           let formData = new FormData();
           formData.append('img_no', props.data[props.val].img_no);
           axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_del', formData, props.cfg).then((result)=>{console.log(result.data);}).catch(()=>{

@@ -579,7 +579,7 @@ ul.add_list .input_con .sns_img {
   padding: 14px;
 }
 
-
+/* 
 
 #noticeSetting .del_slide.minus span {
   display: inline-flex;
@@ -599,7 +599,7 @@ ul.add_list .input_con .sns_img {
 #noticeSetting .del_slide.minus:hover span {
   background: #dc2626;
   transform: scale(1.08);
-}
+} */
 
 
 
@@ -721,350 +721,19 @@ ul.add_list .input_con .sns_img {
   }
 }
 
-/* ==========================================================================
-   위치정보 설정 영역 (.row3) & 반응형
-   ========================================================================== */
-
-#mapSetting .row3 p.opt {
-  margin: 4px 0 0;
-  font-size: 0.75rem;
-  color: var(--setting-text-muted);
-  line-height: 1.4;
-}
-
-/* 메인 컨테이너 (리스트 + 우측/하단 이미지·링크 박스) */
-.row3 .main_con {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-  gap: 20px;
-  align-items: start;
-  margin-top: 8px;
-}
-
-/* 왼쪽/상단 설정 리스트 (주소, 지하철, 버스) */
-.row3 ul.lists {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.row3 ul.lists > li {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 16px;
-  background: var(--setting-surface-soft, #f8fafc);
-  border: 1px solid var(--setting-border, #e2e8f0);
-  border-radius: 14px;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.row3 ul.lists > li:hover {
-  border-color: var(--setting-border-strong, #cbd5e1);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
-}
-
-/* 리스트 아이콘 영역 */
-.row3 ul.lists li .img_con {
-  width: 42px;
-  height: 42px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffffff;
-  border: 1px solid var(--setting-border);
-  border-radius: 10px;
-  padding: 6px;
-  box-sizing: border-box;
-}
-
-.row3 ul.lists li .img_con img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* 상세 입력 영역 */
-.row3 ul.lists li .desc_con {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 0;
-}
-
-.row3 ul.lists li .desc_con h4 {
-  margin: 0;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #4c586c;
-}
-
-.row3 ul.lists li .desc_con .esenstial {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #ef4444;
-}
-
-/* 폼 입력창 (Input, Textarea) 공통 스타일 */
-.row3 input[type="text"],
-.row3 textarea {
-  width: 100%;
-  padding: 10px 12px;
-  background: #ffffff;
-  border: 1px solid var(--setting-border);
-  border-radius: 8px;
-  font-size: 0.78rem;
-  color: var(--setting-text);
-  box-sizing: border-box;
-  outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  font-family: inherit;
-}
-
-.row3 input[type="text"]:focus,
-.row3 textarea:focus {
-  border-color: var(--setting-accent);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.row3 textarea.subus {
-  min-height: 72px;
-  resize: vertical;
-  line-height: 1.4;
-}
-
-/* 오른쪽 우측/하단 컨텐츠 (이미지 캡쳐본 & 지도 링크) */
-#mapSetting .row3 .conts .img_input {
-  position: relative;
-  width: 100%;
-  padding-bottom: 10px;
-}
-
-#mapSetting .row3 .conts .img_input label {
-  display: block;
-  width: 100%;
-  cursor: pointer;
-  margin: 0;
-}
-
-#mapSetting .row3 .conts .upload_img {
-  width: 100%;
-  height: 180px;
-  border-radius: 10px;
-  border: 1px dashed var(--setting-border-strong);
-  background: var(--setting-surface-soft);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.15s ease;
-}
-
-#mapSetting .row3 .conts .upload_img:hover {
-  border-color: var(--setting-accent);
-}
-
-#mapSetting .row3 .conts .upload_img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* 지도 링크 입력창 박스 */
-#mapSetting .row3 .map_link_con {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  background: var(--setting-surface-soft);
-  border: 1px solid var(--setting-border);
-  border-radius: 10px;
-}
-
-#mapSetting .row3 .map_link_con img {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-#mapSetting .row3 .map_link_con input[type="text"] {
-  border: none;
-  background: transparent;
-  padding: 4px 0;
-}
-
-#mapSetting .row3 .map_link_con input[type="text"]:focus {
-  box-shadow: none;
-}
 
 
-/* ==========================================================================
-   매물관리 페이지 설정 (.setting-container) & 반응형
-   ========================================================================== */
-
-/* 전체 컨테이너 */
-.setting-container {
-  display: flex;
-  gap: 16px;
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-/* 개별 카드 */
-.setting-card {
-  flex: 1;
-  min-width: 0; /* flex 자식 요소의 overflow 방지 */
-  background-color: #ffffff;
-  border: 1px solid var(--setting-border, #e2e8f0);
-  border-radius: 12px; /* 기존 디자인 시스템에 맞춰 라운딩 조정 */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.setting-card:hover {
-  border-color: var(--setting-border-strong, #cbd5e1);
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
-}
-
-/* 카드 헤더 */
-.card-header {
-  background-color: var(--setting-surface-soft, #f8fafc);
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--setting-border, #e2e8f0);
-}
-
-.card-header h5 {
-  margin: 0;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--setting-text, #334155);
-}
-
-/* 카드 바디 */
-.card-body {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* 설정 아이템 (라벨 + 토글/체크박스) */
-.setting-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 4px 0;
-}
-
-.item-label {
-  margin: 0;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--setting-text-muted, #475569);
-  word-break: keep-all;
-}
-
-.input_check {
-  display: none;
-}
-
-/* ==========================================================================
-   매물관리 설정 반응형 미디어 쿼리 (Media Queries)
-   ========================================================================== */
-
-/* 1200px 이하: 데스크톱/대형 태블릿 (카드 들을 Wrap으로 감쌈) */
-@media (max-width: 1200px) {
-  .setting-container {
-    flex-wrap: wrap;
-    padding: 16px;
-    gap: 14px;
-  }
-
-  .setting-card {
-    /* 2열 배치 (반씩 차지) */
-    flex: 1 1 calc(50% - 14px);
-    min-width: 280px;
-  }
-}
-
-/* 768px 이하: 태블릿 / 모바일 */
-@media (max-width: 768px) {
-  .setting-container {
-    padding: 12px;
-    gap: 12px;
-  }
-
-  /* 1열 세로 배치 */
-  .setting-card {
-    flex: 1 1 100%;
-    min-width: 100%;
-  }
-
-  .card-header {
-    padding: 10px 14px;
-  }
-
-  .card-body {
-    padding: 12px 14px;
-    gap: 10px;
-  }
-}
-
-/* 600px 이하: 소형 모바일 */
-@media (max-width: 600px) {
-  .setting-container {
-    padding: 0; /* 기존 모바일 패딩 스타일에 맞춤 */
-  }
-
-  .setting-card {
-    border-radius: 10px;
-  }
-
-  .item-label {
-    font-size: 0.75rem;
-  }
-}
 
 /* ==========================================================================
    위치정보 설정 (.row3) 반응형 미디어 쿼리
    ========================================================================== */
 
 @media (max-width: 1100px) {
-  .row3 .main_con {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
 
-  .row3 .conts .upload_img {
-    height: 160px;
-  }
 }
 
 @media (max-width: 768px) {
-  .row3 ul.lists > li {
-    padding: 12px;
-    gap: 10px;
-  }
-
-  .row3 ul.lists li .img_con {
-    width: 36px;
-    height: 36px;
-  }
-
-  .row3 .conts {
-    padding: 12px;
-  }
+  
 }
 
 @media (max-width: 640px) {
@@ -1072,32 +741,7 @@ ul.add_list .input_con .sns_img {
     align-items: start!important;
     flex-direction: column;
   }
-  .row3 ul.lists > li {
-    flex-direction: column;
-    align-items: stretch;
-  }
 
-  .row3 ul.lists li .img_con {
-    width: 32px;
-    height: 32px;
-  }
-
-  .row3 .conts .upload_img {
-    height: 130px;
-  }
-
-  .row3 .map_link_con {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .row3 .map_link_con img {
-    width: 20px;
-    height: 20px;
-  }
-  .row3 .actions {
-    flex-direction: column;
-  }
 }
 
 

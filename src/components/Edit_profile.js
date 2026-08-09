@@ -79,7 +79,7 @@ function Edit_profile(){
                   </label>
                   {
                     upload_logo_img === '' ? null :
-                    <div className="del_slide">
+                    <div className="btn-minus">
                       <span onClick={()=>{
                         setDel('Y')
                         setUpload('');

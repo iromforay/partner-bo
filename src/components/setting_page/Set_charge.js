@@ -122,7 +122,7 @@ function Set_charge(){
                 </div>
               </label>
               {
-                upload_logo_img === '' ? null : <div className="del_slide" onClick={()=>{
+                upload_logo_img === '' ? null : <div className="btn-minus" onClick={()=>{
                   if(chargeSetting.img !== null){
                     del_img(chargeSetting.img, config);
                   }

@@ -73,7 +73,7 @@ function Set_notice(){
                 if(window.confirm('공지&이벤트 페이지 설정을 초기화 시키시겠습니까?\n초기화 후 저장하여 홈페이지에 적용하시기 바랍니다.')){
                   $("input[name='bgcolor']").val('#f5f5f5');
                   $("input[name='transparent']").val(0);
-                  $("#menu_back_transparen").text(0+"%");
+                  $("#menu_back_transparent").text(0+"%");
                 }
               }}>
                 <span>초기화</span>
@@ -96,7 +96,7 @@ function Set_notice(){
         <section className="grid">
           <div className="card">
             <div className="title-checkCon">
-                <h3>배경이미지 설정 (선택)</h3>
+              <h3>배경이미지 설정 (선택)</h3>
             </div>
             <p className="sub">해당페이지 배경 이미지를 설정해주세요. / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
           
@@ -154,7 +154,7 @@ function Set_notice(){
 
                   {/* 투명도 */}
                   <div className="card-content">
-                    <p className="card-content-tit">투명도 <span id="menu_back_transparent"></span>{noticeSetting.row.transparent}%</p>
+                    <p className="card-content-tit">투명도 <span id="menu_back_transparent">{noticeSetting.row.transparent}%</span></p>
                     <div className="range_con">
                       <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={noticeSetting.row.transparent} onChange={(e)=>{
                         let val = e.target.value;
@@ -166,9 +166,9 @@ function Set_notice(){
 
                 <div className="ex_con">
                   <div className="ex_rows">
-                  <p className="card-content-tit">결과예시</p>
-                  <img src="img/basic/notice/bgEx1.jpg"></img>
-                </div>
+                    <p className="card-content-tit">결과예시</p>
+                    <img src="img/basic/notice/bgEx1.jpg"></img>
+                  </div>
                 </div>
 
               </div>

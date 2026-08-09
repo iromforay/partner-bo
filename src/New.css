@@ -673,9 +673,10 @@ h5 {
     gap: 20px;
     align-items: flex-start;
 }
-.bg_img_con .btn-minus span{
+.bg_img_con .btn-minus span, .bg-map-con .btn-minus span{
     width: 100%;
 }
+
 .opacity_con{
     display: flex;
     flex-direction: column;
@@ -751,11 +752,259 @@ h5 {
 }
 .bg_img_con .upload_img img{width: 100%;  height: 100%; object-fit: cover;}
 
-/* 둘러보기 설정 */
+/* 매물관리 설정 */
+/* ==========================================================================
+   매물관리 페이지 설정 (.setting-container) & 반응형
+   ========================================================================== */
+.setting-container {
+    box-sizing: border-box;
+    display: flex;
+    gap: 16px;
+    width: 100%;
+}
+/* 개별 카드 */
+.setting-card {
+    flex: 1;
+    min-width: 0; /* flex 자식 요소의 overflow 방지 */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.setting-card:hover {
+  border-color: var(--setting-border-strong, #cbd5e1);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+/* 카드 헤더 */
+.card-header {
+  background-color: var(--setting-surface-soft, #f8fafc);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--setting-border, #e2e8f0);
+}
+
+.card-header h5 {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--setting-text, #334155);
+}
+
+/* 카드 바디 */
+.card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 설정 아이템 (라벨 + 토글/체크박스) */
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.item-label {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--setting-text-muted, #475569);
+  word-break: keep-all;
+}
+
+.input_check {
+  display: none;
+}
 
 
+/* ==========================================================================
+   위치정보 설정 영역 (.row3) & 반응형
+   ========================================================================== */
 
-@media (max-width: 1040px) { 
+#mapSetting .row3 p.opt {
+  margin: 4px 0 0;
+  font-size: 0.75rem;
+  color: var(--setting-text-muted);
+  line-height: 1.4;
+}
+
+/* 메인 컨테이너 (리스트 + 우측/하단 이미지·링크 박스) */
+#mapSetting .main_con {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  margin-top: 8px;
+}
+
+/* 왼쪽/상단 설정 리스트 (주소, 지하철, 버스) */
+#mapSetting ul.lists {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#mapSetting  ul.lists > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  background: var(--setting-surface-soft, #f8fafc);
+  border: 1px solid var(--setting-border, #e2e8f0);
+  border-radius: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+#mapSetting  ul.lists > li:hover {
+  border-color: var(--setting-border-strong, #cbd5e1);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+/* 리스트 아이콘 영역 */
+#mapSetting  ul.lists li .img_con {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid var(--setting-border);
+  border-radius: 10px;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+#mapSetting  ul.lists li .img_con img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 상세 입력 영역 */
+#mapSetting  ul.lists li .desc_con {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+#mapSetting  ul.lists li .desc_con h4 {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #4c586c;
+}
+
+#mapSetting  ul.lists li .desc_con .esenstial {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+/* 오른쪽 우측/하단 컨텐츠 (이미지 캡쳐본 & 지도 링크) */
+#mapSetting .conts .img_input {
+  position: relative;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+#mapSetting .conts .img_input label {
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  margin: 0;
+}
+
+#mapSetting .conts .upload_img {
+  width: 100%;
+  height: 180px;
+  border-radius: 10px;
+  border: 1px dashed var(--setting-border-strong);
+  background: var(--setting-surface-soft);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s ease;
+}
+
+#mapSetting .conts .upload_img:hover {
+  border-color: var(--setting-accent);
+}
+
+#mapSetting .conts .upload_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 지도 링크 입력창 박스 */
+#mapSetting .map_link_con {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--setting-surface-soft);
+  border: 1px solid var(--setting-border);
+  border-radius: 10px;
+}
+
+#mapSetting .map_link_con img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+#mapSetting .map_link_con input[type="text"] {
+  border: none;
+  background: transparent;
+  padding: 4px 0;
+}
+
+#mapSetting .map_link_con input[type="text"]:focus {
+  box-shadow: none;
+}
+.bg-map-con .upload_img {
+    margin-bottom: 5px;
+}
+
+/* ==========================================================================
+   반응형 미디어 쿼리
+   ========================================================================== */
+
+@media (max-width: 1280px) {
+     /*매물관리 설정  */
+    .setting-container {
+        flex-wrap: wrap;
+    }
+    .setting-card {
+        flex: 1 1 calc(50% - 14px);
+        min-width: 280px;
+    }
+}
+@media (max-width: 1040px) {
+      #mapSetting .main_con {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    #mapSetting .conts .upload_img {
+        height: 160px;
+    }
+   
 }
 
 @media (max-width: 960px) { 
@@ -772,6 +1021,36 @@ h5 {
         grid-template-columns: 1fr;
         display: grid;
     }
+
+    /* 매물관리 설정 */
+    .setting-card {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+
+    .card-header {
+        padding: 10px 14px;
+    }
+
+    .card-body {
+        padding: 12px 14px;
+        gap: 10px;
+    }
+
+    /* 위치정보 설정 */
+    #mapSetting ul.lists > li {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    #mapSetting ul.lists li .img_con {
+        width: 36px;
+        height: 36px;
+    }
+
+    #mapSetting .conts {
+        padding: 12px;
+    }
 }
 
 @media (max-width: 640px) {
@@ -786,11 +1065,45 @@ h5 {
         grid-template-columns: repeat(1, 1fr);
     }
 
-    .title-checkCon {
-        /* align-items: start;
-        flex-direction: column;
-        margin-bottom: 8px; */
+    /* 매물관리 설정 */
+    .setting-container {
+        padding: 0; /* 기존 모바일 패딩 스타일에 맞춤 */
+    }
 
+    .setting-card {
+        border-radius: 10px;
+    }
+
+    .item-label {
+        font-size: 0.75rem;
+    }
+
+    /* 위치정보 설정 */
+      #mapSetting ul.lists > li {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #mapSetting ul.lists li .img_con {
+        width: 32px;
+        height: 32px;
+    }
+
+    #mapSetting .conts .upload_img {
+        height: 130px;
+    }
+
+    #mapSetting .map_link_con {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #mapSetting .map_link_con img {
+        width: 20px;
+        height: 20px;
+    }
+    #mapSetting .actions {
+        flex-direction: column;
     }
 
 }

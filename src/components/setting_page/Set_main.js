@@ -251,7 +251,7 @@ function Main_slide(props){
   return(
     <li>
       <div className={hover === true ? "img_con on" : "img_con"} onMouseOver={mouseover} onMouseOut={mouseleave}>
-        <div className="del_slide" onClick={()=>{
+        <div className="btn-minus" onClick={()=>{
           let formData = new FormData();
           formData.append('img_no', props.data[props.val].img_no);
           axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_del', formData, props.cfg).then((result)=>{console.log(result.data);}).catch(()=>{
