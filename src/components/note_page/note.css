@@ -212,8 +212,6 @@
 /* 폼 컨테이너 */
 .note_section .form_con {  background: var(--surface);  border-radius: 10px;  box-shadow: var(--shadow);  overflow: hidden;}
 
-
-
 /* 버튼 영역 */
 .note_section .row5 {  margin-top:16px;  background:var(--surface);  border-radius:10px;  box-shadow:var(--shadow);}
 

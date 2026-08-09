@@ -117,7 +117,6 @@ function Set_main(){
         </section>
 
         <section className="grid">
-
           <div className="card">
             <h3>배경 이미지 / 슬라이드 설정</h3>
             <p className="sub">사이트 메인페이지 내용을 설정해주세요</p>
@@ -146,13 +145,13 @@ function Set_main(){
             {/* 이미지 슬라이드 */}
             <div className="set_con slide">
               <div className="slide_track">
-                <Slider {...settings}>
+                {/* <Slider {...settings}> */}
                   {main_slide === null || main_slide === '' ? null : main_slide.map(function(a, i){
                     return(
                       <Main_slide cfg={config} data={main_slide} key={i} val={i}/>
                     )
                   })}
-                </Slider>
+                {/* </Slider> */}
               </div>
             </div>
 
@@ -251,7 +250,7 @@ function Main_slide(props){
   return(
     <li>
       <div className={hover === true ? "img_con on" : "img_con"} onMouseOver={mouseover} onMouseOut={mouseleave}>
-        <div className="btn-minus" onClick={()=>{
+        <div className="del_slide" onClick={()=>{
           let formData = new FormData();
           formData.append('img_no', props.data[props.val].img_no);
           axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_del', formData, props.cfg).then((result)=>{console.log(result.data);}).catch(()=>{

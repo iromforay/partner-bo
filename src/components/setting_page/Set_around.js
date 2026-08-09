@@ -122,18 +122,15 @@ function Set_around(){
           </div>
         </section>
 
-        {/* 이미지 슬라이드 설정 */}
-        <div className="row row4">
-          <div className="set_con">
-            <div>
-              <div className="title_con">
-                <h5>이미지 슬라이드 설정</h5>
-              </div>
-              <p className="opt">사이트 내 일반 슬라이드에 들어갈 이미지를 설정해주세요!</p>
-            </div>
 
+        <section className="grid">
+          <div className="card">
+            <h3>이미지 슬라이드 설정</h3>
+            <p className="sub">사이트 내 일반 슬라이드에 들어갈 이미지를 설정해주세요</p>
+            
+            {/* 이미지 추가 버튼 */}
             <div className="btn_con">
-              <div className="plus">
+              <div className="btn btn-plus">
                 <label>
                   <input type="file" name="around_plus_slide" onClick={(e)=>{e.stopPropagation()}} onChange={(e)=>{
                     let formData = new FormData();
@@ -148,24 +145,24 @@ function Set_around(){
                   }} accept="image/png, image/jpeg"></input>
                     <FontAwesomeIcon icon={faPlus}/>
                     <span> 이미지 추가</span>
-
                 </label>
               </div>
             </div>
 
-            <div className="slide">
-              <ul className="add_list">
-                <Slider {...settings}>
-                  {around_slide === null || around_slide === '' ? null : around_slide.map(function(a, i){
-                    return(
-                      <Around_slide cfg={config} data={around_slide} key={i} val={i}/>
-                    )
-                  })}
-                </Slider>
-              </ul>
+            {/* 이미지 슬라이드 설정 */}
+            <div className="set_con slide">
+                <div className="slide_track">
+                  {/* <Slider {...settings}> */}
+                    {around_slide === null || around_slide === '' ? null : around_slide.map(function(a, i){
+                      return(
+                        <Around_slide cfg={config} data={around_slide} key={i} val={i}/>
+                      )
+                    })}
+                  {/* </Slider> */}
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* 배경색 설정 (선택) */}
         <section className="grid">
@@ -255,13 +252,8 @@ function Around_slide(props){
   
   return(
     <li>
-      <div className={`input_con`} 
-        // ${hover === true ? "img_con on" : "img_con"}
-         onMouseOver={mouseover} onMouseOut={mouseleave}>
-
-        <img src={props.data[props.val].full_url}></img>
-
-        <div className="btn-minus" onClick={()=>{
+      <div className={hover === true ? "img_con on" : "img_con"} onMouseOver={mouseover} onMouseOut={mouseleave}>
+        <div className="del_slide" onClick={()=>{
           let formData = new FormData();
           formData.append('img_no', props.data[props.val].img_no);
           axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_del', formData, props.cfg).then((result)=>{console.log(result.data);}).catch(()=>{
@@ -272,9 +264,10 @@ function Around_slide(props){
           }
           dispatch(minus_Aslide(props.val))
         }}>
-          <span><FontAwesomeIcon icon={faTrashCan}/></span>
-          {/* <p>이미지 삭제</p> */}
+          <FontAwesomeIcon icon={faTrashCan}/>
+          <p>이미지 삭제</p>
         </div>
+        <img src={props.data[props.val].full_url}></img>
       </div>
     </li>
   )

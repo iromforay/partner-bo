@@ -86,10 +86,9 @@ console.log("REACT_APP_API_KEY : " + process.env.REACT_APP_API_KEY);
                 <div className='pw_con'>
                   <input name='password' type='password' autoComplete='off' placeholder='비밀번호'></input>
                 </div>
-                <div className='btn_con'>
-                  <span onClick={()=>{
+                <div className='btn btn-primary'onClick={()=>{
                     log_in();
-                  }}>로그인</span>
+                  }}>로그인
                 </div>
               </form>
             </div>

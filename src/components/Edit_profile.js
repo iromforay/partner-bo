@@ -62,7 +62,7 @@ function Edit_profile(){
 
   if(profile){
     return(
-      <div className="page-container container">
+      <div className="page-container container profile-set-container">
         <div className="page-head">
           <h2>기본 정보 관리</h2>
         </div>
@@ -117,14 +117,14 @@ function Edit_profile(){
                   </div>
                 }
                 <input type="hidden" name="img_del" defaultValue={del}></input>
-                <input type="text" name="nick_name" placeholder="닉네임" defaultValue={profile.nick_name}></input>
+                <input type="text" className="nick_name" name="nick_name" placeholder="닉네임" defaultValue={profile.nick_name}></input>
               </div>
             </form>
           </div>
         </section>
           
         {/* 관리자 정보 */}
-        <div className="section_box">
+        <div className="grid section_box card">
           <div className="sec_title_bar">
             <h4>관리자 정보</h4>
           </div>
@@ -138,13 +138,13 @@ function Edit_profile(){
             </div>
 
             <div className="info-item">
-              <span className="info-labelid_tit">아이디</span>
-              <span className="info-valueid_val">{profile.user_info.user_id}</span>
+              <span className="info-label id_tit">아이디</span>
+              <span className="info-value id_val">{profile.user_info.user_id}</span>
             </div>
 
             <div className="info-item">
               <span className="info-label tel_tit">전화번호</span>
-              <span className="info-valuetel_val">{profile.user_info.tel}</span>
+              <span className="info-value tel_val">{profile.user_info.tel}</span>
             </div>
 
             <div className="info-item">
@@ -156,7 +156,7 @@ function Edit_profile(){
         </div>
 
         {/* 매장정보 */}
-        <div className="section_box">
+        <div className="grid section_box card">
           <div className="sec_title_bar">
             <h4>매장정보</h4>
           </div>
@@ -182,7 +182,7 @@ function Edit_profile(){
 
             <div className="info-item">
               <span className="info-label email_tit">사업자번호</span>
-              <span className="info-valueemail_val">{profile.mall_info.regist_num}</span>
+              <span className="info-value email_val">{profile.mall_info.regist_num}</span>
             </div>
 
           </div>

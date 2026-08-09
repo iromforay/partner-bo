@@ -110,7 +110,7 @@ function Header(){
           <aside id="sidebar" className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
             {/* Top: 최상단 로고 영역 */}
             <div className="logo_area">
-              <Link to='/' onClick={()=>{dispatch(change_page(''));}}>
+              <Link to='/dash_board' onClick={()=>{dispatch(change_page(''));}}>
 
               <div className='company_logo'>
                 <img src={data.img_url !== "" ? data.img_url : 'img/header/logo.jpg'} alt='로고이미지'></img>
