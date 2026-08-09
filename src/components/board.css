@@ -1,3 +1,43 @@
+.container .width_con{width: 1400px;}
+.container .width_con:before {position: absolute; bottom: 0; left: 20px; content: ''; width: calc(100% - 20px); height: 15px; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);}
+.container .width_con ul.tabs {position: relative; display: flex; justify-content: space-between; margin: 20px 0 0 0;}
+.container .width_con ul.tabs:before {position: absolute; bottom: -15px; left: 0; content: ''; width: 100%; height: 15px; background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);}
+.container .width_con ul.tabs li {width: calc(11% - 3px); background: #A5AFB6; padding: 10px; border-radius: 4px 4px 0px 0px; cursor: pointer;}
+.container .width_con ul.tabs li.on {background: #fff; box-shadow: none;}
+.container .width_con ul.tabs li h5 {font-size: 0.8rem; line-height: 1.2rem; color: #fff;}
+.container .width_con ul.tabs li.on h5 {color: #000;}
+.container .width_con ul.tabs li .status {}
+.container .width_con ul.tabs li .status span {font-size: 0.6rem; line-height: 1rem; font-weight: 700;}
+.container .width_con ul.tabs li .status span.on {font-size: 0.65rem; line-height: 1.1rem; color: #06F;}
+.container .width_con ul.tabs li .status span.off {}
+.container .board .width_con:before {display: none;}
+.container .board .width_con .board_con {
+   padding: 15px; background: #fff;
+   border-radius: 0px 0px 4px 4px; box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.20); overflow: auto;
+  }
+.container .board .width_con ul.tabs {display:flex; justify-content:left; gap:5px;}
+.container .board .width_con ul.tabs li {
+  width: calc(20% - 5px);
+  border: 1px solid #eeeeee;
+  border-bottom: none;
+}
+.container .board .width_con ul.tabs:before {display: none;}
+.container .board .width_con ul.tabs li .status {display: flex; flex-direction: column; align-items: flex-end;}
+.container .board .width_con ul.tabs li .status p {font-size: 0.5rem; line-height: 0.9rem; color: #F5F5F5;}
+.container .board .width_con ul.tabs li.on .status p {color: #777;}
+.container .board .width_con ul.tabs li .status span {font-size: 1rem; line-height: 1.4rem; color: #E0E0E0;}
+.container .board .width_con ul.tabs li.on .status span {color: #212121;}
+.container .board .width_con ul.tabs li .status .new {color: #fff;}
+.container .board .width_con ul.tabs li.on .status .new {color: #06F;}
+.container .board .width_con ul.tabs li .status .whole {}
+.container .sections.board .width_con .board_con {
+    background: #fff;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 2px 2px 10px 0 #0003;
+    max-height: 750px;
+    overflow: auto;
+    padding: 15px;
+}
 .brd {
   width: 100%;
 }
@@ -63,7 +103,7 @@
   background: var(--surface);
 }
 
-td.col-visitor, td.col-property, td.col-title { text-align: left; font-weight: 700; }
+td.col-visitor, td.col-property, td.col-title { text-align: left; }
 td.col-visitor .phone { display: block; font-weight: 400; color: var(--text-faint); font-size: 12px; margin-top: 2px; font-variant-numeric: tabular-nums; }
 td.col-area { text-align: left; color: var(--text-muted); }
 td.col-date { color: var(--text-faint); font-size: 12.5px; font-variant-numeric: tabular-nums; }
@@ -173,19 +213,7 @@ h3 {  font-size: 22px;  font-weight: 800;  margin: 0 0 18px;}
 .panel .opt{
   margin: 0px;
 }
-.info-grid {  display: grid;  grid-template-columns: repeat(2, 1fr);  gap: 18px 20px;}
 
-/* 섹션 제목 */
-.sec_title_bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px;}
-
-/* 3-Column Info Grid */
-.info-item {  background-color: #f9fafb;  border-radius: 16px;  padding: 16px 20px;  display: flex;  flex-direction: column;  gap: 6px;}
-.info-item.full {
-    grid-column: 1 / -1; /* 두 칸 모두 차지 */
-}
-.info-label {  font-size: 13px;  font-weight: 500;  color: #8b95a1;}
-.info-value {  font-size: 15px;  font-weight: 700;  color: #191f28;  word-break: keep-all;}
-.info-value.highlight-blue {  color: #3182f6;}
 
 @media (max-width: 1024px) {
   .brd .toolbar {
@@ -257,7 +285,9 @@ h3 {  font-size: 22px;  font-weight: 800;  margin: 0 0 18px;}
     align-items: start!important;
   }
   .btn_con {  
+    display: flex;
     flex-direction: column;
+    gap: 5px;
     align-items: start;
   }   
  

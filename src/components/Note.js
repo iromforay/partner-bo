@@ -47,88 +47,92 @@ function Note(){
 
   if(data){
     return(
-      <div className="sections board board_note">
-        <div className="width_con">
-          <h3>노트 관리</h3>
-          <ul className="tabs">
-            <li onClick={()=>{
-              setSelect('all');
-            }} className={select === 'all' ? "on" : null}>
-              <h5>전체</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">
-                    {data.counts?.all?.total_count || 0}
-                  </span>
+      <div className="page-container container">
+        <div className="page-head">
+          <h2>노트 관리</h2>
+        </div>
+        <div className="section board ">
+          <div className="width_con ">
+            <ul className="tabs">
+              <li onClick={()=>{
+                setSelect('all');
+              }} className={select === 'all' ? "on" : null}>
+                <h5>전체</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">
+                      {data.counts?.all?.total_count || 0}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </li>
-            
-            <li onClick={()=>{
-              setSelect('consulting');
-            }} className={select === 'consulting' ? "on" : null}>
-              <h5>상담중</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">
-                    {data.counts?.consulting?.total_count || 0}
-                  </span>
+              </li>
+              
+              <li onClick={()=>{
+                setSelect('consulting');
+              }} className={select === 'consulting' ? "on" : null}>
+                <h5>상담중</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">
+                      {data.counts?.consulting?.total_count || 0}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </li>
+              </li>
 
-            <li onClick={()=>{
-              setSelect('proposed');
-            }} className={select === 'proposed' ? "on" : null}>
-              <h5>매물제안</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">
-                    {data.counts?.proposed?.total_count || 0}
-                  </span>
+              <li onClick={()=>{
+                setSelect('proposed');
+              }} className={select === 'proposed' ? "on" : null}>
+                <h5>매물제안</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">
+                      {data.counts?.proposed?.total_count || 0}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </li>
+              </li>
 
-            <li onClick={()=>{
-              setSelect('contracted');
-            }} className={select === 'contracted' ? "on" : null}>
-              <h5>계약완료</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">
-                    {data.counts?.contracted?.total_count || 0}
-                  </span>
+              <li onClick={()=>{
+                setSelect('contracted');
+              }} className={select === 'contracted' ? "on" : null}>
+                <h5>계약완료</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">
+                      {data.counts?.contracted?.total_count || 0}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </li>
+              </li>
 
-            <li onClick={()=>{
-              setSelect('lost');
-            }} className={select === 'lost' ? "on" : null}>
-              <h5>이탈</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">
-                    {data.counts?.lost?.total_count || 0}
-                  </span>
+              <li onClick={()=>{
+                setSelect('lost');
+              }} className={select === 'lost' ? "on" : null}>
+                <h5>이탈</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">
+                      {data.counts?.lost?.total_count || 0}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
-          <div className="board_con">
-            <Note_list 
-              origin_data={data} 
-              data={copy_data} 
-              whats={select}
-              refreshParent={fetchProperty}
-            >
-            </Note_list>
+              </li>
+            </ul>
+            <div className="board_con">
+              <Note_list 
+                origin_data={data} 
+                data={copy_data} 
+                whats={select}
+                refreshParent={fetchProperty}
+              >
+              </Note_list>
+            </div>
           </div>
         </div>
       </div>

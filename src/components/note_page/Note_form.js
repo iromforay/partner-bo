@@ -345,9 +345,9 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
   });
 
   return (
-    <div className="sections write note_section note_form">
-      
-      <div className="width_con">
+    <div className="page-container container">
+      <div className="sections write property_section">
+        <div className="">
         <Link to="/note" className="back-link">
           ← 목록으로
         </Link>
@@ -616,13 +616,12 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
                 <div></div>
 
                 <div className="right">
-                  <button
-                    type="button"
+                  <div
                     className="btn btn-primary"
                     onClick={handleSubmit}
                   >
                     {isEditMode ? "저장하기" : "등록하기"}
-                  </button>
+                  </div>
 
                   <div className="btn btn-muted">
                     <span>
@@ -637,15 +636,16 @@ console.log("submit", Object.fromEntries(submitFormData.entries()));
             </div>
 
           </form>
-      </div>
+        </div>
 
-      {/* 3-7. 주소 검색 모달 조건부 렌더링 */}
-      {isOpenPostcode && (
-        <AddressSearchModal
-          onComplete={handleAddressComplete}
-          onClose={() => setIsOpenPostcode(false)}
-        />
-      )}
+        {/* 3-7. 주소 검색 모달 조건부 렌더링 */}
+        {isOpenPostcode && (
+          <AddressSearchModal
+            onComplete={handleAddressComplete}
+            onClose={() => setIsOpenPostcode(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }

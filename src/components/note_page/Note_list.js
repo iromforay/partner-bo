@@ -200,13 +200,13 @@ function Note_list(props){
           />
 
           <div className="toolbar-actions">
-            <button className="btn btn-muted" onClick={handleSearch}>
+            <div className="btn btn-muted" onClick={handleSearch}>
               검색
-            </button>
+            </div>
             
-            <button className="btn btn-muted" onClick={handleReset}>
+            <div className="btn btn-muted" onClick={handleReset}>
               초기화
-            </button>
+            </div>
           </div>
 
           <div className="toolbar-register">
@@ -368,8 +368,7 @@ function Rows(props){
             수정
           </Link>
           
-          <button
-            type="button"
+          <div
             className="btn btn_del"
             onClick={() => {
               const formData = new FormData();
@@ -391,7 +390,7 @@ function Rows(props){
             }}
           >
             삭제
-          </button>
+          </div>
         </div>
       </td>
     </tr>

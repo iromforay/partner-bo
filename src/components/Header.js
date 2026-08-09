@@ -104,7 +104,7 @@ function Header(){
 
   if(data){
     return(
-      <div className='wrap'>
+      <div className={`wrap ${isCollapsed ? 'collapsed' : ''}`}>
         <div id='header' className={`admin_layout ${isCollapsed ? "collapsed" : ""}`}>
           {/* 1. 좌측 사이드바 (LNB) */}
           <aside id="sidebar" className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>

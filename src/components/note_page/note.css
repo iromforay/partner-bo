@@ -146,8 +146,6 @@
 
 .badges {  display: flex;  gap: 6px;  margin-top: 10px;}
 
-/* 상세 버튼 영역 */
-/* .actions {  display: flex;  gap: 8px;  flex: 0 0 auto;} */
 
 /* 상태 pill */
 
@@ -214,9 +212,6 @@
 /* 폼 컨테이너 */
 .note_section .form_con {  background: var(--surface);  border-radius: 10px;  box-shadow: var(--shadow);  overflow: hidden;}
 
-/* 섹션 */
-.section_box {  padding: 22px 24px;  border-bottom: 1px solid var(--border);}
-.section_box:last-child {  border-bottom: none;}
 
 
 /* 버튼 영역 */
@@ -269,34 +264,9 @@
 .user-info-title {  font-size: 22px;  font-weight: 700;  color: #191f28;  display: flex;  align-items: baseline;  gap: 8px;}
 .user-sub-text {  font-size: 14px;  font-weight: 600;  color: #191f28;}
 .hero-actions {  display: flex;  gap: 8px;}
-
+.panel-hero .sub{    font-size: 14px;    color: #9a9a9a;}
 /* Content Title */
 .section-title {  font-size: 16px;  font-weight: 700;  color: #191f28;  margin-bottom: 16px;}
-
-
-/* ========================= Button Base & Hover States ========================= */
-
-/* 버튼 공통 Transition & State */
-.btn, .btns, .toss-btn {  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;  user-select: none;}
-.btn:active, .btns:active, .toss-btn:active {  transform: scale(0.98);}
-
-/* 1. Muted Button (보조 / 취소 버튼) */
-.btn-muted, .btns.exit {  background: var(--btn-action-bg);  color: var(--btn-action-fg);}
-.btn-muted:hover, .btns.exit:hover {  background: color-mix(in srgb, var(--btn-action-bg) 85%, var(--text) 15%);  color: var(--text);}
-
-/* 2. Primary Button (주요 / 저장 / 등록 버튼) */
-.btn-primary, .btns.apply {  background: var(--accent);  color: #ffffff;}
-.btn-primary:hover, .btns.apply:hover {  background: color-mix(in srgb, var(--accent) 88%, #ffffff 12%);  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 35%, transparent);}
-.btn-primary:active, .btns.apply:active {  background: color-mix(in srgb, var(--accent) 85%, #000000 15%);}
-
-/* 3. Danger Outline Button (삭제 / 경고 버튼) */
-.btn-danger-outline {  background: transparent;  border: 1px solid var(--danger);  color: var(--danger);}
-.btn-danger-outline:hover {  background: color-mix(in srgb, var(--danger) 10%, transparent);  border-color: var(--danger);}
-.btn-danger-outline:active {  background: color-mix(in srgb, var(--danger) 20%, transparent);}
-
-/* 4. Danger Fill Button (필요 시 사용하는 빨간 채우기 버튼) */
-.btn-danger {  background: var(--danger);  color: #ffffff;  border: none;}
-.btn-danger:hover {  background: color-mix(in srgb, var(--danger) 88%, #000000 12%);}
 
 /* ========================= Sub Action Items Hover ========================= */
 

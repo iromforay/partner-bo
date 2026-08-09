@@ -35,85 +35,87 @@ function Write_brd(){
   }
 
   return(
-    <div className="sections write board_write">
-      <div className="width_con">
-        <Link to="/board" className="back-link">
-          ← 목록으로
-        </Link>
+    <div className="page-container container">
+      <div className="sections write property_section">
+        <div className="">
+          <Link to="/board" className="back-link">
+            ← 목록으로
+          </Link>
 
-        <h3>게시글 등록</h3>
+          <h3>게시글 등록</h3>
 
-        <form id="writeBoard">
-          <div className="panel">
-            <div className="section_box">
-              <div className="">
-                <select name="code" className="select_type" onChange={(e)=>{
-                  setTypes(e.target.value);
-                }}>
-                  <option value='notice'>공지</option>
-                  <option value='event'>이벤트</option>
-                  <option value='charge'>이용요금</option>
-                  <option value='review'>이용후기</option>
-                  <option value='vod'>홍보영상</option>
-                </select>
-              </div>
-
-              <div className="">
-                <div className="input_title_con">
-                  <input type="text" name="board_title" className="write_title" placeholder="글제목"></input>
+          <form id="writeBoard">
+            <div className="panel">
+              <div className="section_box">
+                <div className="">
+                  <select name="code" className="select_type" onChange={(e)=>{
+                    setTypes(e.target.value);
+                  }}>
+                    <option value='notice'>공지</option>
+                    <option value='event'>이벤트</option>
+                    <option value='charge'>이용요금</option>
+                    <option value='review'>이용후기</option>
+                    <option value='vod'>홍보영상</option>
+                  </select>
                 </div>
+
+                <div className="">
+                  <div className="input_title_con">
+                    <input type="text" name="board_title" className="write_title" placeholder="글제목"></input>
+                  </div>
+                  {
+                    types === 'review' ? <Score_con></Score_con> : null
+                  }
+                </div>
+                <div className="">
+                  <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
+                </div>
+
                 {
-                  types === 'review' ? <Score_con></Score_con> : null
+                  types === 'vod' ? <Row4></Row4> : null
                 }
               </div>
-              <div className="">
-                <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
-              </div>
 
-              {
-                types === 'vod' ? <Row4></Row4> : null
-              }
-            </div>
-
-            <div className="section_box">
-              <div className="btn_con">
-                <div></div>
-                <div className="right">
-                  <div className="btn btn-primary" onClick={()=>{
-                  const this_form = document.getElementById("writeBoard");
-                  let formData = new FormData(this_form);
-                  if(contents){
-                    formData.append('board_content', contents);
-                  }
-                  formData.append('board_writer', id);
-                  if(window.confirm('저장하시겠습니까?')){
-                    if($(".write_title").val() === ''){
-                      alert('제목을 입력해주세요.')
-                    }else{
-                      axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/save', formData, config).catch(()=>{
-                        alert("데이터 전송이 실패하였습니다.");
-                      }).then((result)=>{
-                        console.log(result);
-                        alert('저장되었습니다');
-                        navigate(-1);
-                      });
+              <div className="section_box">
+                <div className="btn_con">
+                  <div></div>
+                  <div className="right">
+                    <div className="btn btn-primary" onClick={()=>{
+                    const this_form = document.getElementById("writeBoard");
+                    let formData = new FormData(this_form);
+                    if(contents){
+                      formData.append('board_content', contents);
                     }
-                  }
-                  for (const [key, value] of formData.entries()) {
-                    console.log(key, value);
-                  }
-                }}>
-                    <span>저장하기</span>
-                  </div>
+                    formData.append('board_writer', id);
+                    if(window.confirm('저장하시겠습니까?')){
+                      if($(".write_title").val() === ''){
+                        alert('제목을 입력해주세요.')
+                      }else{
+                        axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/save', formData, config).catch(()=>{
+                          alert("데이터 전송이 실패하였습니다.");
+                        }).then((result)=>{
+                          console.log(result);
+                          alert('저장되었습니다');
+                          navigate(-1);
+                        });
+                      }
+                    }
+                    for (const [key, value] of formData.entries()) {
+                      console.log(key, value);
+                    }
+                  }}>
+                      <span>저장하기</span>
+                    </div>
 
-                  <div className="btn btn-muted">
-                    <span><Link to='/board'>취소</Link></span>
+                    <div className="btn btn-muted">
+                      <span><Link to='/board'>취소</Link></span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   )

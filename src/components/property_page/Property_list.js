@@ -442,8 +442,7 @@ function Rows(props){
               수정
           </Link>
 
-          <button
-            type="button"
+          <div
             className="btn btn_del"
             onClick={() => {
               const formData = new FormData();
@@ -466,7 +465,7 @@ function Rows(props){
             }}
           >
             삭제
-          </button>
+          </div>
         </div>
       </td>
     </tr>

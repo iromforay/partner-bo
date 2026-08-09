@@ -62,35 +62,17 @@ function Edit_profile(){
 
   if(profile){
     return(
-      <div className="sections main">
-        <div className="width_con">
-          <h3>기본 정보 관리</h3>
-          <div className="profile_con">
-            <div className="col col1">
-              <form id="profileSetting" data-whats="profile">
-                <h5>프로필</h5>
-                <p className="col_desc">최대 2MB까지 1:1 정사각형 사이즈로 올리면<br></br>이미지 찌그러짐 없이 잘 나옵니다.</p>
-                <div className="input_con">
-                  <label>
-                    <input type="file" name="img" accept="image/png, image/jpeg" onChange={(e)=>{preview(e.target.files)}}></input>
-                    <div className="upload_img">
-                      {upload_logo_img === '' || upload_logo_img === undefined ? <img src="img/header/profile_base.png"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
-                    </div>
-                  </label>
-                  {
-                    upload_logo_img === '' ? null :
-                    <div className="btn-minus">
-                      <span onClick={()=>{
-                        setDel('Y')
-                        setUpload('');
-                      }}><FontAwesomeIcon icon={faTrashCan}/></span>
-                    </div>
-                  }
-                  <input type="hidden" name="img_del" defaultValue={del}></input>
-                  <input type="text" name="nick_name" placeholder="닉네임" defaultValue={profile.nick_name}></input>
-                </div>
-              </form>
-              <div className="btns save" onClick={()=>{
+      <div className="page-container container">
+        <div className="page-head">
+          <h2>기본 정보 관리</h2>
+        </div>
+
+        {/* 타이틀/버튼 */}
+        <section className="grid">
+          <div className="card homepage-set-title-btn">
+            <h3>프로필 설정</h3>
+            <div className="btn-row">
+              <div className="btn btn-primary" onClick={()=>{
                 const this_form = document.getElementById("profileSetting");
                 let formData = new FormData(this_form);
                 if(window.confirm("저장하시겠습니까?")){
@@ -103,57 +85,110 @@ function Edit_profile(){
                     window.location.href = '/';
                   });
                 }
-              }}><span>저장하기</span></div>
-            </div>
-            <div className="col col2">
-              <div className="row row1">
-                <h5>관리자 정보</h5>
-                <p className="row_desc">※ 수정은 운영관리자만 가능합니다.</p>
-                <ul>
-                  <li>
-                    <h6 className="name_tit">이름</h6>
-                    <span className="name_val">{profile.user_info.name}</span>
-                  </li>
-                  <li>
-                    <h6 className="id_tit">아이디</h6>
-                    <span className="id_val">{profile.user_info.user_id}</span>
-                  </li>
-                  <li>
-                    <h6 className="tel_tit">전화번호</h6>
-                    <span className="tel_val">{profile.user_info.tel}</span>
-                  </li>
-                  <li>
-                    <h6 className="email_tit">이메일</h6>
-                    <span className="email_val">{profile.user_info.email}</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="row row2">
-                <h5>매장 정보</h5>
-                <p className="row_desc">※ 수정은 운영관리자만 가능합니다.</p>
-                <ul>
-                  <li>
-                    <h6 className="shop_tit">매장명</h6>
-                    <span className="shop_val">{profile.mall_info.mall_name}</span>
-                  </li>
-                  <li>
-                    <h6 className="type_tit">주소</h6>
-                    <span className="type_val">{profile.mall_info.addr}</span>
-                  </li>
-                  <li>
-                    <h6 className="shop_tel_tit">대표 번호</h6>
-                    <span className="shop_tel_val">{profile.mall_info.tel}</span>
-                  </li>
-                  <li>
-                    <h6 className="email_tit">사업자번호</h6>
-                    <span className="email_val">{profile.mall_info.regist_num}</span>
-                  </li>
-                </ul>
+              }}><span>저장하기</span>
               </div>
             </div>
           </div>
+        </section>
+        
+        {/* 프로필 */}
+        <section className="grid">
+          <div className="card">
+            <div className="title-checkCon">
+              <h3>프로필</h3>
+            </div>
+            <p className="sub">최대 2MB까지 1:1 정사각형 사이즈로 올리면<br></br>이미지 찌그러짐 없이 잘 나옵니다.</p>
+
+            <form id="profileSetting" data-whats="profile">
+              <div className="input_con">
+                <label>
+                  <input type="file" name="img" accept="image/png, image/jpeg" onChange={(e)=>{preview(e.target.files)}}></input>
+                  <div className="upload_img">
+                    {upload_logo_img === '' || upload_logo_img === undefined ? <img src="img/header/profile_base.png"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
+                  </div>
+                </label>
+                {
+                  upload_logo_img === '' ? null :
+                  <div className="btn-minus">
+                    <span onClick={()=>{
+                      setDel('Y')
+                      setUpload('');
+                    }}><FontAwesomeIcon icon={faTrashCan}/></span>
+                  </div>
+                }
+                <input type="hidden" name="img_del" defaultValue={del}></input>
+                <input type="text" name="nick_name" placeholder="닉네임" defaultValue={profile.nick_name}></input>
+              </div>
+            </form>
+          </div>
+        </section>
+          
+        {/* 관리자 정보 */}
+        <div className="section_box">
+          <div className="sec_title_bar">
+            <h4>관리자 정보</h4>
+          </div>
+          <p className="sub">※ 수정은 운영관리자만 가능합니다.</p>
+
+          <div className="info-grid">
+
+            <div className="info-item">
+              <span className="info-label name_tit">이름</span>
+              <span className="info-value name_val">{profile.user_info.name}</span>
+            </div>
+
+            <div className="info-item">
+              <span className="info-labelid_tit">아이디</span>
+              <span className="info-valueid_val">{profile.user_info.user_id}</span>
+            </div>
+
+            <div className="info-item">
+              <span className="info-label tel_tit">전화번호</span>
+              <span className="info-valuetel_val">{profile.user_info.tel}</span>
+            </div>
+
+            <div className="info-item">
+              <span className="info-label email_tit">이메일</span>
+              <span className="info-value email_val">{profile.user_info.email}</span>
+            </div>
+
+          </div>
+        </div>
+
+        {/* 매장정보 */}
+        <div className="section_box">
+          <div className="sec_title_bar">
+            <h4>매장정보</h4>
+          </div>
+          <p className="sub">※ 수정은 운영관리자만 가능합니다.</p>
+
+
+          <div className="info-grid">
+
+            <div className="info-item">
+              <span className="info-label shop_tit">매장명</span>
+              <span className="info-value shop_val">{profile.mall_info.mall_name}</span>
+            </div>
+
+            <div className="info-item">
+              <span className="info-label type_tit">주소</span>
+              <span className="info-value type_val">{profile.mall_info.addr}</span>
+            </div>
+
+            <div className="info-item">
+              <span className="info-label shop_tel_tit">대표 번호</span>
+              <span className="info-value shop_tel_val">{profile.mall_info.tel}</span>
+            </div>
+
+            <div className="info-item">
+              <span className="info-label email_tit">사업자번호</span>
+              <span className="info-valueemail_val">{profile.mall_info.regist_num}</span>
+            </div>
+
+          </div>
         </div>
       </div>
+
     )
   }
 }
