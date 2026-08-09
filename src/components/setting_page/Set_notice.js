@@ -113,7 +113,7 @@ function Set_notice(){
                 </div>
 
                 {
-                  upload_logo_img === '' ? null : <div className="del_slide minus" onClick={()=>{
+                  upload_logo_img === '' ? null : <div className="btn-minus" onClick={()=>{
                     if(noticeSetting.img !== null){
                       del_img(noticeSetting.img, config);
                     }
@@ -158,7 +158,7 @@ function Set_notice(){
                     <div className="range_con">
                       <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={noticeSetting.row.transparent} onChange={(e)=>{
                         let val = e.target.value;
-                        $(".opa span").text(val+"%")
+                        $("#menu_back_transparent").text(val+"%")
                       }}></input>
                     </div>
                   </div>

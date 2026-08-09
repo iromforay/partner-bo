@@ -192,15 +192,7 @@
 
 
 
-.opa_con .opacity_con{
-    max-width:220px;
-    width:100%;
-    flex-shrink:0;
-}
-#mainSetting .opa_con {
-    max-width:220px;
-  
-}
+
 #mainSetting .opa_con .opacity_con{
     width:100%;
 }
@@ -607,21 +599,6 @@ ul.add_list .input_con .sns_img {
 #noticeSetting .del_slide.minus:hover span {
   background: #dc2626;
   transform: scale(1.08);
-}
-
-/* 색상 및 투명도 설정 영역 */
-#mapSetting .opa_con, #noticeSetting .opa_con, #vodSetting .opa_con, #reviewSetting .opa_con, #aroundSetting .opa_con, #propertySetting .opa_con, #propertyBackground .opa_con {
-  display: grid;
-  grid-template-columns: minmax(180px, 240px) 1fr;
-  gap: 20px;
-  align-items: start;
-}
-
-#mapSetting .opacity_con, #noticeSetting .opacity_con,#noticeSetting .opacity_con, #vodSetting .opacity_con, #reviewSetting .opacity_con,  #aroundSetting .opacity_con, #propertySetting .opacity_con, #propertyBackground .opacity_con {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
 }
 
 
