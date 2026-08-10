@@ -74,6 +74,10 @@
   justify-content: start;
   align-items: center;
 }
+.row-actions .btn {
+    font-size: 12.5px;
+    padding: 2px 12px;
+}
 
 .brd .table-responsive {
    width: 100%;
@@ -163,7 +167,7 @@ td.col-date { color: var(--text-faint); font-size: 12.5px; font-variant-numeric:
 }
 
 .tag {
-  display: inline-block;
+  /* display: inline-block; */
   color: #fff;
   white-space: nowrap;
   padding: 4px 8px;

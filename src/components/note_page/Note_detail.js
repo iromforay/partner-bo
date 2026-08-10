@@ -328,12 +328,17 @@ function Note_detail() {
               <div className="panel-hero">
                 <div className="hero-left">
                   <div className="badge-group">
-                    <span className={`tag ${status_class[data.status]}`}>
-                      {data.status_txt || "-"}
-                    </span>
-                    <span className={`tag ${visit_type_class[data.visit_type]}`}>
-                      {data.visit_type_txt || "-"}
-                    </span>
+                    <div>
+                      <span className={`tag ${status_class[data.status]}`}>
+                        {data.status_txt || "-"}
+                      </span>
+                    </div>
+                    
+                    <div>
+                      <span className={`tag ${visit_type_class[data.visit_type]}`}>
+                        {data.visit_type_txt || "-"}
+                      </span>
+                    </div>
                     
                   </div>
 
@@ -345,7 +350,7 @@ function Note_detail() {
                 </div>    
 
                 <div className="hero-right">
-                  <span className="opt">{data.created_at || "-"}</span>
+                  <span className="sub">{data.created_at || "-"}</span>
                 </div>            
               </div>
             </div>
