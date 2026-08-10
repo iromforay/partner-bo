@@ -47,7 +47,7 @@ function Note(){
 
   if(data){
     return(
-      <div className="page-container container">
+      <div className="page-container container board-page-container">
         <div className="page-head">
           <h2>노트 관리</h2>
         </div>

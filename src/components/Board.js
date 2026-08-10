@@ -48,7 +48,7 @@ function Board(){
   console.log('렌더링!');
   if(data){
     return(
-      <div className="page-container container">
+      <div className="page-container container board-page-containe">
         <div className="page-head">
           <h2>게시판 관리</h2>
         </div>
