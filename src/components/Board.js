@@ -48,91 +48,95 @@ function Board(){
   console.log('렌더링!');
   if(data){
     return(
-      <div className="sections board board_board">
-        <div className="width_con">
-          <h3>게시판 관리</h3>
-          <ul className="tabs">
-            <li onClick={()=>{
-              setSelect('all');
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'all' ? "on" : null}>
-              <h5>전체</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">{data.boards.around.total_count}</span>
+      <div className="page-container container">
+        <div className="page-head">
+          <h2>게시판 관리</h2>
+        </div>
+        <div className="section board ">
+          <div className="width_con">
+            <ul className="tabs">
+              <li onClick={()=>{
+                setSelect('all');
+                axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
+              }} className={select === 'all' ? "on" : null}>
+                <h5>전체</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">{data.boards.around.total_count}</span>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li onClick={()=>{
-              setSelect('notice');
-              // let copy = [...data.rows];
-              // const filtering = ['notice', 'event'];
-              // copy = copy.filter((a)=> a.board_type === 'notice' || a.board_type === 'event');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8&code=notice', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'notice' ? "on" : null}>
-              <h5>공지&이벤트</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">{data.boards.notice.total_count}</span>
+              </li>
+              <li onClick={()=>{
+                setSelect('notice');
+                // let copy = [...data.rows];
+                // const filtering = ['notice', 'event'];
+                // copy = copy.filter((a)=> a.board_type === 'notice' || a.board_type === 'event');
+                // setCopy(copy);
+                axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8&code=notice', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
+              }} className={select === 'notice' ? "on" : null}>
+                <h5>공지&이벤트</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">{data.boards.notice.total_count}</span>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li onClick={()=>{
-              setSelect('charge');
-              // let copy = [...data.rows];
-              // copy = copy.filter((a)=> a.board_type === 'charge');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8&code=charge', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'charge' ? "on" : null}>
-              <h5>이용요금</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">{data.boards.charge.total_count}</span>
+              </li>
+              <li onClick={()=>{
+                setSelect('charge');
+                // let copy = [...data.rows];
+                // copy = copy.filter((a)=> a.board_type === 'charge');
+                // setCopy(copy);
+                axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8&code=charge', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
+              }} className={select === 'charge' ? "on" : null}>
+                <h5>이용요금</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">{data.boards.charge.total_count}</span>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li onClick={()=>{
-              setSelect('review');
-              // let copy = [...data.rows];
-              // copy = copy.filter((a)=> a.board_type === 'review');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8&code=review', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'review' ? "on" : null}>
-              <h5>이용후기</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">{data.boards.review.total_count}</span>
+              </li>
+              <li onClick={()=>{
+                setSelect('review');
+                // let copy = [...data.rows];
+                // copy = copy.filter((a)=> a.board_type === 'review');
+                // setCopy(copy);
+                axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8&code=review', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
+              }} className={select === 'review' ? "on" : null}>
+                <h5>이용후기</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">{data.boards.review.total_count}</span>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li onClick={()=>{
-              setSelect('vod');
-              // let copy = [...data.rows];
-              // copy = copy.filter((a)=> a.board_type === 'vod');
-              // setCopy(copy);
-              axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8&code=vod', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
-            }} className={select === 'vod' ? "on" : null}>
-              <h5>홍보영상</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">{data.boards.vod.total_count}</span>
+              </li>
+              <li onClick={()=>{
+                setSelect('vod');
+                // let copy = [...data.rows];
+                // copy = copy.filter((a)=> a.board_type === 'vod');
+                // setCopy(copy);
+                axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8&code=vod', config).then((result)=>{console.log(result.data.RECORD); setData(result.data.RECORD)});
+              }} className={select === 'vod' ? "on" : null}>
+                <h5>홍보영상</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">{data.boards.vod.total_count}</span>
+                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
-          <div className="board_con">
-            <Brd_all 
-            origin_data={data} 
-            data={copy_data} 
-            whats={select}
-            refreshParent={fetchBoard}
-            ></Brd_all>
+              </li>
+            </ul>
+            <div className="board_con">
+              <Brd_all 
+              origin_data={data} 
+              data={copy_data} 
+              whats={select}
+              refreshParent={fetchBoard}
+              ></Brd_all>
+            </div>
           </div>
         </div>
       </div>

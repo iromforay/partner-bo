@@ -47,66 +47,73 @@ function Property(){
 
   if(data){
     return(
-      <div className="sections board">
-        <div className="width_con">
-          <h3>매물 관리</h3>
-          <ul className="tabs">
-            <li onClick={()=>{
-              setSelect('all');
-            }} className={select === 'all' ? "on" : null}>
-              <h5>전체</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                   <span className="whole">
-                    {data.counts?.all?.total_count || 0}
-                  </span>
+      <div className="page-container container">
+        <div className="page-head">
+          <h2>매물 관리</h2>
+        </div>
+        <div className="section board ">
+          <div className="width_con ">
+
+            <ul className="tabs">
+              <li onClick={()=>{
+                setSelect('all');
+              }} className={select === 'all' ? "on" : null}>
+                <h5>전체</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">
+                      {data.counts?.all?.total_count || 0}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li onClick={()=>{setSelect('display_y');}}
-                className={select === 'display_y' ? "on" : null}>
-              <h5>노출중</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <span className="whole">
-                  {data.display_counts?.["1"]?.total_count || 0}
-                </span>
-              </div>
-            </li>
-            <li onClick={()=>{setSelect('display_n');}}
-                className={select === 'display_n' ? "on" : null}>
-              <h5>비노출</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
+              </li>
+              <li onClick={()=>{setSelect('display_y');}}
+                  className={select === 'display_y' ? "on" : null}>
+                <h5>노출중</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
                   <span className="whole">
-                    {data.display_counts?.["2"]?.total_count || 0}
+                    {data.display_counts?.["1"]?.total_count || 0}
                   </span>
                 </div>
-              </div>
-            </li>
-            <li onClick={()=>{setSelect('status_3');}}
-                className={select === 'status_3' ? "on" : null}>
-              <h5>거래완료</h5>
-              <div className="status">
-                <p>글 총갯수</p>
-                <div className="counting">
-                  <span className="whole">
-                    {data.counts?.["3"]?.total_count || 0}
-                  </span>
+              </li>
+              <li onClick={()=>{setSelect('display_n');}}
+                  className={select === 'display_n' ? "on" : null}>
+                <h5>비노출</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">
+                      {data.display_counts?.["2"]?.total_count || 0}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
-          <div className="board_con">
-            <Property_list 
-              origin_data={data} 
-              data={copy_data} 
-              whats={select}
-              refreshParent={fetchProperty}
-            >
-            </Property_list>
+              </li>
+              <li onClick={()=>{setSelect('status_3');}}
+                  className={select === 'status_3' ? "on" : null}>
+                <h5>거래완료</h5>
+                <div className="status">
+                  <p>글 총갯수</p>
+                  <div className="counting">
+                    <span className="whole">
+                      {data.counts?.["3"]?.total_count || 0}
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            <div className="board_con ">
+            
+              <Property_list 
+                origin_data={data} 
+                data={copy_data} 
+                whats={select}
+                refreshParent={fetchProperty}
+              >
+              </Property_list>
+            </div>
           </div>
         </div>
       </div>

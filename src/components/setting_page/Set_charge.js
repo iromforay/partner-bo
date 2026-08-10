@@ -85,7 +85,7 @@ function Set_charge(){
                 $("input[type='checkbox']").prop('checked', true);
                 $("input[name='bgcolor']").val('#f5f5f5');
                 $("input[name='transparent']").val(0);
-                $(".opa span").text(0+"%");
+                $("#menu_back_transparent").text(0+"%");
                 setContents('');
               }
             }}>
@@ -122,7 +122,7 @@ function Set_charge(){
                 </div>
               </label>
               {
-                upload_logo_img === '' ? null : <div className="del_slide" onClick={()=>{
+                upload_logo_img === '' ? null : <div className="btn-minus" onClick={()=>{
                   if(chargeSetting.img !== null){
                     del_img(chargeSetting.img, config);
                   }
@@ -142,7 +142,7 @@ function Set_charge(){
                 <div className="range_con">
                   <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={chargeSetting.row.transparent} onChange={(e)=>{
                     let val = e.target.value;
-                    $(".opa span").text(val+"%")
+                    $("#menu_back_transparent").text(val+"%")
                   }}></input>
                   <p className="opa"><span>{chargeSetting.row.transparent}%</span>배경색 투명도</p>
                 </div>

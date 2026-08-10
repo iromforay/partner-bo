@@ -63,134 +63,170 @@ function Set_main(){
     draggable: false,
     speed: 500,
     slidesToShow: 2,
-    slidesToScroll: 1
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
   };
   console.log(mainSetting)
   if(mainSetting){
     return(
       <form id="mainSetting" data-whats="main">
-        <div className="row row1">
-          <div className="btn_con">
-            <div className="btns temporary" onClick={()=>{
-              if(window.confirm('메인페이지 설정을 초기화 시키시겠습니까?\n초기화 후 저장하여 홈페이지에 적용하시기 바랍니다.')){
-                $("input[type='text']").val('');
-                $("input[type='checkbox']").prop('checked', true);
-                $("input[name='bgcolor']").val('#000000');
-                $("input[name='transparent']").val(75);
-                $(".opa span").text(75+"%");
-                setContents('');
-              }
-            }}>
-              <span>초기화</span>
-            </div>
-            <div className="btns apply" onClick={()=>{
-                const this_form = $("form").attr("id");
-                let whats = $("form").attr("data-whats");
-                if(window.confirm('저장하시겠습니까?')){
-                  post_ajax(this_form, whats, config, contents);
-                  dispatch(change_set(0));
+        <section className="grid">
+          <div className="card homepage-set-title-btn">
+            <h3>메인페이지 설정</h3>
+
+            <div className="btn-row">
+              <div className="btn btn-muted" onClick={()=>{
+                if(window.confirm('메인페이지 설정을 초기화 시키시겠습니까?\n초기화 후 저장하여 홈페이지에 적용하시기 바랍니다.')){
+                  $("input[type='text']").val('');
+                  $("input[type='checkbox']").prop('checked', true);
+                  $("input[name='bgcolor']").val('#000000');
+                  $("input[name='transparent']").val(75);
+                  $("#menu_back_transparent").text(75+"%");
+                  setContents('');
                 }
               }}>
-            <span>저장하기</span>
-            </div>
-          </div>
-        </div>
-        <div className="row row2">
-          <div className="title_con">
-            <h5>메인페이지 설정</h5>
-          </div>
-
-            <div className="set_con">
-              <div>
-                <div className="title_con">
-                  <h5>배경 이미지 / 슬라이드 설정</h5>
-                </div>
-                <p className="opt">사이트 메인페이지 내용을 설정해주세요</p>
+                <span>초기화</span>
               </div>
-              
-              <div className="btn_con">
-                <div className="plus">
-                  <label>
-                    <input type="file" name="main_plus_slide" onClick={(e)=>{e.stopPropagation()}} onChange={(e)=>{
-                      let formData = new FormData();
-                      formData.append('code', 'main');
-                      formData.append('file', e.target.files[0]);
-                      axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_up', formData, config).then((result)=>{console.log(result.data); setTicking(true)}).catch(()=>{
-                        alert("이미지를 추가할 수 없습니다\n잠시 후에 다시 시도해주십시오.");
-                      });
-                      for (const [key, value] of formData.entries()) {
-                        console.log(key, value);
-                      }
-                    }} accept="image/png, image/jpeg"></input>
-                      <FontAwesomeIcon icon={faPlus} />
-                      <span> 이미지 추가</span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="slide">
-                  <ul className="add_list">
-                    <Slider {...settings}>
-                      {main_slide === null || main_slide === '' ? null : main_slide.map(function(a, i){
-                        return(
-                          <Main_slide cfg={config} data={main_slide} key={i} val={i}/>
-                        )
-                      })}
-                    </Slider>
-                  </ul>
-                </div>
-            </div>
-        </div>
-
-        <div className="row row3">
-          <div className="title_con">
-            <h5>배경 앞 투명 배경색 설정</h5>
-            <div className="check_con">
-              <label>
-                <input className="input_check_hidden" name="bgcolor_show" type="hidden" value='N'></input>
-                <input className="check_menu input_check" name="bgcolor_show" type="checkbox" value="Y" defaultChecked={mainSetting.row.bgcolor_show === "Y" ? true : false}></input>
-                <div className="check_btn">
-                  <span className="disabled">숨김</span>
-                  <span className="abled">보임</span>
-                  <div className="circle"></div>
-                </div>
-              </label>
-            </div>
-          </div>
-          <p className="opt">배경이미지 앞에 투명 배경색을 설정합니다.</p>
-          <div className="opa_con">
-            <input type="color" name="bgcolor" className="clr_input" defaultValue={mainSetting.row.bgcolor}></input>
-            <div className="opacity_con">
-              <div className="range_con">
-                <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={mainSetting.row.transparent} onChange={(e)=>{
-                  let val = e.target.value;
-                  $(".opa span").text(val+"%")
-                }}></input>
-                <p className="opa"><span>{mainSetting.row.transparent}%</span>배경색 투명도</p>
+              <div className="btn btn-primary" onClick={()=>{
+                  const this_form = $("form").attr("id");
+                  let whats = $("form").attr("data-whats");
+                  if(window.confirm('저장하시겠습니까?')){
+                    post_ajax(this_form, whats, config, contents);
+                    dispatch(change_set(0));
+                  }
+                }}>
+              <span>저장하기</span>
               </div>
             </div>
           </div>
-        </div>
-        <div className="row row4">
-        <div className="title_con">
-            <h5>타이틀문구 설정</h5>
-            <div className="check_con">
-              <label>
-                <input className="input_check_hidden" name="title_show" type="hidden" value='N'></input>
-                <input className="check_menu input_check" name="title_show" type="checkbox" value='Y' defaultChecked={mainSetting.row.title_show === "Y" ? true : false}></input>
-                <div className="check_btn">
-                  <span className="disabled">숨김</span>
-                  <span className="abled">보임</span>
-                  <div className="circle"></div>
+        </section>
+
+        <section className="grid">
+          <div className="card">
+            <h3>배경 이미지 / 슬라이드 설정</h3>
+            <p className="sub">사이트 메인페이지 내용을 설정해주세요</p>
+          
+            {/* 이미지 추가 버튼 */}
+            <div className="btn_con">
+              <div className="btn btn-plus">
+                <label>
+                  <input type="file" name="main_plus_slide" onClick={(e)=>{e.stopPropagation()}} onChange={(e)=>{
+                    let formData = new FormData();
+                    formData.append('code', 'main');
+                    formData.append('file', e.target.files[0]);
+                    axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_up', formData, config).then((result)=>{console.log(result.data); setTicking(true)}).catch(()=>{
+                      alert("이미지를 추가할 수 없습니다\n잠시 후에 다시 시도해주십시오.");
+                    });
+                    for (const [key, value] of formData.entries()) {
+                      console.log(key, value);
+                    }
+                  }} accept="image/png, image/jpeg"></input>
+                    <FontAwesomeIcon icon={faPlus} />
+                    <span> 이미지 추가</span>
+                </label>
+              </div>
+            </div>
+
+            {/* 이미지 슬라이드 */}
+            <div className="set_con slide">
+              <div className="slide_track">
+                {/* <Slider {...settings}> */}
+                  {main_slide === null || main_slide === '' ? null : main_slide.map(function(a, i){
+                    return(
+                      <Main_slide cfg={config} data={main_slide} key={i} val={i}/>
+                    )
+                  })}
+                {/* </Slider> */}
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section className="grid">
+          <div className="card">
+            <div className="title-checkCon">
+              <h3>배경 앞 투명 배경색 설정</h3>
+
+              <div className="check_con">
+                <label>
+                  <input className="input_check_hidden" name="bgcolor_show" type="hidden" value='N'></input>
+                  <input className="check_menu input_check" name="bgcolor_show" type="checkbox" value="Y" defaultChecked={mainSetting.row.bgcolor_show === "Y" ? true : false}></input>
+                  <div className="check_btn">
+                    <span className="disabled">숨김</span>
+                    <span className="abled">보임</span>
+                    <div className="circle"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <p className="sub">배경이미지 앞에 투명 배경색을 설정합니다.</p>
+
+            <div className="opa_con">
+              <div className="opacity_con">
+
+                {/* 배경색 */}
+                <div className="card-content">
+                  <p className="card-content-tit">배경색</p>
+                  <input type="color" name="bgcolor" className="clr_input" defaultValue={mainSetting.row.bgcolor}></input>
                 </div>
-              </label>
+
+                {/* 투명도 */}
+                <div className="card-content">
+                  <p className="card-content-tit">투명도 <span id="menu_back_transparent">{mainSetting.row.transparent}%</span></p>
+
+                  <input type="range" name="transparent" className="opacity_input" min={0} max={100} defaultValue={mainSetting.row.transparent} onChange={(e)=>{
+                    let val = e.target.value;
+                    $("#menu_back_transparent").text(val+"%")
+                  }}></input>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section className="grid">
+          <div className="card">
+
+            <div className="title-checkCon">
+              <h3>타이틀문구 설정</h3>
+              <div className="check_con">
+                <label>
+                  <input className="input_check_hidden" name="title_show" type="hidden" value='N'></input>
+                  <input className="check_menu input_check" name="title_show" type="checkbox" value='Y' defaultChecked={mainSetting.row.title_show === "Y" ? true : false}></input>
+                  <div className="check_btn">
+                    <span className="disabled">숨김</span>
+                    <span className="abled">보임</span>
+                    <div className="circle"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <p className="sub">해당 페이지 내 타이틀 문구를 설정해주세요</p>
+
+            <div className="editor_con">
+              <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
             </div>
           </div>
-          <p className="opt">해당 페이지 내 타이틀 문구를 설정해주세요</p>
-          <div className="editor_con">
-            <ReactQuill modules={modules} onChange={(e)=>{setContents(e);}} value={contents}></ReactQuill>
-          </div>
-        </div>
+
+        </section>
       </form>
     )
   }
@@ -213,13 +249,8 @@ function Main_slide(props){
   
   return(
     <li>
-      <div className={`input_con`} 
-        // ${hover === true ? "img_con on" : "img_con"}
-        onMouseOver={mouseover} onMouseOut={mouseleave}>
-
-        <img src={props.data[props.val].full_url}></img>
-
-        <div className="del_slide minus" onClick={()=>{
+      <div className={hover === true ? "img_con on" : "img_con"} onMouseOver={mouseover} onMouseOut={mouseleave}>
+        <div className="del_slide" onClick={()=>{
           let formData = new FormData();
           formData.append('img_no', props.data[props.val].img_no);
           axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_del', formData, props.cfg).then((result)=>{console.log(result.data);}).catch(()=>{
@@ -230,9 +261,10 @@ function Main_slide(props){
           }
           dispatch(minus_Mslide(props.val));
         }}>
-          <span><FontAwesomeIcon icon={faTrashCan}/></span>
-          {/* <p>이미지 삭제</p> */}
+          <FontAwesomeIcon icon={faTrashCan}/>
+          <p>이미지 삭제</p>
         </div>
+        <img src={props.data[props.val].full_url}></img>
       </div>
     </li>
   )

@@ -182,12 +182,12 @@ useEffect(() => {
   };
 
   return (
-    <div className="shell">
+    <div className="page-container">
 
       {/* Page Head */}
       <header className="page-head">
         <div>
-          <h1>대시보드</h1>
+          <h2>대시보드</h2>
            {/*<p className="sub">25시 부동산 · foray.bomul.co.kr</p> */}
         </div>
 
@@ -223,7 +223,7 @@ useEffect(() => {
       </header>
 
       {/* KPI Cards */}
-      <section className="kpi-row">
+      <section className="grid kpi-row">
         {/* 네이버 유입 */}
         <KpiCard
           label="네이버 유입"
@@ -310,11 +310,11 @@ useEffect(() => {
       </section>
 
       {/* Chart Section */}
-      <section className="chart-row">
+      <section className="grid chart-row">
         {/* Line Chart */}
         <div className="card">
           <h3>방문자 추이</h3>
-          <p className="card-sub">최근 30일, 일별 방문자수</p>
+          <p className="sub">최근 30일, 일별 방문자수</p>
 
           <div className="linechart">
             {chartGeometry && (
@@ -373,7 +373,7 @@ useEffect(() => {
         {/* Donut Chart */}
         <div className="card">
           <h3>유입경로</h3>
-          <p className="card-sub">이번 달 방문자 기준</p>
+          <p className="sub">이번 달 방문자 기준</p>
           <div className="donut-wrap">
             <div className="donut" style={donutStyle}>
               <div className="donut-center">
@@ -400,93 +400,84 @@ useEffect(() => {
       </section>
 
       {/* Property Performance Table */}
-      <section className="card table-card">
-        <div className="table-head">
-          <h3 style={{ marginTop: '2px' }}>매물 성과</h3>
-          <div className="seg" role="tablist">
-            <button
-              type="button"
-              className={activeTab === 'top5' ? 'active' : ''}
-              onClick={() => setActiveTab('top5')}
-            >
-              인기매물 TOP5
-            </button>
-            <button
-              type="button"
-              className={activeTab === 'noinq' ? 'active' : ''}
-              onClick={() => setActiveTab('noinq')}
-            >
-              문의없는 매물
-            </button>
+      <div className='grid'>
+        <section className="card table-card">
+          <div className="table-head">
+            <h3 style={{ marginTop: '2px' }}>매물 성과</h3>
+            <div className="seg" role="tablist">
+              <button
+                type="button"
+                className={activeTab === 'top5' ? 'active' : ''}
+                onClick={() => setActiveTab('top5')}
+              >
+                인기매물 TOP5
+              </button>
+              <button
+                type="button"
+                className={activeTab === 'noinq' ? 'active' : ''}
+                onClick={() => setActiveTab('noinq')}
+              >
+                문의없는 매물
+              </button>
+            </div>
           </div>
-        </div>
 
-        {activeTab === 'top5' ? (
-          <table>
-            <thead>
-              <tr>
-                <th>매물</th>
-                <th className="num">조회수</th>
-                <th className="num">평균체류</th>
-                <th className="num">문의수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {record.top_properties.map((item, index) => (
-                <tr key={item.property_no || index}>
-                  <td>
-                    <span className="rank">{index + 1}</span>
-                    <span className="pname">{item.property_name}</span>
-                    <div className="paddr" style={{ marginLeft: '30px' }}>{item.address}</div>
-                  </td>
-                  <td className="num">{item.view_count}</td>
-                  <td className="num">{formatDwellTime(item.avg_dwell_ms)}</td>
-                  <td className="num">
-                    {record.inquiry_data_available ? item.inquiry_count : (item.inquiry_count ?? 18 - index * 3)}
-                  </td>
+          {activeTab === 'top5' ? (
+            <table>
+              <thead>
+                <tr>
+                  <th>매물</th>
+                  <th className="num">조회수</th>
+                  <th className="num">평균체류</th>
+                  <th className="num">문의수</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>매물</th>
-                <th className="num">조회수</th>
-                <th className="num">평균체류</th>
-                <th className="num">문의수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {record.no_inquiry_properties?.map((item, index) => (
-                <tr key={item.property_no || index}>
-                  <td>
-                    <span className="pname">{item.property_name}</span>
-                    <div className="paddr">{item.address}</div>
-                  </td>
-                  <td className="num">{item.view_count}</td>
-                  <td className="num">{formatDwellTime(item.avg_dwell_ms)}</td>
-                  <td className="num">
-                    <span className="zero-chip">0건</span>
-                  </td>
+              </thead>
+              <tbody>
+                {record.top_properties.map((item, index) => (
+                  <tr key={item.property_no || index}>
+                    <td>
+                      <span className="rank">{index + 1}</span>
+                      <span className="pname">{item.property_name}</span>
+                      <div className="paddr" style={{ marginLeft: '30px' }}>{item.address}</div>
+                    </td>
+                    <td className="num">{item.view_count}</td>
+                    <td className="num">{formatDwellTime(item.avg_dwell_ms)}</td>
+                    <td className="num">
+                      {record.inquiry_data_available ? item.inquiry_count : (item.inquiry_count ?? 18 - index * 3)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>매물</th>
+                  <th className="num">조회수</th>
+                  <th className="num">평균체류</th>
+                  <th className="num">문의수</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-
-        {/* <div className="footnote">
-          <svg viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4" />
-            <path d="M10 9v5M10 6.5v.01" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-          </svg>
-          <span>
-            조회수·체류시간·유입경로는 site_analytics_daily_stats / property_analytics_daily(새벽 배치 집계)에서 바로 조회됩니다.{' '}
-            <strong>문의수는 고객노트 시스템과의 연동이 아직 없어 이 화면은 시안 값입니다</strong> — 실제 연결 전까지 해당 컬럼은 비워두거나 별도 표시가 필요합니다.
-          </span>
-        </div> */}
-      </section>
+              </thead>
+              <tbody>
+                {record.no_inquiry_properties?.map((item, index) => (
+                  <tr key={item.property_no || index}>
+                    <td>
+                      <span className="pname">{item.property_name}</span>
+                      <div className="paddr">{item.address}</div>
+                    </td>
+                    <td className="num">{item.view_count}</td>
+                    <td className="num">{formatDwellTime(item.avg_dwell_ms)}</td>
+                    <td className="num">
+                      <span className="zero-chip">0건</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </section>
+      </div>
     </div>
   );
 }
