@@ -17,6 +17,7 @@ function Set_header(props){
   let sns_del = store.sns_del;
   console.log(sns_cnt, sns_del)
   let [upload_logo_img, setUpload] = useState('');
+  let [upload_favicon_img, setUploadFavicon] = useState('');
   let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
 
@@ -31,19 +32,28 @@ function Set_header(props){
       setUpload(basicSetting.logo_url);
       dispatch(replace_list(basicSetting.sns_link));
       $("#menu_back_transparent").text(basicSetting.menu_back_transparent+"%")
+      
+      // 파비콘 이미지
+      if (basicSetting.favicon_dir && basicSetting.favicon_name) {
+        setUploadFavicon(
+          `${basicSetting.favicon_dir}/${basicSetting.favicon_name}`
+        );
+      } else {
+        setUploadFavicon('');
+      }
       // $(".tit_menu").css({'color' : basicSetting.main_menu_color});
       // $(".tit_menu").css({'background' : '#EBEFF2'});
       // $(".tit_menu.point").css({'background' : basicSetting.sub_menu_color});
       // $(".tit_menu.point").css({'color' : '#fff'});
     }
   }, [basicSetting]);
-  
+
   useMemo(()=>{
     
     return axios.get(process.env.REACT_APP_API_KEY+'Admin/Basic/data', config).then((result)=>{console.log(result); setBasicSetting(result.data.RECORD)}).catch(()=>{alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); window.location.href = '/';});
   }, []);
 
-  function preview(input){
+  function preview(input){//로고용
     if (input.length !== 0) {
       console.log(input);
       var reader = new FileReader();
@@ -55,6 +65,18 @@ function Set_header(props){
       return;
     }
   }
+
+  function previewFavicon(input) {//파비콘
+  if (input.length !== 0) {
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      setUploadFavicon(e.target.result);
+    };
+
+    reader.readAsDataURL(input[0]);
+  }
+}
 
   console.log(basicSetting);
   if(basicSetting){
@@ -99,9 +121,11 @@ function Set_header(props){
           </div>         
         </section>
 
-        {/* 홈페이지명/로고 설정 */}
+        {/* 홈페이지명/로고/파비콘 설정 */}
         <section className="grid">
           <div className="card">
+
+            {/* 홈페이지명 설정 */}
             <div className="title-checkCon">
                 <h3>홈페이지명<span className="esenstial">*</span></h3>
             </div>
@@ -110,6 +134,7 @@ function Set_header(props){
               style={{marginBottom:'20px'}}
             ></input>
 
+              {/* 로고 설정 */}
             <div className="title-checkCon">
               <h3>로고 설정<span className="esenstial">*</span></h3>
               <div className="check_con">
@@ -125,7 +150,7 @@ function Set_header(props){
               </div>
             </div>
             <p className="sub">가로160px, 세로 50px</p>
-            <div className="input_con">
+            <div className="input_con" style={{marginBottom:'20px'}}>
               <label>
                 <input type="file" name="logo" accept="image/png, image/jpeg" onChange={(e)=>{preview(e.target.files)}}></input>
                 <div className="upload_img upload_img_logo">
@@ -134,6 +159,62 @@ function Set_header(props){
               </label>
             </div>
 
+            {/* 파비콘 설정 */}
+            <div className="title-checkCon">
+              <h3>파비콘 설정</h3>
+              <div className="check_con">
+                <label>
+                  <input className="input_check_hidden" name="favicon_show" type="hidden" value='N'></input>
+                  <input className="check_menu input_check" name="favicon_show" type="checkbox" value='Y' defaultChecked={basicSetting.favicon_show === "Y" ? true : false}></input>
+                  <div className="check_btn">
+                    <span className="disabled">숨김</span>
+                    <span className="abled">보임</span>
+                    <div className="circle"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <p className="sub">브라우저 탭에 표시되는 파비콘을 설정합니다.</p>
+
+            <div className="input_con">
+              <label>
+                {/* 파비콘 업로드 */}
+                <input
+                  type="file"
+                  name="favicon_img"
+                  accept="image/png, image/jpeg, image/x-icon, image/svg+xml"
+                  onChange={(e) => {
+                    previewFavicon(e.target.files);
+                  }}
+                />
+
+                {/* 파비콘 미리보기 */}
+                <div className="upload_img upload_img_favicon">
+                  {upload_favicon_img ? (
+                    <img
+                      src={upload_favicon_img}
+                      alt="파비콘 미리보기"
+                    />
+                  ) : (
+                    <img src="img/basic/logo_base.jpg"></img>
+                  )}
+                </div>
+              </label>
+            </div>
+
+            {/* 기존 파비콘 정보 */}
+            {/* <input
+              type="hidden"
+              name="favicon_dir"
+              defaultValue={basicSetting.favicon_dir || ""}
+            /> */}
+
+            {/* <input
+              type="hidden"
+              name="favicon_name"
+              defaultValue={basicSetting.favicon_name || ""}
+            /> */}
           </div>
         </section>
 
