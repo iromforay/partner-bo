@@ -46,7 +46,7 @@ function View_brd(){
 
   return(
     <div className="page-container container">
-      <div className="sections write property_section view">
+      <div className="sections write property_section view detail_section">
         <div className="width_con">
           <Link to="/board" className="back-link">
             ← 목록으로

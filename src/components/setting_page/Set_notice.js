@@ -83,7 +83,7 @@ function Set_notice(){
                   let whats = $("form").attr("data-whats");
                   if(window.confirm('저장하시겠습니까?')){
                     post_ajax(this_form, whats, config, contents);
-                    dispatch(change_set(0));
+                    // dispatch(change_set(0));
                   }
                 }}>
                 <span>저장하기</span>

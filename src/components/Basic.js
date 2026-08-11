@@ -59,6 +59,16 @@ function Basic(props){
             <h5>메인페이지</h5>
           </li>
           <li onClick={()=>{
+            dispatch(change_set(4))
+          }} className={select === 4 ? "on" : null}>
+            <h5>매물보기</h5>
+            <div className="status">
+              {
+                menuSetting.property_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
+              }
+            </div>
+          </li>
+          <li onClick={()=>{
             dispatch(change_set(2))
           }} className={select === 2 ? "on" : null}>
             <h5>공지&이벤트</h5>
@@ -78,16 +88,7 @@ function Basic(props){
               }
             </div>
           </li>
-          <li onClick={()=>{
-            dispatch(change_set(4))
-          }} className={select === 4 ? "on" : null}>
-            <h5>매물관리</h5>
-            <div className="status">
-              {
-                menuSetting.property_show === "Y" ? <span className="on">적용중</span> : <span className="off">숨김중</span>
-              }
-            </div>
-          </li>
+          
           {/* <li onClick={()=>{
             dispatch(change_set(5))
           }} className={select === 5 ? "on" : null}>
@@ -108,6 +109,8 @@ function Basic(props){
               }
             </div>
           </li>
+
+          {/* 홍보영상 
           <li onClick={()=>{
             dispatch(change_set(7))
           }} className={select === 7 ? "on" : null}>
@@ -118,6 +121,8 @@ function Basic(props){
               }
             </div>
           </li>
+          */}
+          
           <li onClick={()=>{
             dispatch(change_set(8))
           }} className={select === 8 ? "on" : null}>

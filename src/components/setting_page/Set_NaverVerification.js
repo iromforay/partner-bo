@@ -143,26 +143,28 @@ function Set_NaverVerification(){
           <h3>소유확인 코드</h3>
           <p className="sub">meta 태그의 <code>content="…"</code> 값만 입력하세요.</p>
             
-          <label>네이버 사이트 소유확인 코드</label>
-          <input
-            type="hidden"
-            name="naver_reserve"
-            value={dataSetting?.naver_reserve ?? ""}
-          />
+          <div className="form_group">
+            <label>네이버 사이트 소유확인 코드</label>
+            <input
+              type="hidden"
+              name="naver_reserve"
+              value={dataSetting?.naver_reserve ?? ""}
+            />
 
-          <input
-            type="hidden"
-            name="naver_reserve_show"
-            value={code.trim() ? "Y" : "N"}
-          />
+            <input
+              type="hidden"
+              name="naver_reserve_show"
+              value={code.trim() ? "Y" : "N"}
+            />
 
-          <input
-            type="text"
-            name="naver_site_verification"
-            value={code}
-            placeholder="예: 7848e6654dbff7b0a931f47a50e402d7d681bc06"
-            onChange={(e)=>setCode(e.target.value)}
-          />
+            <input
+              type="text"
+              name="naver_site_verification"
+              value={code}
+              placeholder="예: 7848e6654dbff7b0a931f47a50e402d7d681bc06"
+              onChange={(e)=>setCode(e.target.value)}
+            />
+          </div>
 
           {
             looksLikeTag &&
@@ -179,7 +181,7 @@ function Set_NaverVerification(){
                 if(window.confirm('저장하시겠습니까?')){
                   post_ajax(this_form, whats, config);
                   setSaved(true);
-                  dispatch(change_set(0));
+                  // dispatch(change_set(0));
                 }
               }}>
               <span>저장하기</span>
