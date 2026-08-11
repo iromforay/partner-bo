@@ -643,20 +643,15 @@ console.log("result.address.roadAddress:", result.address?.roadAddress);
             ← 목록으로
           </Link>
           {/* 모드별 헤더 타이틀 분기 */}
-          <h3>{isEditMode ? (
-            <>
-              매물 수정 <span className="code-text">[매물코드: {property_no}]</span>
-            </>
-            ) : (
-              "매물 등록"
-            )}
-          </h3>
+          <h3>{isEditMode ? "매물 수정" : "매물 등록"}</h3>           
+         
           <form id="propertyForm" onSubmit={(e) => e.preventDefault()}>
             <div className="panel">
               {/* 3-1. 기본정보 섹션 */}
               <div className="section_box">
                 <div className="sec_title_bar">
                   <h4>기본정보</h4>
+                  {isEditMode && <span className="code-text">[매물코드: {property_no}]</span>}
                 </div>
 
                 <div className="grid_row col2">
