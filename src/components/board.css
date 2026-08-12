@@ -78,7 +78,10 @@
     font-size: 12.5px;
     padding: 2px 12px;
 }
-
+.detail_section .btn_con{
+  display: flex;
+  justify-content: space-between;
+}
 .brd .table-responsive {
    width: 100%;
  /* overflow-x: auto; */
@@ -194,6 +197,7 @@ td.col-date { color: var(--text-faint); font-size: 12.5px; font-variant-numeric:
 }
 
 h3 {  font-size: 22px;  font-weight: 800;  margin: 0 0 18px;}
+.code-text{    font-weight: 500;}
 
 .panel {
   background: var(--surface);
@@ -288,7 +292,6 @@ h3 {  font-size: 22px;  font-weight: 800;  margin: 0 0 18px;}
     align-items: start!important;
   }
   .btn_con {  
-    display: flex;
     flex-direction: column;
     gap: 5px;
     align-items: start;

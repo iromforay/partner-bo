@@ -699,7 +699,7 @@ h5 {
 
 /* 홈페이지 설정 탭 */
 .hompage-set-tabs{
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 8px;
 }
 .hompage-set-tabs li{
@@ -857,7 +857,10 @@ h5 {
     gap: 20px;
     align-items: flex-start;
 }
-.bg_img_con .btn-minus span, .bg-map-con .btn-minus span{
+.bg_img_con .btn-minus span{
+    width: 220px;
+}
+.bg-map-con .btn-minus span{
     width: 100%;
 }
 
@@ -1203,9 +1206,6 @@ h5 {
 .info-value {  font-size: 15px;  font-weight: 700;  color: #191f28;  word-break: keep-all;}
 .info-value.highlight-blue {  color: #3182f6;}
 
-
-
-
 /* ========================================
    슬라이드 설정 임시 대체(기본, 둘러보기 페이지 설정)
 ======================================== */
@@ -1356,8 +1356,9 @@ h5 {
 @media (max-width: 960px) { 
     .cols-2 {grid-template-columns: 1fr;}
     .hompage-set-tabs{
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
+
     /* 홈페이지설정 숨김/보임 인풋*/
     .checkCon-row{
         grid-template-columns: repeat(3, 1fr);
@@ -1409,6 +1410,9 @@ h5 {
     .homepage-set-title-btn{
         align-items: start;
         flex-direction: column;
+    }
+    .hompage-set-tabs{
+        grid-template-columns: repeat(3, 1fr);
     }
 
     /* 홈페이지설정 숨김/보임 인풋*/

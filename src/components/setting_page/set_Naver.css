@@ -282,6 +282,9 @@
 
 @media (max-width: 960px) { 
   .cols-2 {grid-template-columns: 1fr;}
+  .naver-row {
+    grid-template-columns: 1fr;
+}
 
 }
 

@@ -48,7 +48,7 @@ function Board(){
   console.log('렌더링!');
   if(data){
     return(
-      <div className="page-container container board-page-containe">
+      <div className="page-container container board-page-container">
         <div className="page-head">
           <h2>게시판 관리</h2>
         </div>
@@ -83,6 +83,8 @@ function Board(){
                   </div>
                 </div>
               </li>
+
+              {/* 이용요금 
               <li onClick={()=>{
                 setSelect('charge');
                 // let copy = [...data.rows];
@@ -97,7 +99,8 @@ function Board(){
                     <span className="whole">{data.boards.charge.total_count}</span>
                   </div>
                 </div>
-              </li>
+              </li> */}
+              
               <li onClick={()=>{
                 setSelect('review');
                 // let copy = [...data.rows];
@@ -113,6 +116,8 @@ function Board(){
                   </div>
                 </div>
               </li>
+              
+              {/* 홍보영상 
               <li onClick={()=>{
                 setSelect('vod');
                 // let copy = [...data.rows];
@@ -127,7 +132,7 @@ function Board(){
                     <span className="whole">{data.boards.vod.total_count}</span>
                   </div>
                 </div>
-              </li>
+              </li> */}
             </ul>
             <div className="board_con">
               <Brd_all 

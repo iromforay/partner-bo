@@ -316,7 +316,7 @@ function Note_detail() {
 
   return (
     <div className="page-container container">
-      <div className="sections write property_section">
+      <div className="sections write property_section detail_section">
         <div className="">
           <Link to="/note" className="back-link">
             ← 목록으로

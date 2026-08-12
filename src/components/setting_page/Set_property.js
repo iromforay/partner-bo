@@ -124,7 +124,7 @@ function Set_property(props){
        {/* 타이틀/버튼 */}
         <section className="grid">
           <div className="card homepage-set-title-btn">
-            <h3>매물관리 페이지 설정</h3>
+            <h3>매물보기 페이지 설정</h3>
             <div className="btn-row">
               <div className="btn btn-muted" onClick={()=>{
                 if(window.confirm('기본 설정을 초기화 시키시겠습니까?\n초기화 후 저장하여 홈페이지에 적용하시기 바랍니다.')){
@@ -156,7 +156,7 @@ function Set_property(props){
                       "property",
                       config
                     );
-                    dispatch(change_set(0));
+                    // dispatch(change_set(0));
                   }
                 }}>
                 <span>저장하기</span>

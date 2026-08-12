@@ -30,22 +30,9 @@
   font-size:.75rem;
   line-height: 1.5;
 }
-
-
-
-
-
-.page_container .content_card {
-  /* margin-top: 4px; */
+.content_card{
+  height: fit-content;
 }
-
-.content_card > form, .content_card > div {
-  /* display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 6px 0 30px; */
-}
-
 .row {
   background: var(--setting-surface);
   border: 1px solid var(--setting-border);
