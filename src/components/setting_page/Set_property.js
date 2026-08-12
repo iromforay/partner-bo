@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react"
+// import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-
-import { change_set, minus_list, plus_del, plus_list, replace_list } from "../../store";
+// import { change_set, minus_list, plus_del, plus_list, replace_list } from "../../store";
 import $ from "jquery";
 import post_ajax from "../../ajaxs";
 import axios from "axios";
@@ -15,9 +14,9 @@ function Set_property(props){
 
   let [contents, setContents] = useState("");
   let [upload_logo_img, setUpload] = useState('');
-  let dispatch = useDispatch();
-  let store = useSelector((state)=>{return state});
-  let id = window.localStorage.getItem('id');
+  // let dispatch = useDispatch();
+  // let store = useSelector((state)=>{return state});
+  // let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
 
   const config = {
@@ -48,7 +47,7 @@ function Set_property(props){
       config
     )
     .then((result)=>{
-      console.log("property 배경:", result.data);
+      // console.log("property 배경:", result.data);
       setPropertySetting(result.data.RECORD);
     });
 
@@ -59,7 +58,7 @@ function Set_property(props){
       config
     )
     .then((result)=>{
-      console.log("function menu:", result.data);
+      // console.log("function menu:", result.data);
       setFunctionMenuSetting(result.data.RECORD);
     });
 
@@ -68,7 +67,7 @@ function Set_property(props){
 
   function preview(input){
     if (input.length !== 0) {
-      console.log(input);
+      // console.log(input);
       var reader = new FileReader();
       reader.onload = function(e) {
         setUpload(e.target.result);
@@ -116,7 +115,7 @@ function Set_property(props){
     ],
   };
 
-  console.log(propertySetting);
+  // console.log(propertySetting);
   
   if(propertySetting && functionMenuSetting){
     return(<div id="propertySet">
@@ -140,8 +139,8 @@ function Set_property(props){
                 <span>초기화</span>
               </div>
               <div className="btn btn-primary" onClick={()=>{
-                  const this_form = $("form").attr("id");
-                  let whats = $("form").attr("data-whats");
+                  // const this_form = $("form").attr("id");
+                  // let whats = $("form").attr("data-whats");
                   if(window.confirm('저장하시겠습니까?')){
                     // 배경 저장
                     post_ajax(
@@ -194,7 +193,7 @@ function Set_property(props){
                     }
                   }} accept="image/png, image/jpeg"></input>
                   <div className="upload_img">
-                    {upload_logo_img === '' ? <img src="img/basic/notice/notice_base.jpg"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
+                    {upload_logo_img === '' ? <img src="img/basic/notice/notice_base.jpg" alt="배경이미지"></img> : <img src={upload_logo_img} alt="배경이미지"></img>}
                   </div>
 
                   {
@@ -212,7 +211,7 @@ function Set_property(props){
                 <div className="ex_con">
                   <div className="ex_rows">
                     <p className="card-content-tit">결과예시</p>
-                    <img src="img/basic/notice/bgEx2.jpg"></img>
+                    <img src="img/basic/notice/bgEx2.jpg" alt="결과예시"></img>
                   </div>
                 </div>
               </div>
@@ -252,7 +251,7 @@ function Set_property(props){
                   <div className="ex_con">
                     <div className="ex_rows">
                       <p className="card-content-tit">결과예시</p>
-                      <img src="img/basic/notice/bgEx1.jpg"></img>
+                      <img src="img/basic/notice/bgEx1.jpg" alt="결과예시"></img>
                     </div>
                   </div>
                 </div>

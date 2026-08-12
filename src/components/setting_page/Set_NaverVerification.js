@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import { change_set } from "../../store";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react"
+// import { useDispatch } from "react-redux";
+// import { change_set } from "../../store";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import $ from "jquery";
 import post_ajax from "../../ajaxs";
-import del_img from './del_fn';
+// import del_img from './del_fn';
 import './set_Naver.css';
 
 function Set_NaverVerification(){
@@ -18,8 +18,8 @@ function Set_NaverVerification(){
   
   const [saved,setSaved] = useState(false);
 
-  let dispatch = useDispatch();
-  let id = window.localStorage.getItem('id');
+  // let dispatch = useDispatch();
+  // let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
 
   const config = {
@@ -44,7 +44,7 @@ function Set_NaverVerification(){
       });
   }, []);
 
-  console.log(dataSetting);
+  // console.log(dataSetting);
 
   if(dataSetting){
     return(
@@ -85,7 +85,7 @@ function Set_NaverVerification(){
             <li>
               <span className="step-num">1</span>
               <span className="step-body">
-                <a href="https://searchadvisor.naver.com" target="_blank">
+                <a href="https://searchadvisor.naver.com" target="_blank" rel="noreferrer">
                   네이버 서치어드바이저
                 </a>
                 에 접속해 네이버 아이디로 로그인합니다.

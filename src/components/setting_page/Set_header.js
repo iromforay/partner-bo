@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { change_set, minus_list, plus_del, plus_list, replace_list } from "../../store";
+import { minus_list, plus_del, plus_list, replace_list } from "../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faTrashCan} from "@fortawesome/free-regular-svg-icons";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
@@ -15,10 +15,10 @@ function Set_header(props){
   let store = useSelector((state)=>{return state});
   let sns_cnt = store.snslist_cnt;
   let sns_del = store.sns_del;
-  console.log(sns_cnt, sns_del)
+  // console.log(sns_cnt, sns_del)
   let [upload_logo_img, setUpload] = useState('');
   let [upload_favicon_img, setUploadFavicon] = useState('');
-  let id = window.localStorage.getItem('id');
+  // let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
 
   const config = {
@@ -48,14 +48,25 @@ function Set_header(props){
     }
   }, [basicSetting]);
 
-  useMemo(()=>{
-    
-    return axios.get(process.env.REACT_APP_API_KEY+'Admin/Basic/data', config).then((result)=>{console.log(result); setBasicSetting(result.data.RECORD)}).catch(()=>{alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); window.location.href = '/';});
+  //api 호출
+  useEffect(() => {
+    axios.get(
+      process.env.REACT_APP_API_KEY+'Admin/Basic/data', 
+      config
+    )
+    .then((result)=>{
+      // console.log(result); 
+      setBasicSetting(result.data.RECORD)
+
+    }).catch(()=>{
+      alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); 
+      window.location.href = '/';
+    });
   }, []);
 
   function preview(input){//로고용
     if (input.length !== 0) {
-      console.log(input);
+      // console.log(input);
       var reader = new FileReader();
       reader.onload = function(e) {
         setUpload(e.target.result);
@@ -78,7 +89,8 @@ function Set_header(props){
   }
 }
 
-  console.log(basicSetting);
+  // console.log(basicSetting);
+
   if(basicSetting){
     return(
       <form id="headerSetting" data-whats="header">
@@ -154,7 +166,7 @@ function Set_header(props){
               <label>
                 <input type="file" name="logo" accept="image/png, image/jpeg" onChange={(e)=>{preview(e.target.files)}}></input>
                 <div className="upload_img upload_img_logo">
-                  {upload_logo_img === '' ? <img src="img/basic/logo_base.jpg"></img> : <img src={upload_logo_img} alt="로고 이미지"></img>}
+                  {upload_logo_img === '' ? <img src="img/basic/logo_base.jpg" alt="로고 이미지"></img> : <img src={upload_logo_img} alt="로고 이미지"></img>}
                 </div>
               </label>
             </div>
@@ -202,7 +214,7 @@ function Set_header(props){
                       alt="파비콘 미리보기"
                     />
                   ) : (
-                    <img src="img/basic/logo_base.jpg"></img>
+                    <img src="img/basic/logo_base.jpg" alt="파비콘 미리보기"></img>
                   )}
                 </div>
               </label>
@@ -361,9 +373,9 @@ function Set_header(props){
                   <div className="ex_rows">
                     <p className="card-content-tit">결과예시</p>
                     <p className="sub">①) 배경색 설정할 때</p>
-                    <img src="img/basic/header_ex1.jpg"></img>
+                    <img src="img/basic/header_ex1.jpg" alt="결과예시"></img>
                     <p className="sub"> ②) 배경색 투명도 값 설정할 때</p>
-                    <img src="img/basic/header_ex2.jpg"></img>
+                    <img src="img/basic/header_ex2.jpg" alt="결과예시"></img>
                   </div>
                 </div>
               </div>
@@ -399,10 +411,10 @@ function Set_header(props){
                   <div className="ex_rows">
                     <p className="card-content-tit">결과예시</p>
                     <p className="sub">①) 전체메뉴 글자색 설정할 때</p>
-                    <img src="img/basic/header_ex3.jpg"></img>
+                    <img src="img/basic/header_ex3.jpg" alt="결과예시"></img>
 
                     <p className="sub"> ②) 서브메뉴 선택 시 색상 설정할 때</p>
-                    <img src="img/basic/header_ex4.jpg"></img>
+                    <img src="img/basic/header_ex4.jpg" alt="결과예시"></img>
                   </div>
                 </div>
 
@@ -477,7 +489,7 @@ function Set_header(props){
                 <div className="check_con">
                   <label>네이버 예약
                     <input className="input_check_hidden" name="naver_reserve_show" type="hidden" value='N'></input>
-                    <input className="check_menu input_check" name="naver_reserve_show" name="naver_reserve_show" type="checkbox" value='Y' defaultChecked={basicSetting.naver_reserve_show === "Y" ? true : false}></input>
+                    <input className="check_menu input_check" name="naver_reserve_show" type="checkbox" value='Y' defaultChecked={basicSetting.naver_reserve_show === "Y" ? true : false}></input>
                     <div className="check_btn">
                       <span className="disabled">숨김</span>
                       <span className="abled">보임</span>
@@ -652,7 +664,7 @@ function Snslist(props){
       <input className="sns_img" type="file" name='sns_img[]' accept="image/png, image/jpeg" onChange={(e)=>{preview(e.target.files, props.val)}}></input>
 
       <div className={"upload_img upload_img_link upload_img"+props.val}>
-        <img src={sns_img_url}></img>
+        <img src={sns_img_url} alt="sns이미지"></img>
       </div>
       <input type="text" name='sns_link[]' className="sns_link" placeholder="SNS 링크주소 입력" defaultValue={sns_link} key={sns_link}></input>
       <input type="hidden" name="sns_key[]" defaultValue={sns_key}></input>

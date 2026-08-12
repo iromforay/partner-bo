@@ -1,20 +1,20 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { change_page } from '../../store';
 import { Link } from 'react-router-dom';
 import { now_view } from '../../store';
 import axios from "axios";
-import $ from "jquery";
+// import $ from "jquery";
 
-function chunk(params = [], size = 1) {
-  const arr = [];
+// function chunk(params = [], size = 1) {
+//   const arr = [];
     
-  for (let i = 0; i < params.length; i += size) {
-    arr.push(params.slice(i, i + size));
-  }
+//   for (let i = 0; i < params.length; i += size) {
+//     arr.push(params.slice(i, i + size));
+//   }
 
-  return arr;
-}
+//   return arr;
+// }
 
 function Brd_all(props){
   
@@ -25,10 +25,10 @@ function Brd_all(props){
   let [now_page, setNow_page] = useState(1);
   let [page_info, setPage_info] = useState();
 
-  console.log(data);
-  console.log(origin);
+  // console.log(data);
+  // console.log(origin);
 
-  let id = window.localStorage.getItem('id');
+  // let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
   const config = {
     headers : {
@@ -36,12 +36,10 @@ function Brd_all(props){
     }
   }
 
-
   let page = [];
   for(let i = 0; i < origin.pager.total_page; i++){
     page.push('');
-  }
-  
+  }  
 
   useEffect(()=>{
     setNow_data(data);
@@ -49,10 +47,14 @@ function Brd_all(props){
   }, [data]);
 
   useEffect(()=>{
-    axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8&page='+(now_page)+'&code='+(props.whats)+'', config).then((result)=>{console.log(result.data.RECORD.rows); setNow_data(result.data.RECORD.rows); setPage_info(result.data.RECORD.pager)});
+    axios.get(process.env.REACT_APP_API_KEY+'Admin/Board/list?limit=8&page='+(now_page)+'&code='+(props.whats)+'', config)
+    .then((result)=>{
+      // console.log(result.data.RECORD.rows);
+       setNow_data(result.data.RECORD.rows); 
+       setPage_info(result.data.RECORD.pager)});
   }, [now_page]);
 
-  console.log(now_data, page, page_info)
+  // console.log(now_data, page, page_info)
 
   if(now_data){
     return(
@@ -128,7 +130,7 @@ function Rows(props){
 
   let dispatch = useDispatch();
   let data = props.data;
-  let page_datas = props.page_data;
+  // let page_datas = props.page_data;
   let types = '';
   switch(data.board_type){
     case 'notice' : types = '공지' 
@@ -151,7 +153,7 @@ function Rows(props){
     return a;
   }
 
-  console.log(page_datas);
+  // console.log(page_datas);
 
   return(
     <tr className={data.board_status === "N" ? "deleted" : null}>
@@ -174,13 +176,15 @@ function Rows(props){
               let formData = new FormData();
               formData.append('board_no', data.board_no);
               if(window.confirm('삭제하시겠습니까?')){
-                axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/board_del', formData, props.cfg).catch(()=>{
-                  alert("데이터 전송이 실패하였습니다.");
-                }).then((result)=>{
-                  console.log(result);
+                axios.post(process.env.REACT_APP_API_KEY+'Admin/Board/board_del', formData, props.cfg)
+                .then((result)=>{
+                  // console.log(result);
                   alert('삭제되었습니다');
                   props.refreshParent();//글 총갯수 다시 조회
                   dispatch(change_page('board'));
+                })
+                .catch(()=>{
+                  alert("데이터 전송이 실패하였습니다.");
                 });
               }
             })}>삭제</span>
