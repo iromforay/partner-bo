@@ -112,7 +112,7 @@ function Set_header(props){
                   let whats = $("form").attr("data-whats");
                   if(window.confirm('저장하시겠습니까?')){
                     post_ajax(this_form, whats, config);
-                    dispatch(change_set(0));
+                    // dispatch(change_set(0));
                   }
                 }}>
                 <span>저장하기</span>
@@ -121,7 +121,7 @@ function Set_header(props){
           </div>         
         </section>
 
-        {/* 홈페이지명/로고/파비콘 설정 */}
+        {/* 홈페이지명/로고 설정 */}
         <section className="grid">
           <div className="card">
 
@@ -154,12 +154,17 @@ function Set_header(props){
               <label>
                 <input type="file" name="logo" accept="image/png, image/jpeg" onChange={(e)=>{preview(e.target.files)}}></input>
                 <div className="upload_img upload_img_logo">
-                  {upload_logo_img === '' ? <img src="img/basic/logo_base.jpg"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
+                  {upload_logo_img === '' ? <img src="img/basic/logo_base.jpg"></img> : <img src={upload_logo_img} alt="로고 이미지"></img>}
                 </div>
               </label>
             </div>
+          </div>
+        </section>
+        
+        {/* 파비콘 설정 */}
+        <section className="grid">
+          <div className="card">
 
-            {/* 파비콘 설정 */}
             <div className="title-checkCon">
               <h3>파비콘 설정</h3>
               <div className="check_con">
@@ -229,35 +234,7 @@ function Set_header(props){
             <ul className="checkCon-row">
               <li>
                 <div className="check_con">
-                  <h5 className="tit_menu point">공지&이벤트</h5>
-                  <label>
-                    <input className="input_check_hidden" name="notice_show" type="hidden" value='N'></input>
-                    <input className="check_menu input_check" name="notice_show" type="checkbox" value='Y' defaultChecked={basicSetting.notice_show === "Y" ? true : false}></input>
-                    <div className="check_btn">
-                      <span className="disabled">숨김</span>
-                      <span className="abled">보임</span>
-                      <div className="circle"></div>
-                    </div>
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div className="check_con">
-                  <h5 className="tit_menu">둘러보기</h5>
-                  <label>
-                    <input className="input_check_hidden" name="around_show" type="hidden" value='N'></input>
-                    <input className="check_menu input_check" name="around_show" type="checkbox"value='Y' defaultChecked={basicSetting.around_show === "Y" ? true : false}></input>
-                    <div className="check_btn">
-                      <span className="disabled">숨김</span>
-                      <span className="abled">보임</span>
-                      <div className="circle"></div>
-                    </div>
-                  </label>
-                </div>
-              </li>
-              <li>
-                <div className="check_con">
-                  <h5 className="tit_menu">매물관리</h5>
+                  <h5 className="tit_menu">매물보기</h5>
                   <label>
                     <input className="input_check_hidden" name="property_show" type="hidden" value='N'></input>
                     <input className="check_menu input_check" name="property_show" type="checkbox"value='Y' defaultChecked={basicSetting.property_show === "Y" ? true : false}></input>
@@ -272,6 +249,36 @@ function Set_header(props){
 
               <li>
                 <div className="check_con">
+                  <h5 className="tit_menu point">공지&이벤트</h5>
+                  <label>
+                    <input className="input_check_hidden" name="notice_show" type="hidden" value='N'></input>
+                    <input className="check_menu input_check" name="notice_show" type="checkbox" value='Y' defaultChecked={basicSetting.notice_show === "Y" ? true : false}></input>
+                    <div className="check_btn">
+                      <span className="disabled">숨김</span>
+                      <span className="abled">보임</span>
+                      <div className="circle"></div>
+                    </div>
+                  </label>
+                </div>
+              </li>
+
+              <li>
+                <div className="check_con">
+                  <h5 className="tit_menu">둘러보기</h5>
+                  <label>
+                    <input className="input_check_hidden" name="around_show" type="hidden" value='N'></input>
+                    <input className="check_menu input_check" name="around_show" type="checkbox"value='Y' defaultChecked={basicSetting.around_show === "Y" ? true : false}></input>
+                    <div className="check_btn">
+                      <span className="disabled">숨김</span>
+                      <span className="abled">보임</span>
+                      <div className="circle"></div>
+                    </div>
+                  </label>
+                </div>
+              </li>
+              
+              <li>
+                <div className="check_con">
                   <h5 className="tit_menu">이용후기</h5>
                   <label>
                     <input className="input_check_hidden" name="review_show" type="hidden" value='N'></input>
@@ -284,6 +291,8 @@ function Set_header(props){
                   </label>
                 </div>
               </li>
+              
+              {/* 홍보영상 
               <li>
                 <div className="check_con">
                   <h5 className="tit_menu">홍보영상</h5>
@@ -298,6 +307,8 @@ function Set_header(props){
                   </label>
                 </div>
               </li>
+              */}
+
               <li>
                 <div className="check_con">
                   <h5 className="tit_menu">오시는길</h5>
