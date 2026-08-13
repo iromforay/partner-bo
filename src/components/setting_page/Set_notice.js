@@ -97,6 +97,17 @@ function Set_notice(){
           <div className="card">
             <div className="title-checkCon">
               <h3>배경이미지 설정 (선택)</h3>
+              <div className="check_con">
+                <label>
+                  <input className="input_check_hidden" name="bgcolor_show" type="hidden" value='N'></input>
+                  <input className="check_menu input_check" name="bgcolor_show" type="checkbox" value="Y" defaultChecked={noticeSetting.row.bgcolor_show === "Y" ? true : false}></input>
+                  <div className="check_btn">
+                    <span className="disabled">숨김</span>
+                    <span className="abled">보임</span>
+                    <div className="circle"></div>
+                  </div>
+                </label>
+              </div>
             </div>
             <p className="sub">해당페이지 배경 이미지를 설정해주세요. / 이미지, 배경색 순으로 나타납니다. / 미입력시 기본값으로 적용</p>
           
