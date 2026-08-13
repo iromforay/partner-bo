@@ -2,7 +2,6 @@ import { useEffect, useState, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { change_page, change_set, minus_list, plus_list } from "../store";
 import {Set_header, Set_main, Set_notice, Set_around, Set_property, Set_charge, Set_review, Set_vod, Set_map} from './setting_page/setting_page';
-// import './setting_page/set.css';
 import './setting_page/set2.css';
 import axios from "axios";
 import Set_NaverVerification from "./setting_page/Set_NaverVerification";
