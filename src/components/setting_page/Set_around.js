@@ -1,17 +1,17 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { minus_Aslide, plus_Aslide, change_set } from "../../store";
+import { minus_Aslide, plus_Aslide } from "../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faPlus, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import $ from "jquery";
 import axios from "axios";
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
+// import "slick-carousel/slick/slick.css"; 
+// import "slick-carousel/slick/slick-theme.css";
+// import Slider from "react-slick";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import post_ajax from "../../ajaxs";
-import del_img from './del_fn';
+// import del_img from './del_fn';
 
 function Set_around(){
 
@@ -21,8 +21,8 @@ function Set_around(){
   let store = useSelector((state)=>{return state});
   let around_slide = store.set_around_slide;
   let [ticking, setTicking] = useState();
-  let [upload_logo_img, setUpload] = useState('');
-  let id = window.localStorage.getItem('id');
+  // let [upload_logo_img, setUpload] = useState('');
+  // let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
 
   const config = {
@@ -45,9 +45,17 @@ function Set_around(){
     }
   }
 
-  useMemo(()=>{
+  useEffect(() => {
     if(ticking === true || ticking === undefined){
-      return axios.get(process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=around', config).then((result)=>{setAroundSetting(result.data.RECORD); console.log('아작스 통신', result)}).catch(()=>{
+      axios.get(
+        process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=around', 
+        config
+      )
+      .then((result)=>{
+        setAroundSetting(result.data.RECORD);
+        // console.log('아작스 통신', result)
+      })
+      .catch(()=>{
         alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.');
         window.location.href = '/';
       });
@@ -65,29 +73,29 @@ function Set_around(){
     setTicking(false);
   }, [aroundSetting])
 
-  function preview(input){
-    if (input.length !== 0) {
-      console.log(input);
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        setUpload(e.target.result);
-      };
-      reader.readAsDataURL(input[0]);
-    } else {
-      return;
-    }
-  }
+  // function preview(input){
+  //   if (input.length !== 0) {
+  //     // console.log(input);
+  //     var reader = new FileReader();
+  //     reader.onload = function(e) {
+  //       setUpload(e.target.result);
+  //     };
+  //     reader.readAsDataURL(input[0]);
+  //   } else {
+  //     return;
+  //   }
+  // }
 
-  const settings = {
-    dots: false,
-    infinite: false,
-    draggable: false,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 1
-  };
+  // const settings = {
+  //   dots: false,
+  //   infinite: false,
+  //   draggable: false,
+  //   speed: 500,
+  //   slidesToShow: 2,
+  //   slidesToScroll: 1
+  // };
 
-  console.log(aroundSetting)
+  // console.log(aroundSetting)
   
   if(aroundSetting){
     return(
@@ -136,12 +144,18 @@ function Set_around(){
                     let formData = new FormData();
                     formData.append('code', 'around');
                     formData.append('file', e.target.files[0]);
-                    axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_up', formData, config).then((result)=>{console.log(result.data); setTicking(true)}).catch(()=>{
+                    axios.post(
+                      process.env.REACT_APP_API_KEY+'Admin/Menu/file_up', formData, 
+                      config
+                    )
+                    .then((result)=>{
+                      // console.log(result.data); 
+                      setTicking(true)}).catch(()=>{
                       alert("이미지를 추가할 수 없습니다.\n잠시 후에 다시 시도해주십시오.");
                     });
-                    for (const [key, value] of formData.entries()) {
-                      console.log(key, value);
-                    }
+                    // for (const [key, value] of formData.entries()) {
+                    //   console.log(key, value);
+                    // }
                   }} accept="image/png, image/jpeg"></input>
                     <FontAwesomeIcon icon={faPlus}/>
                     <span> 이미지 추가</span>
@@ -155,7 +169,7 @@ function Set_around(){
                   {/* <Slider {...settings}> */}
                     {around_slide === null || around_slide === '' ? null : around_slide.map(function(a, i){
                       return(
-                        <Around_slide cfg={config} data={around_slide} key={i} val={i}/>
+                        <AroundSlide cfg={config} data={around_slide} key={i} val={i}/>
                       )
                     })}
                   {/* </Slider> */}
@@ -196,7 +210,7 @@ function Set_around(){
                 <div className="ex_con">
                   <div className="ex_rows">
                     <p className="card-content-tit">결과예시</p>
-                    <img src="img/basic/notice/bgEx1.jpg"></img>
+                    <img src="img/basic/notice/bgEx1.jpg" alt="결과예시"></img>
                   </div>
                 </div>
               </div>
@@ -236,7 +250,7 @@ function Set_around(){
   }
 }
 
-function Around_slide(props){
+function AroundSlide(props){
 
   let dispatch = useDispatch();
 
@@ -256,18 +270,22 @@ function Around_slide(props){
         <div className="del_slide" onClick={()=>{
           let formData = new FormData();
           formData.append('img_no', props.data[props.val].img_no);
-          axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_del', formData, props.cfg).then((result)=>{console.log(result.data);}).catch(()=>{
+          axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_del', formData, props.cfg)
+          .then((result)=>{
+            // console.log(result.data);
+          })
+          .catch(()=>{
             alert("이미지를 삭제할 수 없습니다.\n잠시 후에 다시 시도해주십시오.");
           });
-          for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-          }
+          // for (const [key, value] of formData.entries()) {
+          //   console.log(key, value);
+          // }
           dispatch(minus_Aslide(props.val))
         }}>
           <FontAwesomeIcon icon={faTrashCan}/>
           <p>이미지 삭제</p>
         </div>
-        <img src={props.data[props.val].full_url}></img>
+        <img src={props.data[props.val].full_url} alt="이미지 삭제"></img>
       </div>
     </li>
   )

@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { minus_Mslide, plus_Mslide, change_set } from "../../store";
+import { minus_Mslide, plus_Mslide } from "../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faPlus, faTrashCan} from "@fortawesome/free-solid-svg-icons";
 import $ from "jquery";
 import axios from "axios";
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
+// import "slick-carousel/slick/slick.css"; 
+// import "slick-carousel/slick/slick-theme.css";
+// import Slider from "react-slick";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import post_ajax from "../../ajaxs";
@@ -20,7 +20,7 @@ function Set_main(){
   let store = useSelector((state)=>{return state});
   let main_slide = store.set_main_slide;
   let [ticking, setTicking] = useState();
-  let id = window.localStorage.getItem('id');
+  // let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
 
   const config = {
@@ -51,37 +51,41 @@ function Set_main(){
     setTicking(false);
   }, [mainSetting])
 
-  useMemo(()=>{
+  useEffect(()=>{
     if(ticking === true || ticking === undefined){
-      return axios.get(process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=main', config).then((result)=>{setMainSetting(result.data.RECORD); console.log('아작스 통신', result)}).catch(()=>{alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); window.location.href = '/';});
+       axios.get(process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=main', config).then((result)=>{setMainSetting(result.data.RECORD); 
+        // ('아작스 통신', result)
+      }).catch(()=>{alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); window.location.href = '/';});
     }
   }, [ticking]);
 
-  const settings = {
-    dots: false,
-    infinite: false,
-    draggable: false,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
-  };
-  console.log(mainSetting)
+  // const settings = {
+  //   dots: false,
+  //   infinite: false,
+  //   draggable: false,
+  //   speed: 500,
+  //   slidesToShow: 2,
+  //   slidesToScroll: 1,
+  //   responsive: [
+  //     {
+  //       breakpoint: 1024,
+  //       settings: {
+  //         slidesToShow: 2,
+  //         slidesToScroll: 1
+  //       }
+  //     },
+  //     {
+  //       breakpoint: 768,
+  //       settings: {
+  //         slidesToShow: 1,
+  //         slidesToScroll: 1
+  //       }
+  //     }
+  //   ]
+  // };
+  
+  // console.log(mainSetting)
+
   if(mainSetting){
     return(
       <form id="mainSetting" data-whats="main">
@@ -132,9 +136,9 @@ function Set_main(){
                     axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_up', formData, config).then((result)=>{console.log(result.data); setTicking(true)}).catch(()=>{
                       alert("이미지를 추가할 수 없습니다\n잠시 후에 다시 시도해주십시오.");
                     });
-                    for (const [key, value] of formData.entries()) {
-                      console.log(key, value);
-                    }
+                    // for (const [key, value] of formData.entries()) {
+                    //   console.log(key, value);
+                    // }
                   }} accept="image/png, image/jpeg"></input>
                     <FontAwesomeIcon icon={faPlus} />
                     <span> 이미지 추가</span>
@@ -148,7 +152,7 @@ function Set_main(){
                 {/* <Slider {...settings}> */}
                   {main_slide === null || main_slide === '' ? null : main_slide.map(function(a, i){
                     return(
-                      <Main_slide cfg={config} data={main_slide} key={i} val={i}/>
+                      <MainSlide cfg={config} data={main_slide} key={i} val={i}/>
                     )
                   })}
                 {/* </Slider> */}
@@ -233,7 +237,7 @@ function Set_main(){
   
 }
 
-function Main_slide(props){
+function MainSlide(props){
 
   let dispatch = useDispatch();
 
@@ -253,18 +257,20 @@ function Main_slide(props){
         <div className="del_slide" onClick={()=>{
           let formData = new FormData();
           formData.append('img_no', props.data[props.val].img_no);
-          axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_del', formData, props.cfg).then((result)=>{console.log(result.data);}).catch(()=>{
+          axios.post(process.env.REACT_APP_API_KEY+'Admin/Menu/file_del', formData, props.cfg).then((result)=>{
+            // console.log(result.data);
+          }).catch(()=>{
             alert("이미지를 삭제할 수 없습니다\n잠시 후에 다시 시도해주십시오.");
           });
-          for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-          }
+          // for (const [key, value] of formData.entries()) {
+          //   console.log(key, value);
+          // }
           dispatch(minus_Mslide(props.val));
         }}>
           <FontAwesomeIcon icon={faTrashCan}/>
           <p>이미지 삭제</p>
         </div>
-        <img src={props.data[props.val].full_url}></img>
+        <img src={props.data[props.val].full_url} alt="이미지 삭제"></img>
       </div>
     </li>
   )

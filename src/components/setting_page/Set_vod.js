@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import { change_set } from "../../store";
+import { useEffect, useState } from "react"
+// import { useDispatch, useSelector } from "react-redux";
+// import { change_set } from "../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import $ from "jquery";
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
+// import "slick-carousel/slick/slick.css"; 
+// import "slick-carousel/slick/slick-theme.css";
+// import Slider from "react-slick";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import post_ajax from "../../ajaxs";
@@ -18,8 +18,8 @@ function Set_vod(){
   let [vodSetting, setVodSetting] = useState();
   let [contents, setContents] = useState("");
   let [upload_logo_img, setUpload] = useState('');
-  let dispatch = useDispatch();
-  let id = window.localStorage.getItem('id');
+  // let dispatch = useDispatch();
+  // let id = window.localStorage.getItem('id');
   let login_key = window.localStorage.getItem('login_key');
 
   const config = {
@@ -42,8 +42,10 @@ function Set_vod(){
     }
   }
 
-  useMemo(()=>{
-    return axios.get(process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=vod', config).then((result)=>{setVodSetting(result.data.RECORD); console.log('아작스 통신', result)}).catch(()=>{alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); window.location.href = '/';});
+  useEffect(()=>{
+    axios.get(process.env.REACT_APP_API_KEY+'Admin/Menu/data?code=vod', config).then((result)=>{setVodSetting(result.data.RECORD); 
+      // console.log('아작스 통신', result)
+    }).catch(()=>{alert('서버와의 연결이 끊겼습니다. 잠시 후 다시 시도해주십시오.'); window.location.href = '/';});
   }, []);
 
   useEffect(()=>{
@@ -57,7 +59,7 @@ function Set_vod(){
 
   function preview(input){
     if (input.length !== 0) {
-      console.log(input);
+      // console.log(input);
       var reader = new FileReader();
       reader.onload = function(e) {
         setUpload(e.target.result);
@@ -68,7 +70,7 @@ function Set_vod(){
     }
   }
 
-  console.log(vodSetting);
+  // console.log(vodSetting);
 
   if(vodSetting){
     return(
@@ -120,7 +122,7 @@ function Set_vod(){
                   }
                 }}></input>
                 <div className="upload_img">
-                  {upload_logo_img === '' ? <img src="img/basic/notice/notice_base.jpg"></img> : <img src={upload_logo_img} alt="이미지 경로를 확인해주세요"></img>}
+                  {upload_logo_img === '' ? <img src="img/basic/notice/notice_base.jpg" alt="배경이미지"></img> : <img src={upload_logo_img} alt="배경이미지"></img>}
                 </div>
                   {
                   upload_logo_img === '' ? null : <div className="btn-minus" onClick={()=>{
@@ -136,7 +138,7 @@ function Set_vod(){
              <div className="ex_con">
                 <div className="ex_rows">
                   <p className="card-content-tit">결과예시</p>
-                  <img src="img/basic/notice/bgEx2.jpg"></img>
+                  <img src="img/basic/notice/bgEx2.jpg" alt="결과예시"></img>
                 </div>
               </div>
             </div>
@@ -177,7 +179,7 @@ function Set_vod(){
                 <div className="ex_con">
                   <div className="ex_rows">
                     <p className="card-content-tit">결과예시</p>
-                    <img src="img/basic/notice/bgEx1.jpg"></img>
+                    <img src="img/basic/notice/bgEx1.jpg" alt="결과예시"></img>
                   </div>
                 </div>
              </div>
