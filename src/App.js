@@ -69,16 +69,6 @@ console.log("REACT_APP_API_KEY : " + process.env.REACT_APP_API_KEY);
     formData.append('time', time);
     // formData.append('session_id', session);
 
-    const result = {
-  data: {
-    SUCCESS: "TRUE",
-    MSG: {
-      session_id: "TEST_SESSION_123456",
-      fid: "TEST_FID"
-    }
-  }
-};
-
     axios.post(process.env.REACT_APP_API_KEY+'Admin/User/sessionlogin', formData).then((result)=>{
       console.log(result);
 
@@ -105,6 +95,11 @@ console.log("REACT_APP_API_KEY : " + process.env.REACT_APP_API_KEY);
         if(result.data.MSG.fid === ''){
           alert('매장정보없음');
         }else{
+          // 기존 로그인 정보 삭제
+          window.localStorage.removeItem('id');
+          window.localStorage.removeItem('login_key');
+
+          // 새 로그인 정보 저장
           dispatch(log_in_out());
           window.localStorage.setItem('login_key', result.data.MSG.session_id);
           window.localStorage.setItem('id', result.data.MSG.fid);
