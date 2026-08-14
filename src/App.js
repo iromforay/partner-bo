@@ -39,8 +39,8 @@ console.log("REACT_APP_API_KEY : " + process.env.REACT_APP_API_KEY);
     }
     if (
       id !== null &&
-      alt === false
-      // pathname !== '/session_login'
+      alt === false &&
+      pathname !== '/session_login'
     ) {
       dispatch(log_in_out());
     }
@@ -48,38 +48,42 @@ console.log("REACT_APP_API_KEY : " + process.env.REACT_APP_API_KEY);
   
   // AD → BO 자동로그인
   useEffect(()=>{
-  // /session_login으로 들어온 경우에만 특별 로그인
-  if (
-    pathname !== '/session_login' ||
-    !session_token ||
-    !login_id ||
-    !time
-  ) {
-    return;
-  }
-
-  const formData = new FormData();
-
-  formData.append('session_token', session_token);
-  formData.append('id', login_id);
-  formData.append('time', time);
-  // formData.append('session_id', session);
-
-  axios.post(process.env.REACT_APP_API_KEY+'Admin/User/sessionlogin', formData).then((result)=>{
-    console.log(result);
-
-    if(result.data.SUCCESS === true){
-      dispatch(log_in_out());
-      window.localStorage.setItem('login_key', result.data.MSG.session_id);
-      window.localStorage.setItem('id', result.data.MSG.fid);
-    }else{
-      alert(result.data.MSG);
+    // /session_login으로 들어온 경우에만 특별 로그인
+    if (
+      pathname !== '/session_login' ||
+      !session_token ||
+      !login_id ||
+      !time
+    ) {
+      return;
     }
-  
-  }).catch((error)=>{
-    console.error('자동 로그인 실패:', error);
-  });
+
+    // 기존 로그인 정보 제거
+    window.localStorage.removeItem('id');
+    window.localStorage.removeItem('login_key');
+
+    const formData = new FormData();
+
+    formData.append('session_token', session_token);
+    formData.append('id', login_id);
+    formData.append('time', time);
+    // formData.append('session_id', session);
+
+    axios.post(process.env.REACT_APP_API_KEY+'Admin/User/sessionlogin', formData).then((result)=>{
+      console.log(result);
+
+      if(result.data.SUCCESS === "TRUE"){
+        dispatch(log_in_out());
+        window.localStorage.setItem('login_key', result.data.MSG.session_id);
+        window.localStorage.setItem('id', result.data.MSG.fid);
+      }else{
+        alert(result.data.MSG);
+      }
     
+    }).catch((error)=>{
+      console.error('자동 로그인 실패:', error);
+    });
+      
   }, [pathname, session_token, login_id, time, dispatch])
 
   function log_in(){
@@ -91,6 +95,11 @@ console.log("REACT_APP_API_KEY : " + process.env.REACT_APP_API_KEY);
         if(result.data.MSG.fid === ''){
           alert('매장정보없음');
         }else{
+          // 기존 로그인 정보 삭제
+          window.localStorage.removeItem('id');
+          window.localStorage.removeItem('login_key');
+
+          // 새 로그인 정보 저장
           dispatch(log_in_out());
           window.localStorage.setItem('login_key', result.data.MSG.session_id);
           window.localStorage.setItem('id', result.data.MSG.fid);
