@@ -156,7 +156,7 @@ function Header(){
               <div className="bottom_actions">
                 {/* 내 쇼핑몰 바로가기 */}
                 <a 
-                  href={`http://${id}.bomul.co.kr`} 
+                  href={`http://${id}.bomul.ai.kr`} 
                   target="_blank" 
                   rel="noreferrer" 
                   className="btn_icon_action" 
